@@ -22,6 +22,7 @@ import Verifiers from './pages/Verifiers';
 import TrustedProviders from './pages/TrustedProviders';
 import Offers from './pages/Offers';
 import Guide from './pages/Guide';
+import VIPHub from './pages/VIPHub';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -91,6 +92,7 @@ function App() {
             <Route path="/trusted-providers" element={<TrustedProviders />} />
             <Route path="/guide" element={<Guide />} />
             <Route path="/offers" element={<Offers />} />
+            <Route path="/vip" element={<VIPHub />} />
             <Route 
               path="/dashboard" 
               element={

@@ -17,12 +17,16 @@ function Header({ isAuthenticated, isAdmin, onLogout }) {
         </Link>
         <nav className="nav">
           <Link to="/" className="nav-link">HOME</Link>
+          <Link to="/vip" className="nav-link" style={{
+            background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.1))',
+            border: '1px solid rgba(255, 215, 0, 0.3)',
+            borderRadius: '8px',
+            color: '#ffd700'
+          }}>VIP HUB</Link>
           <Link to="/verifiers" className="nav-link">VERIFIERS</Link>
           <Link to="/calculators" className="nav-link">CALCULATORS</Link>
-          <Link to="/tools" className="nav-link">TOOLS</Link>
           <Link to="/trusted-providers" className="nav-link">TRUSTED</Link>
           <Link to="/guide" className="nav-link">GUIDE</Link>
-          <Link to="/offers" className="nav-link">OFFERS</Link>
           <Link to="/stats" className="nav-link">STATS</Link>
           {isAuthenticated ? (
             <>

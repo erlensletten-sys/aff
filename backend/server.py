@@ -12,7 +12,8 @@ from models import (
     UserRegisterRequest, UserLoginRequest, TokenResponse, VerifyEmailRequest,
     PromotionCreateRequest, PromotionUpdateRequest,
     ProviderCreateRequest, ProviderUpdateRequest,
-    ProvablyFairVerifyRequest, ProvablyFairVerifyResponse
+    ProvablyFairVerifyRequest, ProvablyFairVerifyResponse,
+    VIPCampaign, VIPCampaignCreateRequest, VIPCampaignUpdateRequest
 )
 from auth import hash_password, verify_password, create_access_token, decode_access_token
 from email_service import email_service
@@ -108,6 +109,110 @@ async def startup_db_client():
         ]
         await db.providers.insert_many(default_providers)
         logger.info(f"Seeded {len(default_providers)} default providers")
+    
+    # Seed default VIP campaigns if none exist
+    vip_count = await db.vip_campaigns.count_documents({})
+    if vip_count == 0:
+        logger.info("Seeding default VIP campaigns...")
+        default_campaigns = [
+            {
+                "casino_name": "Stake.com",
+                "casino_slug": "stake",
+                "logo_url": None,
+                "bonus_title": "200% Deposit Bonus",
+                "bonus_value": "Up to $3,000",
+                "description": "Get a massive 200% bonus on your first deposit at Stake.com. One of the most trusted crypto casinos with instant withdrawals and thousands of games.",
+                "referral_link": "https://stake.com/?c=notogreed",
+                "bonus_code": "NOTOGREED",
+                "exclusive_extra": "+$25 Free Bet on signup through NoToGreed",
+                "terms": "18+ | New players only | Min deposit $20",
+                "min_deposit": "$20",
+                "wagering_requirement": "40x bonus",
+                "is_featured": True,
+                "is_active": True,
+                "sort_order": 1,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "casino_name": "BC.Game",
+                "casino_slug": "bcgame",
+                "logo_url": None,
+                "bonus_title": "300% Welcome Package",
+                "bonus_value": "Up to $20,000 + Lucky Spin",
+                "description": "BC.Game offers one of the biggest welcome packages in crypto gaming. Spin the lucky wheel daily for free crypto rewards.",
+                "referral_link": "https://bc.game/?ref=notogreed",
+                "bonus_code": None,
+                "exclusive_extra": "VIP Fast-Track + Daily Rakeback Boost",
+                "terms": "18+ | New players only",
+                "min_deposit": "$10",
+                "wagering_requirement": "35x bonus",
+                "is_featured": True,
+                "is_active": True,
+                "sort_order": 2,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "casino_name": "Shuffle.com",
+                "casino_slug": "shuffle",
+                "logo_url": None,
+                "bonus_title": "150% Crypto Bonus",
+                "bonus_value": "Up to $1,500 + 100 Free Spins",
+                "description": "Shuffle combines the best of sports betting and casino gaming. Lightning-fast payouts and provably fair games.",
+                "referral_link": "https://shuffle.com/?r=notogreed",
+                "bonus_code": "GREED150",
+                "exclusive_extra": "+50 Extra Free Spins (NoToGreed Exclusive)",
+                "terms": "18+ | Crypto deposits only",
+                "min_deposit": "$25",
+                "wagering_requirement": "30x bonus",
+                "is_featured": False,
+                "is_active": True,
+                "sort_order": 3,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "casino_name": "Roobet",
+                "casino_slug": "roobet",
+                "logo_url": None,
+                "bonus_title": "Free $20 on Signup",
+                "bonus_value": "$20 No Deposit Bonus",
+                "description": "Start playing instantly with $20 free - no deposit required! Roobet is known for its original games and generous rewards.",
+                "referral_link": "https://roobet.com/?ref=notogreed",
+                "bonus_code": "NOTOGREED20",
+                "exclusive_extra": "Weekly Cashback Boost (NoToGreed Members)",
+                "terms": "18+ | KYC required | Geo-restricted",
+                "min_deposit": "No deposit needed",
+                "wagering_requirement": "25x bonus",
+                "is_featured": False,
+                "is_active": True,
+                "sort_order": 4,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "casino_name": "Rollbit",
+                "casino_slug": "rollbit",
+                "logo_url": None,
+                "bonus_title": "100% Sports Bonus",
+                "bonus_value": "Up to $1,000 + NFT Rewards",
+                "description": "Rollbit pioneered NFT integration in gambling. Trade, stake, and earn with your NFTs while enjoying premium casino games.",
+                "referral_link": "https://rollbit.com/?r=notogreed",
+                "bonus_code": None,
+                "exclusive_extra": "Exclusive NFT Airdrop Entry",
+                "terms": "18+ | NFT holders get extra benefits",
+                "min_deposit": "$10",
+                "wagering_requirement": "20x bonus",
+                "is_featured": False,
+                "is_active": True,
+                "sort_order": 5,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            }
+        ]
+        await db.vip_campaigns.insert_many(default_campaigns)
+        logger.info(f"Seeded {len(default_campaigns)} default VIP campaigns")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
@@ -735,6 +840,141 @@ async def delete_provider(
     except Exception as e:
         logger.error(f"Delete provider error: {e}")
         raise HTTPException(status_code=500, detail="Failed to delete provider")
+
+# VIP Campaign Endpoints (Public)
+@app.get("/api/vip/campaigns")
+async def get_vip_campaigns():
+    """Get all active VIP campaigns (public endpoint)"""
+    try:
+        campaigns = await db.vip_campaigns.find(
+            {"is_active": True},
+            {"_id": 0}
+        ).sort("sort_order", 1).to_list(100)
+        
+        return {"campaigns": campaigns}
+    
+    except Exception as e:
+        logger.error(f"Get VIP campaigns error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve VIP campaigns")
+
+@app.get("/api/vip/campaigns/featured")
+async def get_featured_campaigns():
+    """Get featured VIP campaigns (public endpoint)"""
+    try:
+        campaigns = await db.vip_campaigns.find(
+            {"is_active": True, "is_featured": True},
+            {"_id": 0}
+        ).sort("sort_order", 1).to_list(10)
+        
+        return {"campaigns": campaigns}
+    
+    except Exception as e:
+        logger.error(f"Get featured campaigns error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve featured campaigns")
+
+# VIP Campaign Admin Endpoints
+@app.post("/api/admin/vip/campaigns")
+async def create_vip_campaign(request: VIPCampaignCreateRequest, user: dict = Depends(get_current_user)):
+    """Create a new VIP campaign (admin only)"""
+    try:
+        if not user or not user.get("is_admin"):
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        # Check if campaign with same slug exists
+        existing = await db.vip_campaigns.find_one({"casino_slug": request.casino_slug})
+        if existing:
+            raise HTTPException(status_code=400, detail="Campaign for this casino already exists")
+        
+        campaign_data = VIPCampaign(
+            casino_name=request.casino_name,
+            casino_slug=request.casino_slug,
+            logo_url=request.logo_url,
+            bonus_title=request.bonus_title,
+            bonus_value=request.bonus_value,
+            description=request.description,
+            referral_link=request.referral_link,
+            bonus_code=request.bonus_code,
+            exclusive_extra=request.exclusive_extra,
+            terms=request.terms,
+            min_deposit=request.min_deposit,
+            wagering_requirement=request.wagering_requirement,
+            is_featured=request.is_featured,
+            is_active=True,
+            sort_order=request.sort_order,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc)
+        )
+        
+        await db.vip_campaigns.insert_one(campaign_data.model_dump())
+        
+        logger.info(f"VIP campaign created by {user['email']}: {request.casino_name}")
+        
+        return {
+            "message": "VIP campaign created successfully",
+            "campaign": {
+                "casino_name": request.casino_name,
+                "casino_slug": request.casino_slug
+            }
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Create VIP campaign error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create VIP campaign")
+
+@app.put("/api/admin/vip/campaigns/{slug}")
+async def update_vip_campaign(slug: str, request: VIPCampaignUpdateRequest, user: dict = Depends(get_current_user)):
+    """Update a VIP campaign (admin only)"""
+    try:
+        if not user or not user.get("is_admin"):
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        update_data = {k: v for k, v in request.model_dump().items() if v is not None}
+        if not update_data:
+            raise HTTPException(status_code=400, detail="No fields to update")
+        
+        update_data["updated_at"] = datetime.now(timezone.utc)
+        
+        result = await db.vip_campaigns.update_one(
+            {"casino_slug": slug},
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="VIP campaign not found")
+        
+        logger.info(f"VIP campaign updated by {user['email']}: {slug}")
+        
+        return {"message": "VIP campaign updated successfully"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Update VIP campaign error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update VIP campaign")
+
+@app.delete("/api/admin/vip/campaigns/{slug}")
+async def delete_vip_campaign(slug: str, user: dict = Depends(get_current_user)):
+    """Delete a VIP campaign (admin only)"""
+    try:
+        if not user or not user.get("is_admin"):
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        result = await db.vip_campaigns.delete_one({"casino_slug": slug})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="VIP campaign not found")
+        
+        logger.info(f"VIP campaign deleted by {user['email']}: {slug}")
+        
+        return {"message": "VIP campaign deleted successfully"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Delete VIP campaign error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to delete VIP campaign")
 
 if __name__ == "__main__":
     import uvicorn

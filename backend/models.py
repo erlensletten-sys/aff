@@ -111,6 +111,60 @@ class ProviderUpdateRequest(BaseModel):
     is_active: Optional[bool] = None
 
 
+class VIPCampaign(BaseModel):
+    """VIP referral campaign model"""
+    casino_name: str
+    casino_slug: str
+    logo_url: Optional[str] = None
+    bonus_title: str  # e.g., "200% Welcome Bonus"
+    bonus_value: str  # e.g., "Up to $3,000 + 50 Free Spins"
+    description: str
+    referral_link: str
+    bonus_code: Optional[str] = None
+    exclusive_extra: Optional[str] = None  # NoToGreed exclusive bonus
+    terms: Optional[str] = None
+    min_deposit: Optional[str] = None
+    wagering_requirement: Optional[str] = None
+    is_featured: bool = False
+    is_active: bool = True
+    sort_order: int = 0
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class VIPCampaignCreateRequest(BaseModel):
+    """Create VIP campaign request"""
+    casino_name: str = Field(min_length=2, max_length=100)
+    casino_slug: str = Field(min_length=2, max_length=100)
+    logo_url: Optional[str] = None
+    bonus_title: str = Field(min_length=3, max_length=200)
+    bonus_value: str = Field(min_length=3, max_length=200)
+    description: str = Field(min_length=10, max_length=1000)
+    referral_link: str
+    bonus_code: Optional[str] = None
+    exclusive_extra: Optional[str] = None
+    terms: Optional[str] = None
+    min_deposit: Optional[str] = None
+    wagering_requirement: Optional[str] = None
+    is_featured: bool = False
+    sort_order: int = 0
+
+class VIPCampaignUpdateRequest(BaseModel):
+    """Update VIP campaign request"""
+    casino_name: Optional[str] = None
+    logo_url: Optional[str] = None
+    bonus_title: Optional[str] = None
+    bonus_value: Optional[str] = None
+    description: Optional[str] = None
+    referral_link: Optional[str] = None
+    bonus_code: Optional[str] = None
+    exclusive_extra: Optional[str] = None
+    terms: Optional[str] = None
+    min_deposit: Optional[str] = None
+    wagering_requirement: Optional[str] = None
+    is_featured: Optional[bool] = None
+    is_active: Optional[bool] = None
+    sort_order: Optional[int] = None
+
 class ProvablyFairVerifyRequest(BaseModel):
     """Provably fair verification request"""
     provider: str = Field(min_length=2, max_length=100)
