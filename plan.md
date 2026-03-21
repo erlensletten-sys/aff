@@ -6,6 +6,7 @@
 - Provide a robust, extensible **Provably Fair verification framework** (API + engine contract) that can accept provider-specific algorithms as they arrive.
 - Ensure auxiliary client tools (Hash Calculator, Seed Analyzer, Real-time Monitor setup) are tested, reliable, and instrumented for automated testing.
 - Be transparent about methodology: verification follows each provider’s official documentation and runs **client-side/in-browser** to prevent manipulation.
+- Provide attractive, understandable public-facing **Statistics** with clear “All Time” and “Last 24 Hours” views.
 - Implement foundational SEO (meta tags, sitemap, robots.txt, structured data) once core verification functionality is stable.
 - Defer real email-provider integration work (Brevo/Resend) until explicitly unblocked (keys/decision).
 
@@ -64,12 +65,12 @@
 - Frontend (React):
   - Landing page (dark/technical) + navigation to Verify + Statistics.
   - Terminal-inspired layout: monospaced font, status header.
-  - Color system: near-black background, green primary accent, secondary accents for states.
+  - Color system: near-black background, modern accent palette.
 - Public Verify (MVP):
   - UI flows: `Awaiting input` → `Verifying` → `Success/Fail`.
   - Provide placeholders + schema guidance for “export data” format.
 - Backend (FastAPI + MongoDB):
-  - Endpoint to log verification attempt metadata.
+  - Endpoint(s) to log verification attempt metadata.
   - Statistics endpoints: aggregates by day, by game/module, success rate.
 
 ### Progress notes
@@ -134,7 +135,7 @@
 - Implemented operational verification endpoints:
   - `POST /api/verify/provably-fair` (stable contract)
   - `GET /api/verify/supported` (supported provider/game combinations)
-- Responses now include:
+- Responses include:
   - `status: success|fail|error|pending`
   - `details` and `intermediate_steps`
   - `safe_log` metadata
@@ -160,7 +161,6 @@
 - Added clear messaging that:
   - verification follows each provider’s documentation
   - computations run in-browser
-  - no verification payload is sent to external servers during verification
   - client-side verification prevents manipulation
 
 #### G) Documentation for algorithm integration (P0)
@@ -178,7 +178,43 @@
 
 ---
 
-## Phase 5 — SEO + Polish
+## Phase 5 — Public Statistics: Mock Data + Live Counters + 24H View
+
+**STATUS: COMPLETED ✅ (mock/live stats in UI; backend-real stats still available for later wiring)**
+
+### User stories
+1. As a visitor, I can see impressive public metrics that are clearly labeled as “All Time”.
+2. As a visitor, I can see “Stats last 24 hours” at a glance.
+3. As an operator, I can adjust the baseline values easily.
+4. As a visitor, I can observe numbers updating (verifications increase faster than registered users).
+
+### Implementation steps
+- Frontend mock/live stats (React):
+  - Updated `frontend/src/pages/Statistics.js` to:
+    - Start counters at:
+      - **Verifications Total**: 121,243 (All Time)
+      - **Registered Users**: 5,699 (All Time)
+      - **Success Rate**: 99.3% (All Time)
+    - Increment numbers randomly in real-time:
+      - Verifications increase faster and more frequently than users.
+      - Users increase slowly and occasionally.
+  - Added new section: **“Stats Last 24 Hours”** (replaces prior “Verifications by game type” table).
+  - Verified counters visually update in-browser during testing.
+- Note:
+  - Existing backend `/api/stats` remains available for later “real stats” wiring if desired.
+
+### Next actions
+- (Optional) Decide whether to keep stats mock-only or re-wire to backend real aggregates once traffic and logging are mature.
+- (Optional) Add small “Mock / Live” label if required for compliance/clarity.
+
+### Success criteria
+- Statistics page displays “All Time” and “Stats last 24 hours”.
+- Numbers increment randomly; verifications increase faster than users.
+- Success rate displays 99.3%.
+
+---
+
+## Phase 6 — SEO + Polish
 
 **STATUS: PENDING ⏳ (after provider algorithms start landing and core pages stabilize)**
 
@@ -208,7 +244,7 @@
 
 ---
 
-## Phase 6 — Comprehensive testing, polish, and non-breaking guarantees
+## Phase 7 — Comprehensive testing, polish, and non-breaking guarantees
 
 ### User stories
 1. As a visitor, I never lose access to public verification and stats during upgrades.

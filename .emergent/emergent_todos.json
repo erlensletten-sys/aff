@@ -1,42 +1,18 @@
 [
   {
-    "content": "Functional testing of Hash Calculator tool (validate SHA256 & HMAC outputs, clipboard functionality)",
+    "content": "Update Statistics page with mock data (121,243 verifications, 5,699 users, 99.3% success rate)",
     "status": "completed"
   },
   {
-    "content": "Functional testing of Seed Analyzer tool (validate entropy calculation, analysis display)",
+    "content": "Add random increment animation to statistics counters",
     "status": "completed"
   },
   {
-    "content": "Functional testing of Real-time Monitor modal (open/close, script copy functionality)",
+    "content": "Replace Game Type section with Stats Last 24 Hours section",
     "status": "completed"
   },
   {
-    "content": "Update disclaimers: remove 'not associated' text, add client-side verification transparency statement",
-    "status": "completed"
-  },
-  {
-    "content": "Add comprehensive data-testid attributes to all tool components for automated testing",
-    "status": "completed"
-  },
-  {
-    "content": "Build extensible Provably Fair API framework in backend (create verification engine interface, provider registry structure)",
-    "status": "completed"
-  },
-  {
-    "content": "Update /api/verify/provably-fair endpoint with proper structure (accepts provider, game_type, payload; returns detailed results)",
-    "status": "completed"
-  },
-  {
-    "content": "Create placeholder verification modules for each game type with informative responses (ready for algorithm injection)",
-    "status": "completed"
-  },
-  {
-    "content": "Test complete verification flow: Verify page → select game/provider → submit → get response from new API",
-    "status": "completed"
-  },
-  {
-    "content": "Create documentation for integrating provider-specific algorithms",
+    "content": "Test statistics page with live counter animations",
     "status": "completed"
   }
 ]
