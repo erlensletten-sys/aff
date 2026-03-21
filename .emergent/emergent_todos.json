@@ -1,10 +1,10 @@
 [
   {
-    "content": "Restart backend with new changes",
+    "content": "Test promotions feature",
     "status": "completed"
   },
   {
-    "content": "Test promotions feature",
-    "status": "in_progress"
+    "content": "All features tested and working correctly",
+    "status": "completed"
   }
 ]
