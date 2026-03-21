@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ThemeToggle from './ThemeToggle';
 
 function Header({ isAuthenticated, isAdmin, onLogout }) {
   const navigate = require('react-router-dom').useNavigate();
@@ -30,21 +31,21 @@ function Header({ isAuthenticated, isAdmin, onLogout }) {
           }}>VIP CLUB</Link>
           <Link to="/verifiers" className="nav-link">VERIFIERS</Link>
           <Link to="/calculators" className="nav-link">CALCULATORS</Link>
-          <Link to="/trusted-providers" className="nav-link">TRUSTED</Link>
           <Link to="/stats" className="nav-link">STATS</Link>
           {isAuthenticated ? (
             <>
-              <Link to="/promotions" className="nav-link">PROMOTIONS</Link>
               <Link to="/dashboard" className="nav-link">DASHBOARD</Link>
               {isAdmin && (
                 <Link to="/admin" className="nav-link" style={{color: 'var(--accent-warning)'}}>ADMIN</Link>
               )}
+              <ThemeToggle />
               <button onClick={handleLogout} className="btn btn-secondary" style={{padding: '10px 20px', fontSize: '13px'}}>
                 LOGOUT
               </button>
             </>
           ) : (
             <>
+              <ThemeToggle />
               <Link to="/login" className="nav-link">LOGIN</Link>
               <Link to="/register" className="btn btn-primary" style={{padding: '10px 20px', fontSize: '13px'}}>
                 REGISTER

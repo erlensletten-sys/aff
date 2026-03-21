@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
+// Context
+import { ThemeProvider } from './contexts/ThemeContext';
+
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -75,54 +78,56 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="app">
-        <Header isAuthenticated={isAuthenticated} isAdmin={isAdmin} onLogout={handleLogout} />
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login onLogin={handleLogin} />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route path="/stats" element={<Statistics />} />
-            <Route path="/verify" element={<Verify />} />
-            <Route path="/verifiers" element={<Verifiers />} />
-            <Route path="/tools" element={<Tools />} />
-            <Route path="/calculators" element={<Calculators />} />
-            <Route path="/trusted-providers" element={<TrustedProviders />} />
-            <Route path="/guide" element={<Guide />} />
-            <Route path="/offers" element={<Offers />} />
-            <Route path="/vip" element={<VIPHub />} />
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/promotions" 
-              element={
-                <ProtectedRoute>
-                  <Promotions />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin" 
-              element={
-                <ProtectedRoute>
-                  <AdminPanel />
-                </ProtectedRoute>
-              } 
-            />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <div className="app">
+          <Header isAuthenticated={isAuthenticated} isAdmin={isAdmin} onLogout={handleLogout} />
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login onLogin={handleLogin} />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/stats" element={<Statistics />} />
+              <Route path="/verify" element={<Verify />} />
+              <Route path="/verifiers" element={<Verifiers />} />
+              <Route path="/tools" element={<Tools />} />
+              <Route path="/calculators" element={<Calculators />} />
+              <Route path="/trusted-providers" element={<TrustedProviders />} />
+              <Route path="/guide" element={<Guide />} />
+              <Route path="/offers" element={<Offers />} />
+              <Route path="/vip" element={<VIPHub />} />
+              <Route 
+                path="/dashboard" 
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/promotions" 
+                element={
+                  <ProtectedRoute>
+                    <Promotions />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin" 
+                element={
+                  <ProtectedRoute>
+                    <AdminPanel />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 
