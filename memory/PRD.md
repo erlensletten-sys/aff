@@ -19,20 +19,25 @@ NoToGreed.com is a comprehensive gambling verification and tools platform inspir
 - JWT-based session management
 - Admin role support
 
-### 2. VIP Hub (/vip) - NEW
-**Exclusive referral campaigns with extra bonuses:**
-- Hero section with VIP branding and stats
-- Filter tabs: All Offers / Featured
-- Campaign cards displaying:
-  - Casino name and bonus title
-  - Bonus value (e.g., "Up to $3,000")
-  - NoToGreed exclusive extras (highlighted)
-  - Min deposit & wagering requirements
-  - Bonus codes with copy functionality
-  - Referral link buttons
-- "How It Works" explainer section
-- Admin CRUD for managing campaigns
-- Default seeded campaigns: Stake, BC.Game, Shuffle, Roobet, Rollbit
+### 2. VIP Club (/vip) - NoToGreed's Own VIP System
+**Exclusive membership program with partner casino rewards:**
+- **Hero Section**: "NoToGreed VIP CLUB" branding, stats (Partner Casinos, Max Cashback, Lottery Draws)
+- **4 VIP Tiers**:
+  - Bronze: 5% cashback, monthly lottery entry
+  - Silver: 10% cashback, 2x lottery entries, priority support
+  - Gold: 15% cashback, 5x lottery entries, personal account manager
+  - Diamond: 20% cashback, 10x lottery entries, dedicated VIP host, no withdrawal limits
+- **"REDEEM VIP ACCESS" buttons** open casino selection modal
+- **Casino Selection Modal**: "Which casino do you prefer to connect your boost to?"
+  - Lists all 5 partner casinos with bonuses and exclusive extras
+  - Clicking casino opens referral link in new tab
+- **Weekly VIP Lottery Section**:
+  - $1,000 / $500 / $250 prizes
+  - "MEMBERS ONLY" badge
+  - Shows "Registration Required" for non-logged users
+  - Shows "You're Eligible!" for logged-in users
+- **"How NoToGreed VIP Works"** explainer (3 steps)
+- Backend: Uses existing VIPCampaign API for casino data
 
 ### 3. Live Statistics (Landing & /stats)
 - Real-time animated counters for "Total Verifications" and "Registered Users"
@@ -98,14 +103,16 @@ NoToGreed.com is a comprehensive gambling verification and tools platform inspir
   - Sports Betting (Parlay + Arbitrage)
   - Odds Converter
 - Calculator page reorganized into 3 categories
-- **VIP Hub Implementation**:
-  - New /vip page with premium gold branding
-  - VIPCampaign model and API endpoints
-  - Campaign cards with all bonus details
-  - Filter tabs (All/Featured)
-  - Admin CRUD for managing campaigns
-  - Default 5 casino campaigns seeded
-  - Updated navigation with gold-styled VIP link
+- **VIP Club Implementation**:
+  - Rebranded as "NoToGreed VIP CLUB" (own VIP system)
+  - 4 VIP tiers: Bronze, Silver, Gold, Diamond
+  - "REDEEM VIP ACCESS" buttons with casino selection modal
+  - Modal prompts: "Which casino do you prefer to connect your boost to?"
+  - Weekly VIP Lottery section ($1,000/$500/$250 prizes)
+  - Lottery requires registration (shows appropriate messages)
+  - Backend VIPCampaign API and admin CRUD
+  - 5 default partner casinos seeded
+  - Gold-styled VIP HUB navigation link
 
 ---
 
