@@ -1,10 +1,10 @@
 [
   {
-    "content": "Phase 2: Check backend and frontend logs",
+    "content": "Phase 2: Test complete application",
     "status": "completed"
   },
   {
-    "content": "Phase 2: Test complete application",
-    "status": "in_progress"
+    "content": "Phase 2: All user stories covered in Development and testing",
+    "status": "completed"
   }
 ]

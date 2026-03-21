@@ -46,6 +46,8 @@
 
 ## Phase 2 — V1 App Development (core product without requiring login)
 
+**STATUS: COMPLETED ✅**
+
 ### User stories
 1. As a visitor, I can open the site and immediately understand what the verifier does.
 2. As a visitor, I can paste export data into a verifier UI and see a clear result state.
