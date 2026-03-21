@@ -1,7 +1,9 @@
-# NoToGreed.com - Product Requirements Document
+# Rakestake.com - Product Requirements Document
 
 ## Project Overview
-NoToGreed.com is a comprehensive gambling verification and tools platform inspired by dyutam.com. The site provides provably fair verification tools, game calculators, bankroll management utilities, and a VIP Hub for exclusive casino referral bonuses.
+Rakestake.com is a comprehensive gambling tools and VIP rewards platform. The site provides provably fair verification tools, game calculators, bankroll management utilities, and an exclusive VIP Club with partner casino rewards.
+
+**Tagline**: "Play Smarter. Earn More."
 
 ## Tech Stack
 - **Frontend**: React 18, React Router, CSS3 with animations
@@ -18,26 +20,31 @@ NoToGreed.com is a comprehensive gambling verification and tools platform inspir
 - Register/Login with email and password
 - JWT-based session management
 - Admin role support
+- **Note**: Account NOT required for VIP access, but required for Forum & Lottery
 
-### 2. VIP Club (/vip) - NoToGreed's Own VIP System
-**Exclusive membership program with partner casino rewards:**
-- **Hero Section**: "NoToGreed VIP CLUB" branding, stats (Partner Casinos, Max Cashback, Lottery Draws)
+### 2. VIP Club (/vip) - Rakestake's Exclusive VIP System
+**Membership program with partner casino rewards:**
+- **Hero Section**: "Rakestake VIP CLUB" branding, key stats
 - **4 VIP Tiers**:
-  - Bronze: 5% cashback, monthly lottery entry
+  - Bronze: 5% cashback, monthly lottery entry, community access
   - Silver: 10% cashback, 2x lottery entries, priority support
-  - Gold: 15% cashback, 5x lottery entries, personal account manager
-  - Diamond: 20% cashback, 10x lottery entries, dedicated VIP host, no withdrawal limits
-- **"REDEEM VIP ACCESS" buttons** open casino selection modal
-- **Casino Selection Modal**: "Which casino do you prefer to connect your boost to?"
-  - Lists all 5 partner casinos with bonuses and exclusive extras
-  - Clicking casino opens referral link in new tab
-- **Weekly VIP Lottery Section**:
-  - $1,000 / $500 / $250 prizes
-  - "MEMBERS ONLY" badge
-  - Shows "Registration Required" for non-logged users
-  - Shows "You're Eligible!" for logged-in users
-- **"How NoToGreed VIP Works"** explainer (3 steps)
-- Backend: Uses existing VIPCampaign API for casino data
+  - Gold: 15% cashback, 5x lottery entries, personal bonuses
+  - Diamond: 20% cashback, 10x lottery entries, dedicated VIP host
+- **"REDEEM VIP ACCESS" buttons** → Casino selection modal
+- **Casino Selection Modal**: 
+  - "Which casino do you prefer to connect your boost to?"
+  - **Search functionality** to filter casinos
+  - Lists all 5+ partner casinos with bonuses
+- **Weekly VIP Lottery Section**: $1,000/$500/$250 prizes (REGISTERED MEMBERS ONLY)
+- **Community Forum Section** (REGISTERED MEMBERS ONLY)
+- **"How Rakestake VIP Works"** explainer
+
+### 3. Homepage Features
+- **Prominent VIP Club Section** with featured partner casinos
+- "No account needed to join VIP • Create account for Forum & Lottery access"
+- Live statistics (verifications, success rate, users)
+- "Why Rakestake?" section
+- "Our Tools" section showcasing Calculators, Verifiers, VIP Club
 
 ### 3. Live Statistics (Landing & /stats)
 - Real-time animated counters for "Total Verifications" and "Registered Users"
@@ -104,15 +111,21 @@ NoToGreed.com is a comprehensive gambling verification and tools platform inspir
   - Odds Converter
 - Calculator page reorganized into 3 categories
 - **VIP Club Implementation**:
-  - Rebranded as "NoToGreed VIP CLUB" (own VIP system)
+  - Rebranded from "NoToGreed" to "Rakestake VIP CLUB"
   - 4 VIP tiers: Bronze, Silver, Gold, Diamond
   - "REDEEM VIP ACCESS" buttons with casino selection modal
-  - Modal prompts: "Which casino do you prefer to connect your boost to?"
+  - **Casino search functionality** added to modal
+  - Updated requirements: No account for VIP, account required for Forum & Lottery
   - Weekly VIP Lottery section ($1,000/$500/$250 prizes)
-  - Lottery requires registration (shows appropriate messages)
+  - Community Forum section (both REGISTERED MEMBERS ONLY)
   - Backend VIPCampaign API and admin CRUD
-  - 5 default partner casinos seeded
-  - Gold-styled VIP HUB navigation link
+  - 5 default partner casinos seeded with Rakestake branding
+- **Complete Rebrand to Rakestake.com**:
+  - Updated header logo
+  - Updated homepage with prominent VIP section
+  - Updated footer
+  - Improved text visibility/contrast throughout
+  - Tagline: "Play Smarter. Earn More."
 
 ---
 
