@@ -8,9 +8,10 @@ import logging
 
 from config import settings
 from models import (
-    User, EmailVerificationToken, VerificationLog, Promotion,
+    User, EmailVerificationToken, VerificationLog, Promotion, Provider,
     UserRegisterRequest, UserLoginRequest, TokenResponse, VerifyEmailRequest,
-    PromotionCreateRequest, PromotionUpdateRequest
+    PromotionCreateRequest, PromotionUpdateRequest,
+    ProviderCreateRequest, ProviderUpdateRequest
 )
 from auth import hash_password, verify_password, create_access_token, decode_access_token
 from email_service import email_service
@@ -504,6 +505,134 @@ async def check_admin(authorization: Optional[str] = Header(None)):
         "is_admin": is_admin,
         "email": user.get("email")
     }
+
+# Provider Endpoints
+@app.get("/api/providers")
+async def get_providers():
+    """Get all active providers (public endpoint)"""
+    try:
+        providers = await db.providers.find(
+            {"is_active": True},
+            {"_id": 0, "verification_code": 0}  # Don't expose verification code
+        ).sort("name", 1).to_list(length=100)
+        
+        return {"providers": providers}
+    
+    except Exception as e:
+        logger.error(f"Get providers error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve providers")
+
+@app.post("/api/admin/providers")
+async def create_provider(
+    request: ProviderCreateRequest,
+    authorization: Optional[str] = Header(None)
+):
+    """Create new provider (admin only)"""
+    user = await get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    if user.get("email") not in settings.ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        # Check if slug already exists
+        existing = await db.providers.find_one({"slug": request.slug})
+        if existing:
+            raise HTTPException(status_code=400, detail="Provider slug already exists")
+        
+        provider_data = Provider(
+            name=request.name,
+            slug=request.slug,
+            logo_url=request.logo_url,
+            supported_games=request.supported_games,
+            verification_code=request.verification_code,
+            is_active=True,
+            created_at=datetime.utcnow(),
+            updated_at=datetime.utcnow()
+        )
+        
+        await db.providers.insert_one(provider_data.model_dump())
+        
+        logger.info(f"Provider created by {user['email']}: {request.name}")
+        
+        return {
+            "message": "Provider created successfully",
+            "provider": {
+                "name": provider_data.name,
+                "slug": provider_data.slug,
+                "supported_games": provider_data.supported_games
+            }
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Create provider error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create provider")
+
+@app.put("/api/admin/providers/{slug}")
+async def update_provider(
+    slug: str,
+    request: ProviderUpdateRequest,
+    authorization: Optional[str] = Header(None)
+):
+    """Update provider (admin only)"""
+    user = await get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    if user.get("email") not in settings.ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        update_data = {k: v for k, v in request.model_dump().items() if v is not None}
+        update_data["updated_at"] = datetime.utcnow()
+        
+        result = await db.providers.update_one(
+            {"slug": slug},
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Provider not found")
+        
+        return {"message": "Provider updated successfully"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Update provider error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update provider")
+
+@app.delete("/api/admin/providers/{slug}")
+async def delete_provider(
+    slug: str,
+    authorization: Optional[str] = Header(None)
+):
+    """Delete provider (admin only)"""
+    user = await get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    if user.get("email") not in settings.ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        result = await db.providers.delete_one({"slug": slug})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Provider not found")
+        
+        logger.info(f"Provider deleted by {user['email']}: {slug}")
+        
+        return {"message": "Provider deleted successfully"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Delete provider error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to delete provider")
 
 if __name__ == "__main__":
     import uvicorn

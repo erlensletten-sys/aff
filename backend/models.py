@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, EmailStr, Field
 
 class User(BaseModel):
@@ -25,10 +25,22 @@ class EmailVerificationToken(BaseModel):
 class VerificationLog(BaseModel):
     """Log of verification attempts"""
     game_type: str
+    provider: Optional[str] = None
     result: str  # success, fail
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     duration_ms: Optional[int] = None
     module_used: Optional[str] = None
+
+class Provider(BaseModel):
+    """Casino provider model"""
+    name: str
+    slug: str
+    logo_url: Optional[str] = None
+    supported_games: List[str] = []
+    verification_code: Optional[str] = None
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 class Promotion(BaseModel):
     """Promotion card model"""
@@ -80,4 +92,20 @@ class PromotionUpdateRequest(BaseModel):
     link: Optional[str] = None
     image_url: Optional[str] = None
     expires_at: Optional[datetime] = None
+    is_active: Optional[bool] = None
+
+class ProviderCreateRequest(BaseModel):
+    """Create provider request"""
+    name: str = Field(min_length=2, max_length=100)
+    slug: str = Field(min_length=2, max_length=100)
+    logo_url: Optional[str] = None
+    supported_games: List[str] = []
+    verification_code: Optional[str] = None
+
+class ProviderUpdateRequest(BaseModel):
+    """Update provider request"""
+    name: Optional[str] = None
+    logo_url: Optional[str] = None
+    supported_games: Optional[List[str]] = None
+    verification_code: Optional[str] = None
     is_active: Optional[bool] = None

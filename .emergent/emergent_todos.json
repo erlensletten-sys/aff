@@ -1,10 +1,22 @@
 [
   {
-    "content": "Take screenshots of new modern design",
+    "content": "Update Verify page - new game buttons and provider selector",
     "status": "completed"
   },
   {
-    "content": "Modern tech transformation complete",
-    "status": "completed"
+    "content": "Add provider management to backend and admin panel",
+    "status": "in_progress"
+  },
+  {
+    "content": "Update Tools page with provider injection",
+    "status": "pending"
+  },
+  {
+    "content": "Update header navigation - Providers to Trusted",
+    "status": "pending"
+  },
+  {
+    "content": "Implement comprehensive SEO (meta tags, schema, sitemap)",
+    "status": "pending"
   }
 ]
