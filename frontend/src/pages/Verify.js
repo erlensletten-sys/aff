@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Captcha from '../components/Captcha';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -7,6 +8,8 @@ function Verify() {
   const [inputData, setInputData] = useState('');
   const [status, setStatus] = useState('awaiting'); // awaiting, verifying, success, fail
   const [result, setResult] = useState(null);
+  const [isAuthenticated] = useState(!!localStorage.getItem('token'));
+  const [captchaVerified, setCaptchaVerified] = useState(false);
 
   const modules = [
     { name: 'HMAC-SHA256', endpoint: '/api/verify/hmac-sha256' },
@@ -20,6 +23,12 @@ function Verify() {
   const handleVerify = async () => {
     if (!inputData.trim()) {
       alert('Please paste export data first');
+      return;
+    }
+
+    // Check captcha for guests
+    if (!isAuthenticated && !captchaVerified) {
+      alert('Please complete the CAPTCHA verification first');
       return;
     }
 
@@ -60,14 +69,25 @@ function Verify() {
     setStatus('awaiting');
     setInputData('');
     setResult(null);
+    if (!isAuthenticated) {
+      setCaptchaVerified(false);
+    }
+  };
+
+  const handleCaptchaVerify = (verified) => {
+    setCaptchaVerified(verified);
   };
 
   return (
     <div className="verify-container">
-      <h1 style={{textAlign: 'center', marginBottom: '10px', letterSpacing: '3px'}}>VERIFICATION TOOL</h1>
-      <p style={{textAlign: 'center', color: 'var(--text-muted)', marginBottom: '30px', fontSize: '12px'}}>
-        // PROVABLY FAIR CRYPTOGRAPHIC AUDIT
+      <h1 style={{textAlign: 'center', marginBottom: '10px', letterSpacing: '3px', textShadow: 'var(--glow-green)'}}>VERIFICATION TOOL</h1>
+      <p style={{textAlign: 'center', color: 'var(--text-muted)', marginBottom: '30px', fontSize: '12px', letterSpacing: '1px'}}>
+        &gt; PROVABLY FAIR CRYPTOGRAPHIC AUDIT
       </p>
+
+      {!isAuthenticated && !captchaVerified && (
+        <Captcha onVerify={handleCaptchaVerify} />
+      )}
 
       <div className="verify-module-selector">
         {modules.map((module) => (
