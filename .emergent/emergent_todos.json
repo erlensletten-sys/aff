@@ -1,10 +1,6 @@
 [
   {
-    "content": "Add all-time statistics display to Landing page with same numbers",
-    "status": "completed"
-  },
-  {
-    "content": "Test updated Statistics and Landing pages",
+    "content": "Final verification: Confirm 24H stats increment on Statistics page",
     "status": "completed"
   }
 ]

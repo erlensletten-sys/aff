@@ -18,6 +18,7 @@ function Header({ isAuthenticated, isAdmin, onLogout }) {
         <nav className="nav">
           <Link to="/" className="nav-link">HOME</Link>
           <Link to="/verify" className="nav-link">VERIFY</Link>
+          <Link to="/calculators" className="nav-link">CALCULATORS</Link>
           <Link to="/tools" className="nav-link">TOOLS</Link>
           <Link to="/trusted-providers" className="nav-link">TRUSTED</Link>
           <Link to="/guide" className="nav-link">GUIDE</Link>

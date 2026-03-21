@@ -17,6 +17,7 @@ import Dashboard from './pages/Dashboard';
 import Promotions from './pages/Promotions';
 import AdminPanel from './pages/AdminPanel';
 import Tools from './pages/Tools';
+import Calculators from './pages/Calculators';
 import TrustedProviders from './pages/TrustedProviders';
 import Offers from './pages/Offers';
 import Guide from './pages/Guide';
@@ -84,6 +85,7 @@ function App() {
             <Route path="/stats" element={<Statistics />} />
             <Route path="/verify" element={<Verify />} />
             <Route path="/tools" element={<Tools />} />
+            <Route path="/calculators" element={<Calculators />} />
             <Route path="/trusted-providers" element={<TrustedProviders />} />
             <Route path="/guide" element={<Guide />} />
             <Route path="/offers" element={<Offers />} />

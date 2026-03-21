@@ -5,9 +5,10 @@
 - Keep the site stable and usable first (no broken builds/pages), then expand verification depth.
 - Provide a robust, extensible **Provably Fair verification framework** (API + engine contract) that can accept provider-specific algorithms as they arrive.
 - Ensure auxiliary client tools (Hash Calculator, Seed Analyzer, Real-time Monitor setup) are tested, reliable, and instrumented for automated testing.
+- Provide a growing suite of **game calculators** (built in-house) to help users understand odds/EV and make informed decisions.
 - Be transparent about methodology: verification follows each provider’s official documentation and runs **client-side/in-browser** to prevent manipulation.
-- Provide attractive, understandable public-facing **Statistics** with clear “All Time” and “Last 24 Hours” views.
-- Implement foundational SEO (meta tags, sitemap, robots.txt, structured data) once core verification functionality is stable.
+- Provide attractive, understandable public-facing **Statistics** with clear “All Time” and “Last 24 Hours” views, plus live counter behavior.
+- Implement foundational SEO (meta tags, sitemap, robots.txt, structured data) once core verification functionality and key pages stabilize.
 - Defer real email-provider integration work (Brevo/Resend) until explicitly unblocked (keys/decision).
 
 ---
@@ -75,11 +76,11 @@
 
 ### Progress notes
 - App is loading and building successfully.
-- `Verify.js` is compiling cleanly; earlier recurring syntax error is no longer reproducing.
+- `Verify.js` compiles cleanly; earlier recurring syntax error is no longer reproducing.
 
 ### Success criteria
 - Visitors can use the verifier UI without login.
-- UI matches the intended dark terminal aesthetic and is responsive.
+- UI matches the intended dark technical aesthetic and is responsive.
 
 ---
 
@@ -178,7 +179,7 @@
 
 ---
 
-## Phase 5 — Public Statistics: Mock Data + Live Counters + 24H View
+## Phase 5 — Public Statistics: Mock Data + Live Counters + “All Time” + “Last 24 Hours”
 
 **STATUS: COMPLETED ✅ (mock/live stats in UI; backend-real stats still available for later wiring)**
 
@@ -187,6 +188,8 @@
 2. As a visitor, I can see “Stats last 24 hours” at a glance.
 3. As an operator, I can adjust the baseline values easily.
 4. As a visitor, I can observe numbers updating (verifications increase faster than registered users).
+5. As a visitor, the 24H metrics also update live (same cadence/phase as the all-time counters).
+6. As a visitor, I can see key all-time statistics directly on the homepage.
 
 ### Implementation steps
 - Frontend mock/live stats (React):
@@ -198,23 +201,62 @@
     - Increment numbers randomly in real-time:
       - Verifications increase faster and more frequently than users.
       - Users increase slowly and occasionally.
-  - Added new section: **“Stats Last 24 Hours”** (replaces prior “Verifications by game type” table).
-  - Verified counters visually update in-browser during testing.
-- Note:
-  - Existing backend `/api/stats` remains available for later “real stats” wiring if desired.
+    - Add **Stats Last 24 Hours** section with live increment behavior in the same interval cycle as all-time stats.
+    - Remove prior game distribution section per requirement.
+- Landing page integration:
+  - Updated `frontend/src/pages/Landing.js` to display the same **All Time** statistics in a prominent hero-adjacent card grid.
 
 ### Next actions
 - (Optional) Decide whether to keep stats mock-only or re-wire to backend real aggregates once traffic and logging are mature.
-- (Optional) Add small “Mock / Live” label if required for compliance/clarity.
+- (Optional) Add a small label if needed for compliance/clarity.
 
 ### Success criteria
 - Statistics page displays “All Time” and “Stats last 24 hours”.
 - Numbers increment randomly; verifications increase faster than users.
+- 24H verifications also increment live.
+- Homepage displays the same all-time stats.
 - Success rate displays 99.3%.
 
 ---
 
-## Phase 6 — SEO + Polish
+## Phase 6 — Game Calculators: Tools Expansion (Dyutam-inspired, implemented in-house)
+
+**STATUS: COMPLETED ✅ (initial calculator suite live)**
+
+### User stories
+1. As a visitor, I can use game calculators to understand probability and expected value.
+2. As a visitor, I can switch between calculators from a single hub page.
+3. As an operator, I can add more calculators over time without restructuring the site.
+
+### Implementation steps
+- Research & scope:
+  - Reviewed dyutam.com calculator categories and UX patterns for inspiration.
+- Implemented calculators from scratch (React):
+  - **Mines Calculator**: step-by-step probability and multiplier progression.
+  - **Dice Calculator**: roll over/under, win probability, multiplier, EV.
+  - **Limbo Calculator**: target multiplier, win probability, EV.
+  - **Plinko Calculator**: binomial distribution-based EV approximation, risk level.
+  - **HiLo Calculator**: probability for higher/lower/equal and recommended decision.
+- Created a new calculators hub page:
+  - `frontend/src/pages/Calculators.js`
+  - Route: `/calculators`
+  - Navigation added in header.
+- Added styling:
+  - Calculator-specific CSS added to `frontend/src/App.css`.
+- Tested:
+  - Verified each calculator renders and produces outputs for representative inputs.
+
+### Next actions
+- Expand calculator library (optional, as needed): blackjack strategy chart, poker odds, bankroll tools, betting system sims.
+- Add SEO metadata per calculator page once SEO phase begins.
+
+### Success criteria
+- Calculators page loads with navigation and working calculators.
+- Each calculator produces valid outputs without runtime errors.
+
+---
+
+## Phase 7 — SEO + Polish
 
 **STATUS: PENDING ⏳ (after provider algorithms start landing and core pages stabilize)**
 
@@ -244,13 +286,13 @@
 
 ---
 
-## Phase 7 — Comprehensive testing, polish, and non-breaking guarantees
+## Phase 8 — Comprehensive testing, polish, and non-breaking guarantees
 
 ### User stories
-1. As a visitor, I never lose access to public verification and stats during upgrades.
+1. As a visitor, I never lose access to public verification, stats, and calculators during upgrades.
 2. As a user, I get clear error messages when pasted data is malformed.
 3. As a user, verification results are reproducible and explainable.
-4. As an operator, I can validate verifier modules via automated tests.
+4. As an operator, I can validate verifier modules and calculators via automated tests.
 5. As a user, the UI feels fast, readable, and consistent with the technical dark theme.
 
 ### Implementation steps
@@ -258,6 +300,7 @@
   - Backend: verification engine unit tests + API contract tests.
   - Frontend: key UI states + paste/parse/verify flows.
   - Crypto: SHA256/HMAC known vectors.
+  - Calculators: deterministic unit tests for probability/EV functions (sanity checks and edge cases).
 - Security & reliability pass:
   - input validation, CORS, log redaction, JWT secret handling.
 - UX polish:
@@ -269,4 +312,4 @@
 
 ### Success criteria
 - Stable end-to-end flows with no regressions.
-- Verification computations match provider-documented expected outputs; stats accurate; UX polished.
+- Verification computations match provider-documented expected outputs; stats accurate; calculators consistent; UX polished.

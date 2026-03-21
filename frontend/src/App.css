@@ -818,3 +818,56 @@ body::before {
     box-shadow: 0 0 40px rgba(99, 102, 241, 0.8);
   }
 }
+
+
+/* Calculator Styles */
+.calculator-card {
+  width: 100%;
+}
+
+.calculator-card .form-group {
+  margin-bottom: 20px;
+}
+
+.calculator-card .form-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.calculator-card .form-input,
+.calculator-card .textarea-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.calculator-card .form-input:focus,
+.calculator-card .textarea-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.calculator-card select.form-input {
+  cursor: pointer;
+}
+
+.calculator-card table {
+  border-collapse: collapse;
+}
+
+.calculator-card th,
+.calculator-card td {
+  text-align: left;
+  padding: 8px;
+}
