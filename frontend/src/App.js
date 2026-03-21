@@ -18,6 +18,7 @@ import Promotions from './pages/Promotions';
 import AdminPanel from './pages/AdminPanel';
 import Tools from './pages/Tools';
 import Calculators from './pages/Calculators';
+import Verifiers from './pages/Verifiers';
 import TrustedProviders from './pages/TrustedProviders';
 import Offers from './pages/Offers';
 import Guide from './pages/Guide';
@@ -84,6 +85,7 @@ function App() {
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/stats" element={<Statistics />} />
             <Route path="/verify" element={<Verify />} />
+            <Route path="/verifiers" element={<Verifiers />} />
             <Route path="/tools" element={<Tools />} />
             <Route path="/calculators" element={<Calculators />} />
             <Route path="/trusted-providers" element={<TrustedProviders />} />

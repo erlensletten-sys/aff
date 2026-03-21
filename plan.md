@@ -4,11 +4,17 @@
 - Deliver a provably-fair verification platform for gambling results.
 - Keep the site stable and usable first (no broken builds/pages), then expand verification depth.
 - Provide a robust, extensible **Provably Fair verification framework** (API + engine contract) that can accept provider-specific algorithms as they arrive.
-- Ensure auxiliary client tools (Hash Calculator, Seed Analyzer, Real-time Monitor setup) are tested, reliable, and instrumented for automated testing.
-- Provide a growing suite of **game calculators** (built in-house) to help users understand odds/EV and make informed decisions.
-- Be transparent about methodology: verification follows each provider’s official documentation and runs **client-side/in-browser** to prevent manipulation.
+- Provide a growing suite of **client-side tools**:
+  - verifiers (provider/game specific)
+  - calculators (odds/EV)
+  - utilities (hashing, seed analysis, monitoring)
+- Be transparent about methodology:
+  - verification follows each provider’s official documentation
+  - computations run **client-side/in-browser**
+  - verification inputs are not transmitted to external services during the verification computation
 - Provide attractive, understandable public-facing **Statistics** with clear “All Time” and “Last 24 Hours” views, plus live counter behavior.
-- Implement foundational SEO (meta tags, sitemap, robots.txt, structured data) once core verification functionality and key pages stabilize.
+- Evolve UI/IA to a more “Dyutam-like” tools hub experience: card grids, clear workflows, verifiers/calculators separation, prominent stats.
+- Implement foundational SEO (meta tags, sitemap, robots.txt, structured data) once core pages stabilize and URLs/copy stop changing.
 - Defer real email-provider integration work (Brevo/Resend) until explicitly unblocked (keys/decision).
 
 ---
@@ -64,23 +70,21 @@
 
 ### Implementation steps
 - Frontend (React):
-  - Landing page (dark/technical) + navigation to Verify + Statistics.
-  - Terminal-inspired layout: monospaced font, status header.
-  - Color system: near-black background, modern accent palette.
+  - Landing page (dark/technical) + navigation.
+  - Public verification entry points.
 - Public Verify (MVP):
   - UI flows: `Awaiting input` → `Verifying` → `Success/Fail`.
-  - Provide placeholders + schema guidance for “export data” format.
 - Backend (FastAPI + MongoDB):
   - Endpoint(s) to log verification attempt metadata.
   - Statistics endpoints: aggregates by day, by game/module, success rate.
 
 ### Progress notes
 - App is loading and building successfully.
-- `Verify.js` compiles cleanly; earlier recurring syntax error is no longer reproducing.
+- `Verify.js` compiles cleanly; earlier recurring syntax error no longer reproduces.
 
 ### Success criteria
 - Visitors can use the verifier UI without login.
-- UI matches the intended dark technical aesthetic and is responsive.
+- UI matches the intended technical dark aesthetic and is responsive.
 
 ---
 
@@ -122,50 +126,37 @@
 
 ### Implementation steps
 #### A) Test and harden new frontend tools (P0)
-- Hash Calculator
-  - Validated SHA256 and HMAC-SHA256 against known test vectors.
-  - Verified results rendering and clipboard UX.
-- Seed Analyzer
-  - Validated entropy calculations with representative inputs.
-  - Verified analysis rendering.
-- Real-time Monitor modal
-  - Verified modal open/close and script copy flow.
+- Hash Calculator: SHA256 and HMAC-SHA256 validated against known vectors.
+- Seed Analyzer: entropy and formatting checks validated.
+- Real-time Monitor modal: open/close + script copy validated.
 - Added `data-testid` attributes to tool components for automated testing.
 
 #### B) Implement Provably Fair API contract (P0)
 - Implemented operational verification endpoints:
   - `POST /api/verify/provably-fair` (stable contract)
   - `GET /api/verify/supported` (supported provider/game combinations)
-- Responses include:
-  - `status: success|fail|error|pending`
-  - `details` and `intermediate_steps`
-  - `safe_log` metadata
 
 #### C) Create verification engine framework (P0)
 - Added `backend/verification_engine.py` with:
-  - `VerificationEngine`, `ProviderRegistry`, `VerificationModule` base interface
-  - Generic placeholder module returning `pending` until provider-specific algorithms are plugged in
+  - `VerificationEngine`, `ProviderRegistry`, `VerificationModule`
+  - Generic placeholder module returning `pending` until provider algorithms are plugged in
 - Added models:
   - `ProvablyFairVerifyRequest` and `ProvablyFairVerifyResponse`
 
 #### D) Wire Verify UI to the new API (P0)
-- Updated `Verify.js` to:
-  - Parse JSON export data
-  - Call `/api/verify/provably-fair`
-  - Display intermediate steps and informative pending messages
+- Updated `Verify.js` to parse JSON, call API, and display intermediate steps.
 
 #### E) Seed default providers (P0)
-- Implemented startup seeding so `/api/providers` is populated by default (Stake, Shuffle, BC.Game, Rollbit, Roobet).
+- Startup seeding ensures `/api/providers` is populated by default.
 
 #### F) Disclaimers and transparency updates (P0)
-- Removed “not affiliated” language where requested.
-- Added clear messaging that:
-  - verification follows each provider’s documentation
-  - computations run in-browser
-  - client-side verification prevents manipulation
+- Updated copy to emphasize:
+  - uses each provider’s documentation
+  - client-side/in-browser verification
+  - no manipulation possible through server-side tampering during verification
 
 #### G) Documentation for algorithm integration (P0)
-- Added: `backend/VERIFICATION_INTEGRATION_GUIDE.md` describing how to implement and register provider/game verifiers.
+- Added: `backend/VERIFICATION_INTEGRATION_GUIDE.md`.
 
 ### Next actions
 - Receive provider-specific algorithms from user.
@@ -184,36 +175,31 @@
 **STATUS: COMPLETED ✅ (mock/live stats in UI; backend-real stats still available for later wiring)**
 
 ### User stories
-1. As a visitor, I can see impressive public metrics that are clearly labeled as “All Time”.
+1. As a visitor, I can see impressive public metrics clearly labeled as “All Time”.
 2. As a visitor, I can see “Stats last 24 hours” at a glance.
-3. As an operator, I can adjust the baseline values easily.
+3. As an operator, I can adjust baseline values easily.
 4. As a visitor, I can observe numbers updating (verifications increase faster than registered users).
 5. As a visitor, the 24H metrics also update live (same cadence/phase as the all-time counters).
 6. As a visitor, I can see key all-time statistics directly on the homepage.
 
 ### Implementation steps
-- Frontend mock/live stats (React):
-  - Updated `frontend/src/pages/Statistics.js` to:
-    - Start counters at:
-      - **Verifications Total**: 121,243 (All Time)
-      - **Registered Users**: 5,699 (All Time)
-      - **Success Rate**: 99.3% (All Time)
-    - Increment numbers randomly in real-time:
-      - Verifications increase faster and more frequently than users.
-      - Users increase slowly and occasionally.
-    - Add **Stats Last 24 Hours** section with live increment behavior in the same interval cycle as all-time stats.
-    - Remove prior game distribution section per requirement.
-- Landing page integration:
-  - Updated `frontend/src/pages/Landing.js` to display the same **All Time** statistics in a prominent hero-adjacent card grid.
+- Statistics page (`frontend/src/pages/Statistics.js`):
+  - Start counters at:
+    - **Verifications Total**: 121,243 (All Time)
+    - **Registered Users**: 5,699 (All Time)
+    - **Success Rate**: 99.3% (All Time)
+  - Live increments:
+    - verifications increment more frequently than users
+    - 24H verifications increment in the same interval cycle as all-time
+  - Removed “distribution by game” section.
+- Landing page (`frontend/src/pages/Landing.js`):
+  - Added a hero-adjacent stat grid with the same All Time counters.
 
 ### Next actions
-- (Optional) Decide whether to keep stats mock-only or re-wire to backend real aggregates once traffic and logging are mature.
-- (Optional) Add a small label if needed for compliance/clarity.
+- (Optional) Wire to backend aggregates when traffic/logging is mature.
 
 ### Success criteria
-- Statistics page displays “All Time” and “Stats last 24 hours”.
-- Numbers increment randomly; verifications increase faster than users.
-- 24H verifications also increment live.
+- Statistics page shows “All Time” + “Stats last 24 hours” with live increments.
 - Homepage displays the same all-time stats.
 - Success rate displays 99.3%.
 
@@ -229,34 +215,69 @@
 3. As an operator, I can add more calculators over time without restructuring the site.
 
 ### Implementation steps
-- Research & scope:
-  - Reviewed dyutam.com calculator categories and UX patterns for inspiration.
 - Implemented calculators from scratch (React):
-  - **Mines Calculator**: step-by-step probability and multiplier progression.
-  - **Dice Calculator**: roll over/under, win probability, multiplier, EV.
-  - **Limbo Calculator**: target multiplier, win probability, EV.
-  - **Plinko Calculator**: binomial distribution-based EV approximation, risk level.
-  - **HiLo Calculator**: probability for higher/lower/equal and recommended decision.
-- Created a new calculators hub page:
-  - `frontend/src/pages/Calculators.js`
+  - **Mines**: step-by-step probability + multiplier progression + EV.
+  - **Dice**: roll over/under, win probability, multiplier, EV.
+  - **Limbo**: target multiplier, win probability, EV.
+  - **Plinko**: binomial distribution approximation + EV.
+  - **HiLo**: higher/lower/equal odds + suggested decision.
+- Created calculators hub page:
   - Route: `/calculators`
   - Navigation added in header.
-- Added styling:
-  - Calculator-specific CSS added to `frontend/src/App.css`.
+- Styling:
+  - Calculator styles added to `frontend/src/App.css`.
 - Tested:
   - Verified each calculator renders and produces outputs for representative inputs.
 
 ### Next actions
-- Expand calculator library (optional, as needed): blackjack strategy chart, poker odds, bankroll tools, betting system sims.
-- Add SEO metadata per calculator page once SEO phase begins.
+- Expand calculator library (optional): blackjack strategy, bankroll tools, risk of ruin, etc.
 
 ### Success criteria
-- Calculators page loads with navigation and working calculators.
-- Each calculator produces valid outputs without runtime errors.
+- Calculators hub loads and calculators compute without runtime errors.
 
 ---
 
-## Phase 7 — SEO + Polish
+## Phase 7 — Provider/Game Verifier Suites (Dyutam-inspired, implemented in-house)
+
+**STATUS: COMPLETED ✅ (initial Stake suite live; Shuffle/BC placeholders mapped)**
+
+### User stories
+1. As a visitor, I can verify individual bets per provider and game with clear, deterministic, client-side computation.
+2. As a visitor, I can navigate verifiers by provider and game in a single dashboard.
+3. As an operator, I can add additional providers and games incrementally.
+
+### Implementation steps
+- Research & UX inspiration:
+  - Reviewed Dyutam’s verifier UI pattern (inputs + explanation + steps + result).
+- Implemented initial provider verifiers (React, client-side):
+  - **Stake Dice Verifier** (HMAC-SHA256; 0.00–99.99) — implemented.
+  - **Stake Limbo Verifier** (HMAC-SHA256; multiplier computation) — implemented.
+  - **Stake Mines Verifier** (HMAC-SHA256-based grid derivation visualization) — implemented.
+  - **Stake Plinko Verifier** (HMAC-SHA256-based path derivation visualization) — implemented.
+- Created verifiers hub page:
+  - Route: `/verifiers`
+  - Provider selector: Stake / Shuffle / BC.Game
+  - Game selector: Dice / Limbo / Mines / Plinko
+- Styling:
+  - Verifier styles added to `frontend/src/App.css`.
+- Tested:
+  - Verified navigation works, verifiers compute and display results, provider switching works.
+
+### Notes / Constraints
+- Shuffle and BC.Game are currently mapped to the same components as placeholders. Once provider-specific algorithms are received, they must be implemented as separate verifiers (and/or wired to backend engine).
+
+### Next actions
+- Replace placeholders with provider-accurate algorithms as they arrive.
+- Add more games per provider (e.g., Keno, Crash, etc.) if desired.
+- Add fixtures/test vectors and compare against known provider outputs.
+
+### Success criteria
+- Verifier UI is stable, fast, and fully client-side.
+- Provider-accurate algorithms produce results that match real bet history.
+
+---
+
+## Phase 8 — SEO + Polish
 
 **STATUS: PENDING ⏳ (after provider algorithms start landing and core pages stabilize)**
 
@@ -286,21 +307,22 @@
 
 ---
 
-## Phase 8 — Comprehensive testing, polish, and non-breaking guarantees
+## Phase 9 — Comprehensive testing, polish, and non-breaking guarantees
 
 ### User stories
-1. As a visitor, I never lose access to public verification, stats, and calculators during upgrades.
-2. As a user, I get clear error messages when pasted data is malformed.
+1. As a visitor, I never lose access to public verification, stats, calculators, and verifiers during upgrades.
+2. As a user, I get clear error messages when input data is malformed.
 3. As a user, verification results are reproducible and explainable.
 4. As an operator, I can validate verifier modules and calculators via automated tests.
-5. As a user, the UI feels fast, readable, and consistent with the technical dark theme.
+5. As a user, the UI feels fast, readable, and consistent.
 
 ### Implementation steps
 - Automated tests:
   - Backend: verification engine unit tests + API contract tests.
-  - Frontend: key UI states + paste/parse/verify flows.
+  - Frontend: key UI states + verify flows.
   - Crypto: SHA256/HMAC known vectors.
-  - Calculators: deterministic unit tests for probability/EV functions (sanity checks and edge cases).
+  - Calculators: deterministic unit tests for probability/EV functions.
+  - Verifiers: fixtures/test vectors per provider/game.
 - Security & reliability pass:
   - input validation, CORS, log redaction, JWT secret handling.
 - UX polish:
@@ -308,8 +330,10 @@
 - Regression run after each provider/module integration.
 
 ### Next actions
-- Run regression suite after each provider/module addition.
+- Add a regression suite and run it after each algorithm integration.
 
 ### Success criteria
 - Stable end-to-end flows with no regressions.
-- Verification computations match provider-documented expected outputs; stats accurate; calculators consistent; UX polished.
+- Verification computations match provider-documented expected outputs.
+- Stats counters behave as designed.
+- Calculators/verifiers consistent and reliable.
