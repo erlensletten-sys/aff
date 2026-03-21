@@ -1,50 +1,158 @@
 # Rakestake.com - Product Requirements Document
 
 ## Project Overview
-Rakestake.com is a comprehensive gambling tools and VIP rewards platform. The site provides provably fair verification tools, game calculators, bankroll management utilities, and an exclusive VIP Club with partner casino rewards.
+Rakestake.com is a **crypto casino affiliate aggregator** platform that maximizes player rewards across multiple crypto casinos via a unified VIP system, rakeback, and smart routing.
 
-**Tagline**: "Play Smarter. Earn More."
+**Tagline**: "Earn Extra Rakeback on Top Crypto Casinos"
+
+**Core Value Proposition**: One account, maximum rewards across all partner casinos.
 
 ## Tech Stack
-- **Frontend**: React 18, React Router, CSS3 with animations
+- **Frontend**: React 18, React Router, CSS3 with theme system
 - **Backend**: FastAPI (Python)
-- **Database**: MongoDB with Beanie ODM
+- **Database**: MongoDB
 - **Authentication**: JWT tokens
-- **Crypto**: crypto-js for client-side verification
+- **Theme System**: Main/Dark/Light with CSS variables
+
+---
+
+## Partner Casinos (Real Affiliate Links)
+
+| Casino | Affiliate Link | Rakeback | Welcome Bonus |
+|--------|----------------|----------|---------------|
+| Stake | stake.com/?c=rakestakevip | 10% | Up to $3,000 |
+| Shuffle | shuffle.com?r=rakestakevip | 15% | Up to $1,500 + 100 Free Spins |
+| Rainbet | rainbet.com?r=rakestakevip | 12% | Up to $1,000 + Daily Rakeback |
 
 ---
 
 ## Core Features
 
-### 1. User Authentication
-- Register/Login with email and password
-- JWT-based session management
-- Admin role support
-- **Note**: Account NOT required for VIP access, but required for Forum & Lottery
+### 1. Theme System
+- **Main (🎰)**: Original dark purple theme
+- **Dark (🌙)**: Deep black theme
+- **Light (☀️)**: Light gray/blue theme
+- Theme toggle in header, persists to localStorage
 
-### 2. VIP Club (/vip) - Rakestake's Exclusive VIP System
-**Membership program with partner casino rewards:**
-- **Hero Section**: "Rakestake VIP CLUB" branding, key stats
-- **4 VIP Tiers**:
-  - Bronze: 5% cashback, monthly lottery entry, community access
-  - Silver: 10% cashback, 2x lottery entries, priority support
-  - Gold: 15% cashback, 5x lottery entries, personal bonuses
-  - Diamond: 20% cashback, 10x lottery entries, dedicated VIP host
-- **"REDEEM VIP ACCESS" buttons** → Casino selection modal
-- **Casino Selection Modal**: 
-  - "Which casino do you prefer to connect your boost to?"
-  - **Search functionality** to filter casinos
-  - Lists all 5+ partner casinos with bonuses
-- **Weekly VIP Lottery Section**: $1,000/$500/$250 prizes (REGISTERED MEMBERS ONLY)
-- **Community Forum Section** (REGISTERED MEMBERS ONLY)
-- **"How Rakestake VIP Works"** explainer
+### 2. XP-Based VIP System
+5 VIP Levels with progressive rakeback rates:
+
+| Level | XP Required | Rakeback | Lottery Entries |
+|-------|-------------|----------|-----------------|
+| Bronze | 0 | 2% | 1x |
+| Silver | 1,000 | 5% | 2x |
+| Gold | 10,000 | 8% | 5x |
+| Platinum | 50,000 | 12% | 10x |
+| Diamond | 100,000 | 15% | 25x |
+
+**XP Earning**: Users earn XP from wagers at partner casinos.
 
 ### 3. Homepage Features
-- **Prominent VIP Club Section** with featured partner casinos
-- "No account needed to join VIP • Create account for Forum & Lottery access"
-- Live statistics (verifications, success rate, users)
-- "Why Rakestake?" section
-- "Our Tools" section showcasing Calculators, Verifiers, VIP Club
+- **Hero Section**: "Earn Extra Rakeback on Top Crypto Casinos"
+- **XP Progress Widget**: Shows current level, XP, progress to next level
+- **Casino Comparison Table**: All 3 casinos with:
+  - Welcome bonus value
+  - Rakeback percentage
+  - Min deposit
+  - Supported cryptos (BTC, ETH, LTC, etc.)
+  - PLAY NOW buttons with affiliate links
+- **VIP Tiers Preview**: 5 levels with rakeback rates
+- **How It Works**: 3-step onboarding flow
+
+### 4. VIP Club Page (/vip)
+- XP progress display
+- All 5 VIP tier cards with benefits
+- "CONNECT CASINO" buttons (unlocked based on XP)
+- Partner casino cards with affiliate links
+- Weekly VIP Lottery ($1,000/$500/$250 prizes)
+
+### 5. Game Calculators (/calculators)
+12 calculators in 3 categories:
+- **Game Calculators**: Mines, Dice, Limbo, Plinko, HiLo
+- **Strategy & Bankroll**: Kelly Criterion, Bankroll Mgmt, Risk of Ruin, Variance, Monthly Boost
+- **Sports Betting**: Parlay & Arbitrage, Odds Converter
+
+### 6. Provably Fair Verifiers (/verifiers)
+- Stake.com verifiers for Dice, Limbo, Mines, Plinko
+- Client-side cryptographic verification
+
+---
+
+## Completed Work
+
+### Phase 1 (Current - December 2025)
+- ✅ **Theme Toggle**: Main/Dark/Light with CSS variables
+- ✅ **Real Affiliate Links**: Stake, Shuffle, Rainbet with correct URLs
+- ✅ **Casino Comparison Table**: Bonus, rakeback, cryptos, PLAY NOW buttons
+- ✅ **XP-Based VIP System**: 5 levels (Bronze→Diamond), progress widget
+- ✅ **VIP Page Redesign**: Level cards, partner casinos, lottery
+- ✅ **Rebrand to Rakestake**: All pages updated
+
+### Previous Sessions
+- User authentication (register/login/JWT)
+- Admin panel for managing content
+- 12 game calculators
+- Provably fair verifiers
+- Live statistics page
+
+---
+
+## Roadmap
+
+### Phase 2 (Next)
+- [ ] Live wins feed widget
+- [ ] Affiliate click tracking
+- [ ] SEO comparison pages (stake-vs-shuffle, etc.)
+- [ ] User dashboard with rewards tracking
+
+### Phase 3 (Future)
+- [ ] Reward engine (actual rakeback calculations)
+- [ ] User tracking & LTV analytics
+- [ ] Leaderboards
+- [ ] Discord integration
+- [ ] Forum functionality
+
+### Phase 4 (Advanced)
+- [ ] ML-based casino routing
+- [ ] Postback API integration
+- [ ] Advanced analytics dashboard
+
+---
+
+## Key Files
+
+### Frontend
+- `/app/frontend/src/pages/Landing.js` - Homepage with comparison table
+- `/app/frontend/src/pages/VIPHub.js` - VIP Club page
+- `/app/frontend/src/contexts/ThemeContext.js` - Theme system
+- `/app/frontend/src/components/ThemeToggle.js` - Theme toggle button
+- `/app/frontend/src/components/Header.js` - Navigation with theme toggle
+
+### Backend
+- `/app/backend/server.py` - API endpoints, casino seeding
+- `/app/backend/models.py` - Data models including VIPCampaign
+
+---
+
+## API Endpoints
+
+### Public
+- `GET /api/vip/campaigns` - Get all partner casinos
+- `GET /api/vip/campaigns/featured` - Get featured casinos
+- `GET /api/providers` - Get all providers
+- `POST /api/auth/register` - Register
+- `POST /api/auth/login` - Login
+
+### Admin
+- CRUD for VIP campaigns, providers, promotions
+
+---
+
+## Notes
+- XP is currently demo/simulated (stored in localStorage)
+- Affiliate links are real and ready for use
+- Theme preference persists across sessions
+- All calculators are client-side only
 
 ### 3. Live Statistics (Landing & /stats)
 - Real-time animated counters for "Total Verifications" and "Registered Users"
