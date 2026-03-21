@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Header({ isAuthenticated, isAdmin, onLogout }) {
-  const navigate = useNavigate();
+  const navigate = require('react-router-dom').useNavigate();
 
   const handleLogout = () => {
     onLogout();
@@ -19,7 +19,8 @@ function Header({ isAuthenticated, isAdmin, onLogout }) {
           <Link to="/" className="nav-link">HOME</Link>
           <Link to="/verify" className="nav-link">VERIFY</Link>
           <Link to="/tools" className="nav-link">TOOLS</Link>
-          <Link to="/trusted-providers" className="nav-link">PROVIDERS</Link>
+          <Link to="/trusted-providers" className="nav-link">TRUSTED</Link>
+          <Link to="/guide" className="nav-link">GUIDE</Link>
           <Link to="/offers" className="nav-link">OFFERS</Link>
           <Link to="/stats" className="nav-link">STATS</Link>
           {isAuthenticated ? (

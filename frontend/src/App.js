@@ -19,6 +19,7 @@ import AdminPanel from './pages/AdminPanel';
 import Tools from './pages/Tools';
 import TrustedProviders from './pages/TrustedProviders';
 import Offers from './pages/Offers';
+import Guide from './pages/Guide';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -84,6 +85,7 @@ function App() {
             <Route path="/verify" element={<Verify />} />
             <Route path="/tools" element={<Tools />} />
             <Route path="/trusted-providers" element={<TrustedProviders />} />
+            <Route path="/guide" element={<Guide />} />
             <Route path="/offers" element={<Offers />} />
             <Route 
               path="/dashboard" 
