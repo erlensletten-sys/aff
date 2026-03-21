@@ -810,4 +810,4 @@ export function LimboCalculator() {
   );
 }
 
-export default { MinesCalculator, HiLoCalculator, DiceCalculator, PlinkoCalculator };
+export default { MinesCalculator, HiLoCalculator, DiceCalculator, PlinkoCalculator, LimboCalculator };

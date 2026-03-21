@@ -1,6 +1,34 @@
 [
   {
-    "content": "Test all verifier functionality with sample seeds",
-    "status": "completed"
+    "content": "Remove VERIFY link from navigation",
+    "status": "in_progress"
+  },
+  {
+    "content": "Build Kelly Criterion Calculator",
+    "status": "pending"
+  },
+  {
+    "content": "Build Bankroll Management Calculator",
+    "status": "pending"
+  },
+  {
+    "content": "Build Risk of Ruin Calculator",
+    "status": "pending"
+  },
+  {
+    "content": "Build Variance Calculator",
+    "status": "pending"
+  },
+  {
+    "content": "Build RTP Reality Check / Monthly Boost Calculator",
+    "status": "pending"
+  },
+  {
+    "content": "Build Sports Betting Calculators (Arbitrage, Hedge, Parlay)",
+    "status": "pending"
+  },
+  {
+    "content": "Update Calculators page with new categories",
+    "status": "pending"
   }
 ]

@@ -11,7 +11,7 @@ import time
 from datetime import datetime
 
 class NoToGreedAPITester:
-    def __init__(self, base_url="https://provably-fair-verify.preview.emergentagent.com"):
+    def __init__(self, base_url="https://gamble-tools-hub.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.admin_token = None

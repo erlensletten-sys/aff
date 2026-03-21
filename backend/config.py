@@ -35,6 +35,6 @@ class Settings:
     ADMIN_EMAILS = os.getenv("ADMIN_EMAILS", "admin@notogreed.com").split(",")
     
     # CORS
-    CORS_ORIGINS = ["http://localhost:3000", "https://provably-fair-verify.preview.emergentagent.com"]
+    CORS_ORIGINS = ["http://localhost:3000", "https://gamble-tools-hub.preview.emergentagent.com"]
 
 settings = Settings()
