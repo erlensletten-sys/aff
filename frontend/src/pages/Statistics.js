@@ -6,44 +6,44 @@ function Statistics() {
   const [registeredUsers, setRegisteredUsers] = useState(5699);
   const successRate = 99.3;
   
-  // Last 24 hours stats (mock data with random variance)
+  // Last 24 hours stats (also increment live)
   const [last24Hours, setLast24Hours] = useState({
     verifications: 3847,
     newUsers: 127,
     avgResponseTime: 1.2,
-    topGame: 'LIMBO'
+    successRate24h: 99.4
   });
 
   useEffect(() => {
-    // Increment counters at different rates
+    // Increment all counters in the same phase
     const interval = setInterval(() => {
-      // Verifications increase faster (every 2-5 seconds, +1 to +3)
+      // All-time verifications increase faster (every 2-5 seconds, +1 to +3)
       const verificationChance = Math.random();
       if (verificationChance > 0.4) {
         const increment = Math.floor(Math.random() * 3) + 1;
         setTotalVerifications(prev => prev + increment);
-        
-        // Also increment 24h stats occasionally
-        if (Math.random() > 0.7) {
-          setLast24Hours(prev => ({
-            ...prev,
-            verifications: prev.verifications + 1
-          }));
-        }
       }
       
-      // Users increase slower (every 10-15 seconds, +1)
+      // All-time users increase slower (every 10-15 seconds, +1)
       const userChance = Math.random();
       if (userChance > 0.85) {
         setRegisteredUsers(prev => prev + 1);
-        
-        // Also increment 24h new users occasionally
-        if (Math.random() > 0.5) {
-          setLast24Hours(prev => ({
-            ...prev,
-            newUsers: prev.newUsers + 1
-          }));
-        }
+      }
+      
+      // 24H verifications also increment (slightly slower than all-time)
+      if (Math.random() > 0.6) {
+        setLast24Hours(prev => ({
+          ...prev,
+          verifications: prev.verifications + 1
+        }));
+      }
+      
+      // 24H new users also increment (rarely)
+      if (Math.random() > 0.92) {
+        setLast24Hours(prev => ({
+          ...prev,
+          newUsers: prev.newUsers + 1
+        }));
       }
       
       // Occasionally update response time (slight variance)
@@ -62,15 +62,6 @@ function Statistics() {
   const formatNumber = (num) => {
     return num.toLocaleString('en-US');
   };
-
-  const gameTypeStats = [
-    { game: 'LIMBO', count: 34821, percentage: 28.7, trend: '+12%' },
-    { game: 'DICE', count: 29456, percentage: 24.3, trend: '+8%' },
-    { game: 'MINES', count: 21087, percentage: 17.4, trend: '+15%' },
-    { game: 'BLACKJACK', count: 18234, percentage: 15.0, trend: '+5%' },
-    { game: 'PLINKO', count: 11298, percentage: 9.3, trend: '+18%' },
-    { game: 'KENO', count: 6347, percentage: 5.2, trend: '+3%' }
-  ];
 
   return (
     <div className="stats-container">
@@ -150,7 +141,7 @@ function Statistics() {
           padding: '32px'
         }}>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '32px'}}>
-            <div>
+            <div data-testid="stat-24h-verifications">
               <div style={{fontSize: '36px', fontWeight: '700', color: 'var(--accent-primary)', marginBottom: '8px'}}>
                 {formatNumber(last24Hours.verifications)}
               </div>
@@ -158,11 +149,11 @@ function Statistics() {
                 VERIFICATIONS
               </div>
               <div style={{marginTop: '6px', fontSize: '12px', color: 'var(--accent-success)'}}>
-                ↑ 23% from yesterday
+                ↑ Live counter
               </div>
             </div>
 
-            <div>
+            <div data-testid="stat-24h-users">
               <div style={{fontSize: '36px', fontWeight: '700', color: 'var(--accent-secondary)', marginBottom: '8px'}}>
                 {formatNumber(last24Hours.newUsers)}
               </div>
@@ -170,25 +161,25 @@ function Statistics() {
                 NEW USERS
               </div>
               <div style={{marginTop: '6px', fontSize: '12px', color: 'var(--accent-success)'}}>
-                ↑ 15% from yesterday
+                ↑ Live counter
               </div>
             </div>
 
             <div>
               <div style={{fontSize: '36px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '8px'}}>
-                99.4%
+                {last24Hours.successRate24h}%
               </div>
               <div style={{fontSize: '13px', color: 'var(--text-secondary)', letterSpacing: '1px'}}>
                 SUCCESS RATE (24H)
               </div>
               <div style={{marginTop: '6px', fontSize: '12px', color: 'var(--accent-success)'}}>
-                ↑ +0.1% improvement
+                +0.1% improvement
               </div>
             </div>
 
             <div>
               <div style={{fontSize: '36px', fontWeight: '700', color: 'var(--accent-warning)', marginBottom: '8px'}}>
-                {last24Hours.topGame}
+                LIMBO
               </div>
               <div style={{fontSize: '13px', color: 'var(--text-secondary)', letterSpacing: '1px'}}>
                 MOST VERIFIED GAME
@@ -228,93 +219,7 @@ function Statistics() {
         </div>
       </div>
 
-      {/* Game Type Distribution */}
-      <div style={{marginBottom: '50px'}}>
-        <h2 style={{fontSize: '20px', marginBottom: '24px', letterSpacing: '2px', color: 'var(--text-muted)'}}>
-          // VERIFICATION DISTRIBUTION BY GAME
-        </h2>
-        <div style={{
-          background: 'var(--bg-glass)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid var(--border-color)',
-          borderRadius: '16px',
-          overflow: 'hidden'
-        }}>
-          {gameTypeStats.map((game, index) => (
-            <div 
-              key={game.game}
-              style={{
-                padding: '20px 32px',
-                borderBottom: index < gameTypeStats.length - 1 ? '1px solid var(--border-color)' : 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                transition: 'background 0.2s ease',
-                cursor: 'default'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(99, 102, 241, 0.05)'}
-              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-            >
-              <div style={{display: 'flex', alignItems: 'center', gap: '24px', flex: 1}}>
-                <div style={{minWidth: '120px'}}>
-                  <div style={{fontSize: '18px', fontWeight: '600', color: 'var(--text-primary)'}}>
-                    {game.game}
-                  </div>
-                  <div style={{fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px'}}>
-                    {game.percentage}% of total
-                  </div>
-                </div>
-                
-                {/* Progress bar */}
-                <div style={{flex: 1, maxWidth: '400px'}}>
-                  <div style={{
-                    width: '100%',
-                    height: '8px',
-                    background: 'var(--bg-primary)',
-                    borderRadius: '4px',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      width: `${game.percentage}%`,
-                      height: '100%',
-                      background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))',
-                      borderRadius: '4px',
-                      transition: 'width 0.3s ease'
-                    }} />
-                  </div>
-                </div>
-              </div>
-
-              <div style={{display: 'flex', alignItems: 'center', gap: '32px'}}>
-                <div style={{textAlign: 'right'}}>
-                  <div style={{fontSize: '24px', fontWeight: '700', color: 'var(--text-primary)'}}>
-                    {formatNumber(game.count)}
-                  </div>
-                  <div style={{fontSize: '11px', color: 'var(--text-muted)'}}>
-                    verifications
-                  </div>
-                </div>
-                
-                <div style={{
-                  padding: '6px 12px',
-                  background: 'rgba(16, 185, 129, 0.1)',
-                  border: '1px solid var(--accent-success)',
-                  borderRadius: '6px',
-                  fontSize: '12px',
-                  color: 'var(--accent-success)',
-                  fontWeight: '600',
-                  minWidth: '60px',
-                  textAlign: 'center'
-                }}>
-                  {game.trend}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Additional Insights */}
+      {/* Platform Insights */}
       <div style={{
         background: 'var(--bg-glass)',
         backdropFilter: 'blur(20px)',

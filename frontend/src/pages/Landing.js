@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function Landing() {
+  // Live statistics (same as Stats page)
+  const [totalVerifications, setTotalVerifications] = useState(121243);
+  const [registeredUsers, setRegisteredUsers] = useState(5699);
+  const successRate = 99.3;
+
+  useEffect(() => {
+    // Increment counters at different rates
+    const interval = setInterval(() => {
+      // Verifications increase faster
+      if (Math.random() > 0.4) {
+        const increment = Math.floor(Math.random() * 3) + 1;
+        setTotalVerifications(prev => prev + increment);
+      }
+      
+      // Users increase slower
+      if (Math.random() > 0.85) {
+        setRegisteredUsers(prev => prev + 1);
+      }
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatNumber = (num) => num.toLocaleString('en-US');
+
   return (
     <div className="landing">
       <div className="system-status">
@@ -26,6 +51,152 @@ function Landing() {
         <Link to="/offers" className="btn btn-secondary">
           EXCLUSIVE OFFERS
         </Link>
+      </div>
+
+      {/* Live Statistics Display */}
+      <div style={{marginTop: '80px', marginBottom: '60px'}}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '24px',
+          maxWidth: '1000px',
+          margin: '0 auto'
+        }}>
+          <div style={{
+            padding: '32px 24px',
+            background: 'var(--bg-glass)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid var(--border-color)',
+            borderRadius: '16px',
+            textAlign: 'center',
+            transition: 'transform 0.2s ease, border-color 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.borderColor = 'var(--accent-primary)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'var(--border-color)';
+          }}>
+            <div style={{
+              fontSize: '42px',
+              fontWeight: '700',
+              background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              marginBottom: '8px'
+            }}>
+              {formatNumber(totalVerifications)}
+            </div>
+            <div style={{fontSize: '12px', letterSpacing: '1px', color: 'var(--text-muted)', textTransform: 'uppercase'}}>
+              Verifications
+            </div>
+            <div style={{fontSize: '11px', color: 'var(--accent-success)', marginTop: '6px'}}>
+              ↑ All Time
+            </div>
+          </div>
+
+          <div style={{
+            padding: '32px 24px',
+            background: 'var(--bg-glass)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid var(--border-color)',
+            borderRadius: '16px',
+            textAlign: 'center',
+            transition: 'transform 0.2s ease, border-color 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.borderColor = 'var(--accent-success)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'var(--border-color)';
+          }}>
+            <div style={{
+              fontSize: '42px',
+              fontWeight: '700',
+              color: 'var(--accent-success)',
+              marginBottom: '8px'
+            }}>
+              {successRate}%
+            </div>
+            <div style={{fontSize: '12px', letterSpacing: '1px', color: 'var(--text-muted)', textTransform: 'uppercase'}}>
+              Success Rate
+            </div>
+            <div style={{fontSize: '11px', color: 'var(--text-muted)', marginTop: '6px'}}>
+              All Time
+            </div>
+          </div>
+
+          <div style={{
+            padding: '32px 24px',
+            background: 'var(--bg-glass)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid var(--border-color)',
+            borderRadius: '16px',
+            textAlign: 'center',
+            transition: 'transform 0.2s ease, border-color 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.borderColor = 'var(--accent-secondary)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'var(--border-color)';
+          }}>
+            <div style={{
+              fontSize: '42px',
+              fontWeight: '700',
+              color: 'var(--accent-secondary)',
+              marginBottom: '8px'
+            }}>
+              {formatNumber(registeredUsers)}
+            </div>
+            <div style={{fontSize: '12px', letterSpacing: '1px', color: 'var(--text-muted)', textTransform: 'uppercase'}}>
+              Registered Users
+            </div>
+            <div style={{fontSize: '11px', color: 'var(--accent-success)', marginTop: '6px'}}>
+              ↑ All Time
+            </div>
+          </div>
+
+          <div style={{
+            padding: '32px 24px',
+            background: 'var(--bg-glass)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid var(--border-color)',
+            borderRadius: '16px',
+            textAlign: 'center',
+            transition: 'transform 0.2s ease, border-color 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.borderColor = 'var(--accent-warning)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'var(--border-color)';
+          }}>
+            <div style={{
+              fontSize: '42px',
+              fontWeight: '700',
+              color: 'var(--text-primary)',
+              marginBottom: '8px'
+            }}>
+              100%
+            </div>
+            <div style={{fontSize: '12px', letterSpacing: '1px', color: 'var(--text-muted)', textTransform: 'uppercase'}}>
+              Free Forever
+            </div>
+            <div style={{fontSize: '11px', color: 'var(--accent-primary)', marginTop: '6px'}}>
+              Always Free
+            </div>
+          </div>
+        </div>
       </div>
       
       <div style={{marginTop: '80px', marginBottom: '60px', padding: '50px', background: 'var(--bg-glass)', backdropFilter: 'blur(20px)', border: '1px solid var(--border-color)', borderRadius: '24px'}}>

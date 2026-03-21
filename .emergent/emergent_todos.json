@@ -1,18 +1,10 @@
 [
   {
-    "content": "Update Statistics page with mock data (121,243 verifications, 5,699 users, 99.3% success rate)",
+    "content": "Add all-time statistics display to Landing page with same numbers",
     "status": "completed"
   },
   {
-    "content": "Add random increment animation to statistics counters",
-    "status": "completed"
-  },
-  {
-    "content": "Replace Game Type section with Stats Last 24 Hours section",
-    "status": "completed"
-  },
-  {
-    "content": "Test statistics page with live counter animations",
+    "content": "Test updated Statistics and Landing pages",
     "status": "completed"
   }
 ]
