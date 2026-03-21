@@ -1,0 +1,10 @@
+[
+  {
+    "content": "Phase 2: Check backend and frontend logs",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 2: Test complete application",
+    "status": "in_progress"
+  }
+]
