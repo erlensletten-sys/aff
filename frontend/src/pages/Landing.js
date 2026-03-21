@@ -5,15 +5,15 @@ function Landing() {
   return (
     <div className="landing">
       <div className="system-status">
-        <span>[ SYSTEM_ONLINE ]</span>
+        <span>[ SYSTEM ONLINE ]</span>
       </div>
       
-      <h1>GAMBLE_VERIFY</h1>
+      <h1>NoToGreed</h1>
       
       <div className="subtitle">
-        <p>// PROVABLY FAIR CRYPTOGRAPHIC AUDIT TOOL</p>
-        <p>// INDEPENDENT THIRD-PARTY VERIFICATION SYSTEM</p>
-        <p>// ALL COMPUTATION RUNS IN YOUR BROWSER</p>
+        <p style={{fontSize: '22px', fontWeight: 600, marginBottom: '16px'}}>Your Honest Verification</p>
+        <p>Independent third-party cryptographic verification</p>
+        <p>Ensuring fairness and transparency in online gambling</p>
       </div>
       
       <div className="cta-buttons">
@@ -27,50 +27,50 @@ function Landing() {
       
       <div className="features-grid">
         <div className="feature-card">
-          <h3>$ HMAC-SHA256</h3>
+          <h3>🔒 Cryptographic Verification</h3>
           <p>
-            // Cryptographic hash verification for ensuring data integrity and authenticity.
-            Browser-based computation ensures your data never leaves your device.
+            Verify gambling results using industry-standard cryptographic algorithms. 
+            HMAC-SHA256 and SHA256 hash verification for complete data integrity.
           </p>
         </div>
         
         <div className="feature-card">
-          <h3>$ PROVABLY_FAIR</h3>
+          <h3>🎲 Provably Fair</h3>
           <p>
-            // Verify gambling game results using cryptographic proofs.
             Check that house games (Dice, Limbo, Slots) are truly fair and unmanipulated.
+            Independent verification you can trust.
           </p>
         </div>
         
         <div className="feature-card">
-          <h3>$ SHA256_HASH</h3>
+          <h3>📊 Real-Time Statistics</h3>
           <p>
-            // Standard SHA256 hash verification for data validation.
-            Confirm the integrity of server seeds and game outcomes.
+            View live statistics of verification attempts across the platform.
+            Track success rates and community verification activity.
           </p>
         </div>
         
         <div className="feature-card">
-          <h3>$ CLIENT_SIDE</h3>
+          <h3>🔓 No Login Required</h3>
           <p>
-            // Zero server-side processing of sensitive data.
-            All cryptographic operations execute in your browser using Web Crypto API.
+            Public access for basic verification ensures transparency.
+            Anyone can verify results without creating an account.
           </p>
         </div>
         
         <div className="feature-card">
-          <h3>$ OPEN_VERIFICATION</h3>
+          <h3>💻 Client-Side Processing</h3>
           <p>
-            // No account required for basic verification.
-            Public access ensures transparency and builds trust in the verification process.
+            All cryptographic operations execute in your browser.
+            Your data never leaves your device. Zero server-side processing.
           </p>
         </div>
         
         <div className="feature-card">
-          <h3>$ REAL_TIME_STATS</h3>
+          <h3>🎁 Exclusive Promotions</h3>
           <p>
-            // View live statistics of verification attempts.
-            Track success rates, popular games, and community verification activity.
+            Get access to exclusive promo codes and special offers.
+            Register to unlock member-only promotions and deals.
           </p>
         </div>
       </div>

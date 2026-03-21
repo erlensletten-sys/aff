@@ -3,9 +3,9 @@ import React from 'react';
 function Footer() {
   return (
     <footer className="footer">
-      <p>© 2026 GAMBLE_VERIFY // ALL RIGHTS RESERVED</p>
-      <p>// INDEPENDENT THIRD-PARTY CRYPTOGRAPHIC VERIFICATION SYSTEM</p>
-      <p>// ALL COMPUTATIONS RUN IN YOUR BROWSER</p>
+      <p>© 2026 NoToGreed.com // ALL RIGHTS RESERVED</p>
+      <p>// YOUR HONEST VERIFICATION PLATFORM</p>
+      <p>// TRANSPARENCY • INTEGRITY • FAIRNESS</p>
     </footer>
   );
 }

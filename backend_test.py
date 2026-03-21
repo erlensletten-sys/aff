@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend API Testing for GambleVerify Platform
-Tests all authentication, verification, and statistics endpoints
+Backend API Testing for NoToGreed Platform
+Tests all authentication, verification, statistics, and promotions endpoints
 """
 
 import requests
@@ -10,10 +10,11 @@ import json
 import time
 from datetime import datetime
 
-class GambleVerifyAPITester:
+class NoToGreedAPITester:
     def __init__(self, base_url="https://gamble-verify.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
+        self.admin_token = None
         self.tests_run = 0
         self.tests_passed = 0
         self.test_results = []
@@ -215,6 +216,160 @@ class GambleVerifyAPITester:
             data=test_data
         )
 
+    def test_admin_registration_and_login(self):
+        """Test admin user registration and login"""
+        admin_user_data = {
+            "username": f"admin_{int(time.time())}",
+            "email": "admin@notogreed.com",  # Admin email
+            "full_name": "Admin User",
+            "password": "AdminPassword123!"
+        }
+        
+        # Register admin user
+        success, response = self.run_test(
+            "Admin Registration",
+            "POST",
+            "auth/register",
+            201,
+            data=admin_user_data
+        )
+        
+        if success:
+            self.admin_email = admin_user_data["email"]
+            self.admin_password = admin_user_data["password"]
+            
+            # Manually verify admin email for testing (in real scenario, this would be done via email)
+            # For testing purposes, we'll assume the admin is verified
+            
+        return success, response
+
+    def test_admin_login(self):
+        """Test admin login (assuming email is verified)"""
+        if not hasattr(self, 'admin_email'):
+            self.log_test("Admin Login", False, "No admin user created")
+            return False, {}
+        
+        login_data = {
+            "email": self.admin_email,
+            "password": self.admin_password
+        }
+        
+        # Note: This will fail if email is not verified, but we'll test it anyway
+        success, response = self.run_test(
+            "Admin Login (May Fail - Email Not Verified)",
+            "POST",
+            "auth/login",
+            200,  # Expecting success if verified
+            data=login_data
+        )
+        
+        if success and 'access_token' in response:
+            self.admin_token = response['access_token']
+        
+        return success, response
+
+    def test_admin_check_endpoint(self):
+        """Test admin check endpoint"""
+        if not self.admin_token:
+            self.log_test("Admin Check", False, "No admin token available")
+            return False, {}
+        
+        return self.run_test(
+            "Admin Check",
+            "GET",
+            "admin/check",
+            200,
+            headers={'Authorization': f'Bearer {self.admin_token}'}
+        )
+
+    def test_promotions_without_auth(self):
+        """Test promotions endpoint without authentication"""
+        return self.run_test(
+            "Promotions (No Auth)",
+            "GET",
+            "promotions",
+            401,  # Should fail without auth
+            headers={'Authorization': ''}
+        )
+
+    def test_promotions_with_auth(self):
+        """Test promotions endpoint with authentication"""
+        if not self.token:
+            self.log_test("Promotions (With Auth)", False, "No user token available")
+            return False, {}
+        
+        return self.run_test(
+            "Promotions (With Auth)",
+            "GET",
+            "promotions",
+            200,
+            headers={'Authorization': f'Bearer {self.token}'}
+        )
+
+    def test_create_promotion_non_admin(self):
+        """Test creating promotion with non-admin user"""
+        if not self.token:
+            self.log_test("Create Promotion (Non-Admin)", False, "No user token available")
+            return False, {}
+        
+        promotion_data = {
+            "title": "Test Promotion",
+            "description": "This is a test promotion",
+            "code": "TEST123",
+            "link": "https://example.com"
+        }
+        
+        return self.run_test(
+            "Create Promotion (Non-Admin)",
+            "POST",
+            "admin/promotions",
+            403,  # Should fail with 403 for non-admin
+            data=promotion_data,
+            headers={'Authorization': f'Bearer {self.token}'}
+        )
+
+    def test_create_promotion_admin(self):
+        """Test creating promotion with admin user"""
+        if not self.admin_token:
+            self.log_test("Create Promotion (Admin)", False, "No admin token available")
+            return False, {}
+        
+        promotion_data = {
+            "title": f"Admin Test Promotion {int(time.time())}",
+            "description": "This is an admin test promotion",
+            "code": f"ADMIN{int(time.time())}",
+            "link": "https://example.com",
+            "image_url": "https://via.placeholder.com/300x200"
+        }
+        
+        success, response = self.run_test(
+            "Create Promotion (Admin)",
+            "POST",
+            "admin/promotions",
+            200,
+            data=promotion_data,
+            headers={'Authorization': f'Bearer {self.admin_token}'}
+        )
+        
+        if success:
+            self.test_promotion_title = promotion_data["title"]
+        
+        return success, response
+
+    def test_delete_promotion_admin(self):
+        """Test deleting promotion with admin user"""
+        if not self.admin_token or not hasattr(self, 'test_promotion_title'):
+            self.log_test("Delete Promotion (Admin)", False, "No admin token or promotion to delete")
+            return False, {}
+        
+        return self.run_test(
+            "Delete Promotion (Admin)",
+            "DELETE",
+            f"admin/promotions/{self.test_promotion_title}",
+            200,
+            headers={'Authorization': f'Bearer {self.admin_token}'}
+        )
+
     def test_protected_endpoints_without_auth(self):
         """Test protected endpoints without authentication"""
         # Test /me endpoint without token
@@ -242,7 +397,7 @@ class GambleVerifyAPITester:
 
     def run_all_tests(self):
         """Run comprehensive API test suite"""
-        print("🚀 Starting GambleVerify API Testing...")
+        print("🚀 Starting NoToGreed API Testing...")
         print(f"📍 Testing against: {self.base_url}")
         print("=" * 60)
         
@@ -255,6 +410,11 @@ class GambleVerifyAPITester:
         self.test_duplicate_registration()
         self.test_invalid_login()
         
+        # Admin authentication flow
+        self.test_admin_registration_and_login()
+        self.test_admin_login()
+        self.test_admin_check_endpoint()
+        
         # Email verification
         self.test_email_verification_invalid_token()
         
@@ -265,6 +425,13 @@ class GambleVerifyAPITester:
         
         # Protected endpoints
         self.test_protected_endpoints_without_auth()
+        
+        # Promotions endpoints
+        self.test_promotions_without_auth()
+        self.test_promotions_with_auth()
+        self.test_create_promotion_non_admin()
+        self.test_create_promotion_admin()
+        self.test_delete_promotion_admin()
         
         # Print summary
         print("\n" + "=" * 60)
@@ -285,7 +452,7 @@ class GambleVerifyAPITester:
 
 def main():
     """Main test execution"""
-    tester = GambleVerifyAPITester()
+    tester = NoToGreedAPITester()
     results = tester.run_all_tests()
     
     # Exit with appropriate code

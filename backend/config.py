@@ -8,7 +8,7 @@ class Settings:
     
     # MongoDB
     MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
-    DATABASE_NAME = os.getenv("DATABASE_NAME", "gamble_verify")
+    DATABASE_NAME = os.getenv("DATABASE_NAME", "notogreed")
     
     # JWT
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "your-secret-key-change-in-production")
@@ -20,8 +20,8 @@ class Settings:
     
     # Brevo
     BREVO_API_KEY = os.getenv("BREVO_API_KEY", "")
-    BREVO_SENDER_EMAIL = os.getenv("BREVO_SENDER_EMAIL", "noreply@yourdomain.com")
-    BREVO_SENDER_NAME = os.getenv("BREVO_SENDER_NAME", "GambleVerify")
+    BREVO_SENDER_EMAIL = os.getenv("BREVO_SENDER_EMAIL", "noreply@notogreed.com")
+    BREVO_SENDER_NAME = os.getenv("BREVO_SENDER_NAME", "NoToGreed")
     
     # Resend
     RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
@@ -30,6 +30,9 @@ class Settings:
     # Email Verification
     VERIFICATION_TOKEN_EXPIRY_HOURS = 24
     VERIFICATION_BASE_URL = os.getenv("VERIFICATION_BASE_URL", "http://localhost:3000")
+    
+    # Admin
+    ADMIN_EMAILS = os.getenv("ADMIN_EMAILS", "admin@notogreed.com").split(",")
     
     # CORS
     CORS_ORIGINS = ["http://localhost:3000", "https://gamble-verify.preview.emergentagent.com"]

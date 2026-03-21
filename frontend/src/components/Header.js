@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Header({ isAuthenticated, onLogout }) {
+function Header({ isAuthenticated, isAdmin, onLogout }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -13,7 +13,7 @@ function Header({ isAuthenticated, onLogout }) {
     <header className="header">
       <div className="header-content">
         <Link to="/" className="logo">
-          GAMBLE_VERIFY
+          NoToGreed
         </Link>
         <nav className="nav">
           <Link to="/" className="nav-link">HOME</Link>
@@ -21,7 +21,11 @@ function Header({ isAuthenticated, onLogout }) {
           <Link to="/stats" className="nav-link">STATISTICS</Link>
           {isAuthenticated ? (
             <>
+              <Link to="/promotions" className="nav-link">PROMOTIONS</Link>
               <Link to="/dashboard" className="nav-link">DASHBOARD</Link>
+              {isAdmin && (
+                <Link to="/admin" className="nav-link" style={{color: 'var(--accent-warning)'}}>ADMIN</Link>
+              )}
               <button onClick={handleLogout} className="btn btn-secondary" style={{padding: '8px 16px', fontSize: '12px'}}>
                 LOGOUT
               </button>

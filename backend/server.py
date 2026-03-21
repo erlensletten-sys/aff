@@ -8,8 +8,9 @@ import logging
 
 from config import settings
 from models import (
-    User, EmailVerificationToken, VerificationLog,
-    UserRegisterRequest, UserLoginRequest, TokenResponse, VerifyEmailRequest
+    User, EmailVerificationToken, VerificationLog, Promotion,
+    UserRegisterRequest, UserLoginRequest, TokenResponse, VerifyEmailRequest,
+    PromotionCreateRequest, PromotionUpdateRequest
 )
 from auth import hash_password, verify_password, create_access_token, decode_access_token
 from email_service import email_service
@@ -20,8 +21,8 @@ logger = logging.getLogger(__name__)
 
 # Initialize FastAPI
 app = FastAPI(
-    title="GambleVerify API",
-    description="Independent third-party provably fair verification platform",
+    title="NoToGreed API",
+    description="Your Honest Verification - Independent third-party provably fair verification platform",
     version="1.0.0"
 )
 
@@ -365,6 +366,143 @@ async def verify_provably_fair(data: dict):
         "status": "pending",
         "message": "Verification tool will be integrated here",
         "module": "Provably Fair"
+    }
+
+# Promotions Endpoints
+@app.get("/api/promotions")
+async def get_promotions(authorization: Optional[str] = Header(None)):
+    """Get all active promotions (requires login)"""
+    user = await get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    try:
+        promotions = await db.promotions.find(
+            {"is_active": True},
+            {"_id": 0}
+        ).sort("created_at", -1).to_list(length=100)
+        
+        return {"promotions": promotions}
+    
+    except Exception as e:
+        logger.error(f"Get promotions error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve promotions")
+
+@app.post("/api/admin/promotions")
+async def create_promotion(
+    request: PromotionCreateRequest,
+    authorization: Optional[str] = Header(None)
+):
+    """Create new promotion (admin only)"""
+    user = await get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    # Check if user is admin
+    if user.get("email") not in settings.ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        promotion_data = Promotion(
+            title=request.title,
+            description=request.description,
+            code=request.code,
+            link=request.link,
+            image_url=request.image_url,
+            expires_at=request.expires_at,
+            is_active=True,
+            created_at=datetime.utcnow(),
+            updated_at=datetime.utcnow()
+        )
+        
+        result = await db.promotions.insert_one(promotion_data.model_dump())
+        
+        logger.info(f"Promotion created by {user['email']}: {request.title}")
+        
+        return {
+            "message": "Promotion created successfully",
+            "promotion": promotion_data.model_dump()
+        }
+    
+    except Exception as e:
+        logger.error(f"Create promotion error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create promotion")
+
+@app.put("/api/admin/promotions/{promotion_id}")
+async def update_promotion(
+    promotion_id: str,
+    request: PromotionUpdateRequest,
+    authorization: Optional[str] = Header(None)
+):
+    """Update promotion (admin only)"""
+    user = await get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    if user.get("email") not in settings.ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        update_data = {k: v for k, v in request.model_dump().items() if v is not None}
+        update_data["updated_at"] = datetime.utcnow()
+        
+        result = await db.promotions.update_one(
+            {"title": promotion_id},  # Using title as ID for simplicity
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Promotion not found")
+        
+        return {"message": "Promotion updated successfully"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Update promotion error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update promotion")
+
+@app.delete("/api/admin/promotions/{promotion_id}")
+async def delete_promotion(
+    promotion_id: str,
+    authorization: Optional[str] = Header(None)
+):
+    """Delete promotion (admin only)"""
+    user = await get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    if user.get("email") not in settings.ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        result = await db.promotions.delete_one({"title": promotion_id})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Promotion not found")
+        
+        logger.info(f"Promotion deleted by {user['email']}: {promotion_id}")
+        
+        return {"message": "Promotion deleted successfully"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Delete promotion error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to delete promotion")
+
+@app.get("/api/admin/check")
+async def check_admin(authorization: Optional[str] = Header(None)):
+    """Check if current user is admin"""
+    user = await get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    is_admin = user.get("email") in settings.ADMIN_EMAILS
+    
+    return {
+        "is_admin": is_admin,
+        "email": user.get("email")
     }
 
 if __name__ == "__main__":

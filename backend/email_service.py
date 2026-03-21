@@ -185,8 +185,8 @@ class EmailService:
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>GAMBLE_VERIFY</h1>
-                    <p style="margin: 5px 0; color: #666;">// CRYPTOGRAPHIC AUDIT TOOL</p>
+                    <h1>NOTOGREED</h1>
+                    <p style="margin: 5px 0; color: #666;">// YOUR HONEST VERIFICATION</p>
                 </div>
                 <div class="content">
                     <p>$ HELLO {first_name.upper()},</p>
@@ -209,8 +209,8 @@ class EmailService:
                     • If you didn't create this account, please ignore this email</p>
                 </div>
                 <div class="footer">
-                    <p>© 2026 GAMBLE_VERIFY // ALL RIGHTS RESERVED</p>
-                    <p>// INDEPENDENT THIRD-PARTY VERIFICATION SYSTEM</p>
+                    <p>© 2026 NOTOGREED // ALL RIGHTS RESERVED</p>
+                    <p>// YOUR HONEST VERIFICATION PLATFORM</p>
                 </div>
             </div>
         </body>

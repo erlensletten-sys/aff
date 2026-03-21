@@ -9,6 +9,7 @@ class User(BaseModel):
     full_name: str
     hashed_password: str
     is_email_verified: bool = False
+    is_admin: bool = False
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
@@ -28,6 +29,18 @@ class VerificationLog(BaseModel):
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     duration_ms: Optional[int] = None
     module_used: Optional[str] = None
+
+class Promotion(BaseModel):
+    """Promotion card model"""
+    title: str
+    description: str
+    code: Optional[str] = None
+    link: Optional[str] = None
+    image_url: Optional[str] = None
+    expires_at: Optional[datetime] = None
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 class UserRegisterRequest(BaseModel):
     """Registration request"""
@@ -49,3 +62,22 @@ class TokenResponse(BaseModel):
 class VerifyEmailRequest(BaseModel):
     """Email verification request"""
     token: str
+
+class PromotionCreateRequest(BaseModel):
+    """Create promotion request"""
+    title: str = Field(min_length=3, max_length=100)
+    description: str = Field(min_length=10, max_length=500)
+    code: Optional[str] = None
+    link: Optional[str] = None
+    image_url: Optional[str] = None
+    expires_at: Optional[datetime] = None
+
+class PromotionUpdateRequest(BaseModel):
+    """Update promotion request"""
+    title: Optional[str] = None
+    description: Optional[str] = None
+    code: Optional[str] = None
+    link: Optional[str] = None
+    image_url: Optional[str] = None
+    expires_at: Optional[datetime] = None
+    is_active: Optional[bool] = None
