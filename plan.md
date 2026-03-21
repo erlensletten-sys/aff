@@ -2,13 +2,17 @@
 
 ## Objectives
 - Deliver an independent, third‑party provably-fair verification platform for gambling results.
-- Prove the core external integration works: real email verification via **Brevo and Resend** (configurable) before building the full app.
-- Build an MVP web app with: landing page, public verify UI (no login), public verification statistics, and later integrate the user’s existing verification tool.
-- Match the provided PDF aesthetic: dark/terminal UI, monospaced typography, green accents + refined modern accent palette.
+- Keep the site stable and usable first (no broken builds/pages), then expand verification depth.
+- Provide a robust, extensible **Provably Fair verification framework** (API + engine contract) that can accept provider-specific algorithms as they arrive.
+- Offer professional-grade client tools (Hash Calculator, Seed Analyzer, Real-time Monitor setup) and ensure they are tested and reliable.
+- Implement foundational SEO (meta tags, sitemap, robots.txt, structured data) once core functionality is stable.
+- Defer real email-provider integration work (Brevo/Resend) until explicitly unblocked (keys/decision).
 
 ---
 
 ## Phase 1 — Core POC: Email verification integration (Isolation)
+
+**STATUS: DEFERRED ⏸️ (per user: wait with this)**
 
 ### User stories
 1. As a user, I can register with email/password and receive a verification email.
@@ -34,8 +38,8 @@
 - Fix until stable: handle common failures (bad API key, sender not verified, link encoding, spam blocks).
 
 ### Next actions
-- Request from user: Brevo + Resend API keys, sender email/domain, app base URL.
-- Implement POC and run script until both providers pass.
+- Wait for user to provide Brevo/Resend keys + sender identity + base URL.
+- Keep auth flows functioning without changing behavior until email work is unblocked.
 
 ### Success criteria
 - Both Brevo and Resend can send a real verification email.
@@ -62,27 +66,25 @@
   - Color system: near-black background, green primary accent, secondary accents (cyan/purple/amber) for states.
 - Public Verify (MVP):
   - UI flows: `Awaiting input` → `Parsing` → `Verifying` → `Success/Fail`.
-  - Provide **placeholders + schema validator** for “export data” format; store raw payload only if user opts-in.
-  - Implement browser-side crypto helpers (Web Crypto API) for HMAC-SHA256 + SHA256 (deterministic unit-tested).
-  - Provably-fair modules scaffold for house games (Limbo/Dice/Slots): define interfaces and stub calculators.
+  - Provide placeholders + schema guidance for “export data” format.
 - Backend (FastAPI + MongoDB):
   - Public endpoint to log verification attempt metadata (no secrets): game type, timestamp, result, duration.
   - Statistics endpoints: aggregates by day, by game/module, success rate.
-- Deployable configuration:
-  - Environment variables for API base URL, email provider selection, JWT secrets, Mongo connection.
 
-### Next actions
-- Implement V1 in minimal passes (frontend + backend wired once).
-- Run 1 round end-to-end testing (Verify UI states + stats population + API connectivity).
+### Progress notes (new)
+- Verified the app is currently loading and building successfully.
+- `Verify.js` is compiling cleanly; the earlier recurring syntax error is no longer reproducing.
 
 ### Success criteria
-- Visitors can use the verifier UI without login and see deterministic results for HMAC/SHA256 test vectors.
+- Visitors can use the verifier UI without login and see deterministic states.
 - Statistics page updates from real verification events.
 - UI matches dark terminal aesthetic and is responsive enough for desktop/mobile.
 
 ---
 
 ## Phase 3 — Authentication & Accounts (real email verification, JWT auth)
+
+**STATUS: PARTIALLY IMPLEMENTED (email provider integration deferred)**
 
 ### User stories
 1. As a user, I can register/login/logout securely.
@@ -92,71 +94,140 @@
 5. As an admin/operator, I can switch email provider without downtime.
 
 ### Implementation steps
-- Convert POC auth endpoints into production routes:
-  - `POST /auth/register`, `/auth/login`, `/auth/verify`, `/auth/resend`, `/auth/forgot`, `/auth/reset`.
-- JWT auth with refresh strategy (MVP acceptable: access token + refresh token in httpOnly cookies).
-- Add user model fields: `email`, `password_hash`, `email_verified`, `created_at`, `last_login`.
+- Maintain existing JWT auth implementation.
+- When unblocked, complete email verification lifecycle (Phase 1/3 overlap):
+  - `/api/auth/register`, `/api/auth/login`, `/api/auth/verify`, `/api/auth/resend`, `/api/auth/forgot`, `/api/auth/reset`.
 - Add rate limiting + abuse controls (basic): resend cooldown, login throttling.
-- Add optional “account area” (minimal): profile + view personal verification counts (not required for public).
 
 ### Next actions
-- Wire frontend auth pages (Register/Login/Verify pending screen).
-- Run testing round for full auth lifecycle.
+- Do not expand email flows until user provides keys and requests it.
 
 ### Success criteria
-- Full auth lifecycle works with both email providers.
+- Full auth lifecycle works once email provider work is enabled.
 - No-login verification remains available and unaffected.
 
 ---
 
-## Phase 4 — Integrate user’s existing verification tool + house games expansion
+## Phase 4 — Provably Fair System: Framework + Provider Algorithms + Tools Validation
+
+**STATUS: IN PROGRESS 🔨 (this is the current priority)**
 
 ### User stories
-1. As a user, I can run verifications using the platform’s integrated verifier engine.
-2. As a user, I can select a house game module (Limbo/Dice/Slots) and verify outcomes.
-3. As a user, I can see a detailed audit trail output (inputs used, derived hashes, intermediate steps).
-4. As a user, I can export a verification report (JSON/text).
-5. As an operator, I can update the verifier tool without breaking the UI.
+1. As a visitor, I can verify a result using a selected module + provider and get a deterministic, explainable output.
+2. As an operator, I can add provider-specific algorithms without rewriting the UI or API.
+3. As a user, I can use auxiliary tools (Hash Calculator, Seed Analyzer, Real-time Monitor setup) reliably.
+4. As a developer, I can test verification modules using fixtures/test vectors.
 
 ### Implementation steps
-- Define integration contract now (even before tool arrives):
-  - `VerifierEngine.verify(payload) -> {status, module, details, safeLog}`
-  - run in-browser where possible; fallback to server-side only for non-sensitive metadata.
-- When tool is provided: integrate as module/package (or API adapter), add parsing rules for supported export formats.
-- Expand house games: implement deterministic computations; add reference test vectors.
-- Harden logging: only store non-sensitive metadata by default; opt-in for user-provided storage.
+#### A) Test and harden new frontend tools (P0)
+- Hash Calculator
+  - Validate SHA256 output against known vectors.
+  - Validate HMAC-SHA256 output against known vectors.
+  - Ensure copy-to-clipboard UX works and errors are handled (permissions).
+- Seed Analyzer
+  - Validate entropy calculation for edge cases (empty string, unicode, very long strings).
+  - Clarify entropy units/meaning in UI copy (optional).
+- Real-time Monitor modal
+  - Confirm modal open/close, copy script works.
+  - Add warnings/disclaimer text as needed (no credential capture; user-run console script).
+
+#### B) Build extensible Provably Fair API contract (P0)
+- Replace placeholder verification endpoints with a stable contract:
+  - `POST /api/verify/provably-fair` accepts:
+    - `provider_slug`
+    - `game_type` / `module`
+    - `payload` (raw export data)
+    - `options` (optional: strict parsing, include intermediate steps)
+  - returns:
+    - `status: success|fail|pending`
+    - `normalized_input` (sanitized)
+    - `result` + `details` (intermediate steps)
+    - `safe_log` (no secrets) for stats/logging
+- Implement structured error handling:
+  - parse errors vs verification mismatch vs unsupported provider/module.
+- Keep sensitive inputs out of persistent storage by default.
+
+#### C) Create verification engine framework (P0)
+- Define internal interface:
+  - `VerifierEngine.verify(provider, module, payload) -> {status, details, safe_log}`
+- Create provider registry:
+  - `providers/{provider_slug}/{module}.py` (or similar) implementing the interface.
+- Add test vectors harness:
+  - store fixtures per provider/module.
+  - automated unit tests for deterministic outputs.
+
+#### D) Integrate provider-specific algorithms when delivered (P0)
+- User is collecting algorithms now.
+- When received:
+  - implement modules provider-by-provider.
+  - add fixtures based on provider documentation/examples.
+  - validate against known game outcomes.
 
 ### Next actions
-- Request tool delivery format (repo/code snippet/npm package/api spec) when ready.
-- Add modules iteratively, test each with fixtures.
+- Execute functional test pass on Tools page.
+- Implement the backend verification framework (contract + engine + registry) and wire Verify UI to call it.
+- Add initial “unsupported/pending” responses that are informative until each provider/module is implemented.
 
 ### Success criteria
-- Tool is integrated cleanly behind a stable interface.
-- Each house game module has passing test vectors and clear UI outputs.
+- Tools are tested and behave consistently.
+- `/api/verify/provably-fair` is stable and ready for algorithm plug-ins.
+- At least one provider/module end-to-end verification works once algorithms are provided.
 
 ---
 
-## Phase 5 — Comprehensive testing, polish, and non-breaking guarantees
+## Phase 5 — SEO + Polish
+
+**STATUS: PENDING ⏳ (after Provably Fair framework is stable)**
+
+### User stories
+1. As a visitor, I can find the site via search engines and get correct previews/snippets.
+2. As an operator, I can control indexing and avoid duplicate-content issues.
+
+### Implementation steps
+- Add metadata:
+  - per-route `<title>` and meta description.
+  - OpenGraph + Twitter cards.
+- Add crawlability assets:
+  - `sitemap.xml`
+  - `robots.txt`
+- Add structured data:
+  - Organization + WebSite schema.
+- Basic performance checks:
+  - avoid blocking scripts, ensure reasonable LCP.
+
+### Next actions
+- Implement SEO pass after verification endpoints and tools are stable.
+
+### Success criteria
+- Correct metadata on main pages.
+- Sitemap and robots deployed.
+- Rich previews render as expected.
+
+---
+
+## Phase 6 — Comprehensive testing, polish, and non-breaking guarantees
 
 ### User stories
 1. As a visitor, I never lose access to public verification and stats during upgrades.
 2. As a user, I get clear error messages when pasted data is malformed.
 3. As a user, verification results are reproducible and explainable.
-4. As an operator, I can validate email/auth and verifier modules via automated tests.
+4. As an operator, I can validate verifier modules via automated tests.
 5. As a user, the UI feels fast, readable, and consistent with the technical dark theme.
 
 ### Implementation steps
 - Automated tests:
-  - Backend: auth flows, token expiry, stats aggregates.
+  - Backend: verification engine unit tests + API contract tests.
   - Frontend: key UI states + paste/parse/verify flows.
-  - Crypto: HMAC/SHA256 known vectors.
-- Security & reliability pass: input validation, CORS, cookie flags, JWT secret handling.
-- UX polish: loading states, copy, empty states, responsive layout.
-- Final end-to-end testing round across: landing → verify → stats → register/verify/login.
+  - Crypto: SHA256/HMAC test vectors.
+- Security & reliability pass:
+  - input validation, CORS, log redaction, JWT secret handling.
+- UX polish:
+  - loading states, copy, empty states, responsive layout.
+- Final end-to-end testing round across: landing → verify → stats → tools → (auth flows unchanged).
 
 ### Next actions
-- Execute full regression test suite after each phase completion.
+- Run regression suite after each provider/module integration.
 
 ### Success criteria
 - Stable end-to-end flows with no regressions.
-- Verification computations match expected vectors; stats accurate; auth reliable with both providers.
+- Verification computations match expected vectors; stats accurate; UX polished.

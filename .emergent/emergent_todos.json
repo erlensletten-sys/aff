@@ -1,18 +1,34 @@
 [
   {
-    "content": "Create comprehensive admin panel",
-    "status": "completed"
+    "content": "Functional testing of Hash Calculator tool (validate SHA256 & HMAC outputs, clipboard functionality)",
+    "status": "pending"
   },
   {
-    "content": "Create guide page",
-    "status": "completed"
+    "content": "Functional testing of Seed Analyzer tool (validate entropy calculation, analysis display)",
+    "status": "pending"
   },
   {
-    "content": "Update header - Providers to Trusted",
-    "status": "completed"
+    "content": "Functional testing of Real-time Monitor modal (open/close, script copy functionality)",
+    "status": "pending"
   },
   {
-    "content": "Fix all errors and test",
-    "status": "completed"
+    "content": "Build extensible Provably Fair API framework in backend (create verification engine interface, provider registry structure)",
+    "status": "pending"
+  },
+  {
+    "content": "Update /api/verify/provably-fair endpoint with proper structure (accepts provider, game_type, payload; returns detailed results)",
+    "status": "pending"
+  },
+  {
+    "content": "Create placeholder verification modules for each game type with informative responses (ready for algorithm injection)",
+    "status": "pending"
+  },
+  {
+    "content": "Add comprehensive data-testid attributes to all tool components for automated testing",
+    "status": "pending"
+  },
+  {
+    "content": "Test complete verification flow: Verify page → select game/provider → submit → get response from new API",
+    "status": "pending"
   }
 ]
