@@ -16,13 +16,23 @@ Rakestake.com is a **crypto casino affiliate aggregator** platform that maximize
 
 ---
 
-## Partner Casinos (Real Affiliate Links)
+## Partner Casinos (8 Total)
 
+### Real Affiliate Links (Ready)
 | Casino | Affiliate Link | Rakeback | Welcome Bonus |
 |--------|----------------|----------|---------------|
 | Stake | stake.com/?c=rakestakevip | 10% | Up to $3,000 |
 | Shuffle | shuffle.com?r=rakestakevip | 15% | Up to $1,500 + 100 Free Spins |
 | Rainbet | rainbet.com?r=rakestakevip | 12% | Up to $1,000 + Daily Rakeback |
+
+### Placeholder Links (Update When Ready)
+| Casino | Affiliate Link | Rakeback | Welcome Bonus |
+|--------|----------------|----------|---------------|
+| FortuneJack | fortunejack.com/?ref=rakestake | 8% | Up to 6 BTC |
+| BitStarz | bitstarz.com/?ref=rakestake | 10% | Up to 5 BTC + 180 Free Spins |
+| 1win | 1win.com/?ref=rakestake | 12% | Up to $10,000 |
+| 1xBet | 1xbet.com/?ref=rakestake | 8% | Up to $1,500 + 150 Free Spins |
+| RoyalPartners | royalpartners.com/?ref=rakestake | 15% | Up to $3,000 + Cashback |
 
 ---
 
