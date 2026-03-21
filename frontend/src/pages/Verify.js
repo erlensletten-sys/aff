@@ -8,7 +8,7 @@ function Verify() {
   const [selectedProvider, setSelectedProvider] = useState('');
   const [providers, setProviders] = useState([]);
   const [inputData, setInputData] = useState('');
-  const [status, setStatus] = useState('awaiting'); // awaiting, verifying, success, fail
+  const [status, setStatus] = useState('awaiting');
   const [result, setResult] = useState(null);
   const [isAuthenticated] = useState(!!localStorage.getItem('token'));
   const [captchaVerified, setCaptchaVerified] = useState(false);
@@ -52,7 +52,6 @@ function Verify() {
       return;
     }
 
-    // Check captcha for guests
     if (!isAuthenticated && !captchaVerified) {
       alert('Please complete the CAPTCHA verification first');
       return;
@@ -61,10 +60,8 @@ function Verify() {
     setStatus('verifying');
 
     try {
-      // Simulate verification process
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Log verification attempt
       await fetch(`${API_URL}/api/verify/log`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -106,9 +103,23 @@ function Verify() {
     setCaptchaVerified(verified);
   };
 
+  const getPlaceholderText = () => {
+    return `Paste your ${selectedModule} export data here...
+
+Example format:
+{
+  "server_seed": "...",
+  "client_seed": "...",
+  "nonce": 1,
+  "result": "..."
+}`;
+  };
+
   return (
-    <div className=\"verify-container\">
-      <h1 style={{textAlign: 'center', marginBottom: '10px', letterSpacing: '-1px', fontSize: '42px'}}>VERIFICATION TOOL</h1>
+    <div className="verify-container">
+      <h1 style={{textAlign: 'center', marginBottom: '10px', letterSpacing: '-1px', fontSize: '42px'}}>
+        VERIFICATION TOOL
+      </h1>
       <p style={{textAlign: 'center', color: 'var(--text-muted)', marginBottom: '30px', fontSize: '14px'}}>
         Provably Fair Cryptographic Audit
       </p>
@@ -117,7 +128,7 @@ function Verify() {
         <Captcha onVerify={handleCaptchaVerify} />
       )}
 
-      <div className=\"verify-module-selector\">
+      <div className="verify-module-selector">
         {modules.map((module) => (
           <button
             key={module.name}
@@ -131,15 +142,17 @@ function Verify() {
       </div>
 
       <div style={{marginBottom: '30px'}}>
-        <label className=\"form-label\" style={{marginBottom: '12px', display: 'block'}}>SELECT PROVIDER</label>
+        <label className="form-label" style={{marginBottom: '12px', display: 'block'}}>
+          SELECT PROVIDER
+        </label>
         <select
-          className=\"form-input\"
+          className="form-input"
           value={selectedProvider}
           onChange={(e) => setSelectedProvider(e.target.value)}
           style={{width: '100%', cursor: 'pointer'}}
         >
           {providers.length === 0 && (
-            <option value=\"\">No providers available</option>
+            <option value="">No providers available</option>
           )}
           {providers.map((provider) => (
             <option key={provider.slug} value={provider.slug}>
@@ -154,12 +167,12 @@ function Verify() {
         )}
       </div>
 
-      <div className=\"verify-panel\">
+      <div className="verify-panel">
         {status === 'awaiting' && (
           <>
-            <div className=\"status-display\">
-              <div className=\"status-icon\">[_]</div>
-              <div className=\"status-text\">AWAITING INPUT DATA</div>
+            <div className="status-display">
+              <div className="status-icon">[_]</div>
+              <div className="status-text">AWAITING INPUT DATA</div>
               <p style={{color: 'var(--text-muted)', fontSize: '14px', marginTop: '10px'}}>
                 Selected: {selectedModule} • {providers.find(p => p.slug === selectedProvider)?.name || 'No provider'}
               </p>
@@ -167,20 +180,20 @@ function Verify() {
                 Paste your export data below
               </p>
             </div>
-            <div className=\"form-group\" style={{marginTop: '30px'}}>
-              <label className=\"form-label\">EXPORT DATA</label>
+            <div className="form-group" style={{marginTop: '30px'}}>
+              <label className="form-label">EXPORT DATA</label>
               <textarea
-                className=\"textarea-input\"
-                placeholder={`Paste your ${selectedModule} export data here...\\n\\nExample format:\\n{\\n  \"server_seed\": \"...\",\\n  \"client_seed\": \"...\",\\n  \"nonce\": 1,\\n  \"result\": \"...\"\\n}`}
+                className="textarea-input"
+                placeholder={getPlaceholderText()}
                 value={inputData}
                 onChange={(e) => setInputData(e.target.value)}
-                data-testid=\"verify-input\"
+                data-testid="verify-input"
               />
             </div>
             <button 
-              className=\"btn btn-primary btn-full\" 
+              className="btn btn-primary btn-full" 
               onClick={handleVerify}
-              data-testid=\"verify-submit\"
+              data-testid="verify-submit"
               disabled={!selectedProvider}
             >
               START VERIFICATION
@@ -189,11 +202,11 @@ function Verify() {
         )}
 
         {status === 'verifying' && (
-          <div className=\"status-display\">
-            <div className=\"status-icon\">
-              <span className=\"loading\">⚙️</span>
+          <div className="status-display">
+            <div className="status-icon">
+              <span className="loading">⚙️</span>
             </div>
-            <div className=\"status-text\">VERIFYING...</div>
+            <div className="status-text">VERIFYING...</div>
             <p style={{color: 'var(--text-muted)', fontSize: '14px', marginTop: '10px'}}>
               Module: {selectedModule} • Provider: {providers.find(p => p.slug === selectedProvider)?.name}
             </p>
@@ -204,40 +217,83 @@ function Verify() {
         )}
 
         {status === 'success' && (
-          <div className=\"status-display\">
-            <div className=\"status-icon\" style={{fontSize: '64px'}}>✓</div>
-            <div className=\"status-text\" style={{color: 'var(--accent-success)'}}>VERIFICATION COMPLETE</div>
-            <div style={{marginTop: '30px', textAlign: 'left', backgroundColor: 'var(--bg-tertiary)', padding: '20px', border: '1px solid var(--border-color)', borderRadius: '12px'}}>
-              <p style={{color: 'var(--text-secondary)', marginBottom: '10px', fontWeight: '600'}}>RESULTS:</p>
+          <div className="status-display">
+            <div className="status-icon" style={{fontSize: '64px'}}>✓</div>
+            <div className="status-text" style={{color: 'var(--accent-success)'}}>
+              VERIFICATION COMPLETE
+            </div>
+            <div style={{
+              marginTop: '30px',
+              textAlign: 'left',
+              backgroundColor: 'var(--bg-tertiary)',
+              padding: '20px',
+              border: '1px solid var(--border-color)',
+              borderRadius: '12px'
+            }}>
+              <p style={{color: 'var(--text-secondary)', marginBottom: '10px', fontWeight: '600'}}>
+                RESULTS:
+              </p>
               <p style={{color: 'var(--text-secondary)'}}>Module: {result?.module}</p>
               <p style={{color: 'var(--text-secondary)'}}>Provider: {result?.provider}</p>
               <p style={{color: 'var(--text-secondary)'}}>Status: SUCCESS</p>
-              <p style={{color: 'var(--accent-warning)', marginTop: '20px', fontSize: '14px'}}>⚠️ {result?.note}</p>
+              <p style={{color: 'var(--accent-warning)', marginTop: '20px', fontSize: '14px'}}>
+                ⚠️ {result?.note}
+              </p>
             </div>
-            <button className=\"btn btn-secondary btn-full\" onClick={handleReset} style={{marginTop: '20px'}}>
+            <button 
+              className="btn btn-secondary btn-full" 
+              onClick={handleReset} 
+              style={{marginTop: '20px'}}
+            >
               NEW VERIFICATION
             </button>
           </div>
         )}
 
         {status === 'fail' && (
-          <div className=\"status-display\">
-            <div className=\"status-icon\" style={{color: 'var(--accent-danger)', fontSize: '64px'}}>✗</div>
-            <div className=\"status-text\" style={{color: 'var(--accent-danger)'}}>VERIFICATION FAILED</div>
-            <div style={{marginTop: '30px', textAlign: 'left', backgroundColor: 'var(--bg-tertiary)', padding: '20px', border: '1px solid var(--accent-danger)', borderRadius: '12px'}}>
-              <p style={{color: 'var(--accent-danger)', marginBottom: '10px', fontWeight: '600'}}>ERROR:</p>
+          <div className="status-display">
+            <div className="status-icon" style={{color: 'var(--accent-danger)', fontSize: '64px'}}>
+              ✗
+            </div>
+            <div className="status-text" style={{color: 'var(--accent-danger)'}}>
+              VERIFICATION FAILED
+            </div>
+            <div style={{
+              marginTop: '30px',
+              textAlign: 'left',
+              backgroundColor: 'var(--bg-tertiary)',
+              padding: '20px',
+              border: '1px solid var(--accent-danger)',
+              borderRadius: '12px'
+            }}>
+              <p style={{color: 'var(--accent-danger)', marginBottom: '10px', fontWeight: '600'}}>
+                ERROR:
+              </p>
               <p style={{color: 'var(--text-secondary)'}}>{result?.error}</p>
               <p style={{color: 'var(--text-secondary)'}}>{result?.message}</p>
             </div>
-            <button className=\"btn btn-secondary btn-full\" onClick={handleReset} style={{marginTop: '20px'}}>
+            <button 
+              className="btn btn-secondary btn-full" 
+              onClick={handleReset} 
+              style={{marginTop: '20px'}}
+            >
               RETRY
             </button>
           </div>
         )}
       </div>
 
-      <div style={{marginTop: '40px', padding: '24px', background: 'var(--bg-glass)', backdropFilter: 'blur(20px)', border: '1px solid var(--border-color)', borderRadius: '16px'}}>
-        <h3 style={{marginBottom: '15px', color: 'var(--text-primary)', fontSize: '18px'}}>SECURITY NOTICE</h3>
+      <div style={{
+        marginTop: '40px',
+        padding: '24px',
+        background: 'var(--bg-glass)',
+        backdropFilter: 'blur(20px)',
+        border: '1px solid var(--border-color)',
+        borderRadius: '16px'
+      }}>
+        <h3 style={{marginBottom: '15px', color: 'var(--text-primary)', fontSize: '18px'}}>
+          SECURITY NOTICE
+        </h3>
         <p style={{color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.8'}}>
           • All cryptographic computations run in your browser using Web Crypto API<br />
           • No data is transmitted to external servers during verification<br />
