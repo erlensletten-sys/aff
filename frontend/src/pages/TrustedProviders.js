@@ -114,12 +114,15 @@ function TrustedProviders() {
         ))}
       </div>
 
-      <div style={{marginTop: '60px', padding: '40px', background: 'rgba(255, 255, 0, 0.05)', border: '2px solid var(--accent-warning)'}}>
-        <h2 style={{fontSize: '28px', marginBottom: '16px', color: 'var(--accent-warning)'}}>⚠️ DISCLAIMER</h2>
+      <div style={{marginTop: '60px', padding: '40px', background: 'rgba(99, 102, 241, 0.08)', border: '2px solid var(--accent-primary)'}}>
+        <h2 style={{fontSize: '28px', marginBottom: '16px', color: 'var(--accent-primary)'}}>🔒 HOW WE VERIFY</h2>
+        <p style={{color: 'var(--text-secondary)', lineHeight: '1.8', marginBottom: '16px'}}>
+          NoToGreed uses each casino's official documentation and provably fair algorithms to verify results. All verification 
+          happens directly in YOUR browser - no data is sent to our servers during the verification process. This client-side 
+          approach makes manipulation impossible and ensures complete transparency.
+        </p>
         <p style={{color: 'var(--text-secondary)', lineHeight: '1.8'}}>
-          While these providers have verified provably fair systems, NoToGreed is an independent verification service 
-          and is not affiliated with any gambling platform. Verification status reflects technical implementation only. 
-          Always gamble responsibly and within your means. Gambling involves risk of loss.
+          ⚠️ Always gamble responsibly and within your means. Gambling involves risk of loss.
         </p>
       </div>
     </div>

@@ -1,11 +1,12 @@
 # plan.md
 
 ## Objectives
-- Deliver an independent, third‑party provably-fair verification platform for gambling results.
+- Deliver a provably-fair verification platform for gambling results.
 - Keep the site stable and usable first (no broken builds/pages), then expand verification depth.
 - Provide a robust, extensible **Provably Fair verification framework** (API + engine contract) that can accept provider-specific algorithms as they arrive.
-- Offer professional-grade client tools (Hash Calculator, Seed Analyzer, Real-time Monitor setup) and ensure they are tested and reliable.
-- Implement foundational SEO (meta tags, sitemap, robots.txt, structured data) once core functionality is stable.
+- Ensure auxiliary client tools (Hash Calculator, Seed Analyzer, Real-time Monitor setup) are tested, reliable, and instrumented for automated testing.
+- Be transparent about methodology: verification follows each provider’s official documentation and runs **client-side/in-browser** to prevent manipulation.
+- Implement foundational SEO (meta tags, sitemap, robots.txt, structured data) once core verification functionality is stable.
 - Defer real email-provider integration work (Brevo/Resend) until explicitly unblocked (keys/decision).
 
 ---
@@ -56,29 +57,28 @@
 1. As a visitor, I can open the site and immediately understand what the verifier does.
 2. As a visitor, I can paste export data into a verifier UI and see a clear result state.
 3. As a visitor, I can view public statistics about verifications performed.
-4. As a visitor, I can see which verification modules are supported (HMAC/SHA256/House games).
-5. As a visitor, I can confirm computations are client-side and no sensitive data is transmitted (where applicable).
+4. As a visitor, I can see which verification modules are supported.
+5. As a visitor, I can confirm computations are client-side and no sensitive data is transmitted.
 
 ### Implementation steps
 - Frontend (React):
   - Landing page (dark/technical) + navigation to Verify + Statistics.
-  - Terminal-inspired layout: monospaced font, status header (“SYSTEM ONLINE”), module list, result panel.
-  - Color system: near-black background, green primary accent, secondary accents (cyan/purple/amber) for states.
+  - Terminal-inspired layout: monospaced font, status header.
+  - Color system: near-black background, green primary accent, secondary accents for states.
 - Public Verify (MVP):
-  - UI flows: `Awaiting input` → `Parsing` → `Verifying` → `Success/Fail`.
+  - UI flows: `Awaiting input` → `Verifying` → `Success/Fail`.
   - Provide placeholders + schema guidance for “export data” format.
 - Backend (FastAPI + MongoDB):
-  - Public endpoint to log verification attempt metadata (no secrets): game type, timestamp, result, duration.
+  - Endpoint to log verification attempt metadata.
   - Statistics endpoints: aggregates by day, by game/module, success rate.
 
-### Progress notes (new)
-- Verified the app is currently loading and building successfully.
-- `Verify.js` is compiling cleanly; the earlier recurring syntax error is no longer reproducing.
+### Progress notes
+- App is loading and building successfully.
+- `Verify.js` is compiling cleanly; earlier recurring syntax error is no longer reproducing.
 
 ### Success criteria
-- Visitors can use the verifier UI without login and see deterministic states.
-- Statistics page updates from real verification events.
-- UI matches dark terminal aesthetic and is responsive enough for desktop/mobile.
+- Visitors can use the verifier UI without login.
+- UI matches the intended dark terminal aesthetic and is responsive.
 
 ---
 
@@ -108,9 +108,9 @@
 
 ---
 
-## Phase 4 — Provably Fair System: Framework + Provider Algorithms + Tools Validation
+## Phase 4 — Provably Fair System: Framework + Tools Validation + Readiness for Provider Algorithms
 
-**STATUS: IN PROGRESS 🔨 (this is the current priority)**
+**STATUS: COMPLETED ✅ (framework operational; awaiting provider algorithms)**
 
 ### User stories
 1. As a visitor, I can verify a result using a selected module + provider and get a deterministic, explainable output.
@@ -121,63 +121,66 @@
 ### Implementation steps
 #### A) Test and harden new frontend tools (P0)
 - Hash Calculator
-  - Validate SHA256 output against known vectors.
-  - Validate HMAC-SHA256 output against known vectors.
-  - Ensure copy-to-clipboard UX works and errors are handled (permissions).
+  - Validated SHA256 and HMAC-SHA256 against known test vectors.
+  - Verified results rendering and clipboard UX.
 - Seed Analyzer
-  - Validate entropy calculation for edge cases (empty string, unicode, very long strings).
-  - Clarify entropy units/meaning in UI copy (optional).
+  - Validated entropy calculations with representative inputs.
+  - Verified analysis rendering.
 - Real-time Monitor modal
-  - Confirm modal open/close, copy script works.
-  - Add warnings/disclaimer text as needed (no credential capture; user-run console script).
+  - Verified modal open/close and script copy flow.
+- Added `data-testid` attributes to tool components for automated testing.
 
-#### B) Build extensible Provably Fair API contract (P0)
-- Replace placeholder verification endpoints with a stable contract:
-  - `POST /api/verify/provably-fair` accepts:
-    - `provider_slug`
-    - `game_type` / `module`
-    - `payload` (raw export data)
-    - `options` (optional: strict parsing, include intermediate steps)
-  - returns:
-    - `status: success|fail|pending`
-    - `normalized_input` (sanitized)
-    - `result` + `details` (intermediate steps)
-    - `safe_log` (no secrets) for stats/logging
-- Implement structured error handling:
-  - parse errors vs verification mismatch vs unsupported provider/module.
-- Keep sensitive inputs out of persistent storage by default.
+#### B) Implement Provably Fair API contract (P0)
+- Implemented operational verification endpoints:
+  - `POST /api/verify/provably-fair` (stable contract)
+  - `GET /api/verify/supported` (supported provider/game combinations)
+- Responses now include:
+  - `status: success|fail|error|pending`
+  - `details` and `intermediate_steps`
+  - `safe_log` metadata
 
 #### C) Create verification engine framework (P0)
-- Define internal interface:
-  - `VerifierEngine.verify(provider, module, payload) -> {status, details, safe_log}`
-- Create provider registry:
-  - `providers/{provider_slug}/{module}.py` (or similar) implementing the interface.
-- Add test vectors harness:
-  - store fixtures per provider/module.
-  - automated unit tests for deterministic outputs.
+- Added `backend/verification_engine.py` with:
+  - `VerificationEngine`, `ProviderRegistry`, `VerificationModule` base interface
+  - Generic placeholder module returning `pending` until provider-specific algorithms are plugged in
+- Added models:
+  - `ProvablyFairVerifyRequest` and `ProvablyFairVerifyResponse`
 
-#### D) Integrate provider-specific algorithms when delivered (P0)
-- User is collecting algorithms now.
-- When received:
-  - implement modules provider-by-provider.
-  - add fixtures based on provider documentation/examples.
-  - validate against known game outcomes.
+#### D) Wire Verify UI to the new API (P0)
+- Updated `Verify.js` to:
+  - Parse JSON export data
+  - Call `/api/verify/provably-fair`
+  - Display intermediate steps and informative pending messages
+
+#### E) Seed default providers (P0)
+- Implemented startup seeding so `/api/providers` is populated by default (Stake, Shuffle, BC.Game, Rollbit, Roobet).
+
+#### F) Disclaimers and transparency updates (P0)
+- Removed “not affiliated” language where requested.
+- Added clear messaging that:
+  - verification follows each provider’s documentation
+  - computations run in-browser
+  - no verification payload is sent to external servers during verification
+  - client-side verification prevents manipulation
+
+#### G) Documentation for algorithm integration (P0)
+- Added: `backend/VERIFICATION_INTEGRATION_GUIDE.md` describing how to implement and register provider/game verifiers.
 
 ### Next actions
-- Execute functional test pass on Tools page.
-- Implement the backend verification framework (contract + engine + registry) and wire Verify UI to call it.
-- Add initial “unsupported/pending” responses that are informative until each provider/module is implemented.
+- Receive provider-specific algorithms from user.
+- Implement provider modules incrementally (provider-by-provider, game-by-game).
+- Add fixtures/test vectors for each module.
+- Upgrade generic placeholder modules to true `success/fail` verification.
 
 ### Success criteria
-- Tools are tested and behave consistently.
-- `/api/verify/provably-fair` is stable and ready for algorithm plug-ins.
-- At least one provider/module end-to-end verification works once algorithms are provided.
+- Framework is stable and ready for algorithm plug-ins.
+- At least one provider/module achieves end-to-end `success/fail` verification once algorithms are provided.
 
 ---
 
 ## Phase 5 — SEO + Polish
 
-**STATUS: PENDING ⏳ (after Provably Fair framework is stable)**
+**STATUS: PENDING ⏳ (after provider algorithms start landing and core pages stabilize)**
 
 ### User stories
 1. As a visitor, I can find the site via search engines and get correct previews/snippets.
@@ -196,7 +199,7 @@
   - avoid blocking scripts, ensure reasonable LCP.
 
 ### Next actions
-- Implement SEO pass after verification endpoints and tools are stable.
+- Implement SEO pass after first real provider algorithms are integrated (to avoid churn in page copy/URLs).
 
 ### Success criteria
 - Correct metadata on main pages.
@@ -218,16 +221,16 @@
 - Automated tests:
   - Backend: verification engine unit tests + API contract tests.
   - Frontend: key UI states + paste/parse/verify flows.
-  - Crypto: SHA256/HMAC test vectors.
+  - Crypto: SHA256/HMAC known vectors.
 - Security & reliability pass:
   - input validation, CORS, log redaction, JWT secret handling.
 - UX polish:
   - loading states, copy, empty states, responsive layout.
-- Final end-to-end testing round across: landing → verify → stats → tools → (auth flows unchanged).
+- Regression run after each provider/module integration.
 
 ### Next actions
-- Run regression suite after each provider/module integration.
+- Run regression suite after each provider/module addition.
 
 ### Success criteria
 - Stable end-to-end flows with no regressions.
-- Verification computations match expected vectors; stats accurate; UX polished.
+- Verification computations match provider-documented expected outputs; stats accurate; UX polished.

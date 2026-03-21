@@ -49,6 +49,7 @@ function Tools() {
             onClick={() => setShowMonitorModal(true)} 
             className="btn btn-primary" 
             style={{width: '100%'}}
+            data-testid="realtime-monitor-btn"
           >
             SETUP MONITOR
           </button>

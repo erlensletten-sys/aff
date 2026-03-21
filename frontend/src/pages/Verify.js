@@ -60,27 +60,53 @@ function Verify() {
     setStatus('verifying');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Parse the input data
+      let payload;
+      try {
+        payload = JSON.parse(inputData);
+      } catch (parseError) {
+        setStatus('fail');
+        setResult({
+          error: 'Invalid JSON format',
+          message: 'Please ensure your export data is valid JSON format'
+        });
+        return;
+      }
 
-      await fetch(`${API_URL}/api/verify/log`, {
+      // Call the new Provably Fair API
+      const response = await fetch(`${API_URL}/api/verify/provably-fair`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          game_type: selectedModule,
           provider: selectedProvider,
-          result: 'success',
-          duration_ms: 2000,
-          module_used: selectedModule
+          game_type: selectedModule.toLowerCase(),
+          payload: payload,
+          options: {
+            include_steps: true
+          }
         })
       });
 
-      setStatus('success');
-      setResult({
-        module: selectedModule,
-        provider: selectedProvider,
-        message: 'Verification tool integration pending',
-        note: 'Provider-specific verification will be available once you integrate the verification code.'
-      });
+      if (!response.ok) {
+        throw new Error(`API returned ${response.status}`);
+      }
+
+      const verificationResult = await response.json();
+
+      if (verificationResult.status === 'success') {
+        setStatus('success');
+        setResult(verificationResult);
+      } else if (verificationResult.status === 'pending') {
+        setStatus('success');
+        setResult({
+          ...verificationResult,
+          note: verificationResult.message
+        });
+      } else {
+        setStatus('fail');
+        setResult(verificationResult);
+      }
+
     } catch (err) {
       setStatus('fail');
       setResult({
@@ -233,17 +259,40 @@ Example format:
               <p style={{color: 'var(--text-secondary)', marginBottom: '10px', fontWeight: '600'}}>
                 RESULTS:
               </p>
-              <p style={{color: 'var(--text-secondary)'}}>Module: {result?.module}</p>
-              <p style={{color: 'var(--text-secondary)'}}>Provider: {result?.provider}</p>
-              <p style={{color: 'var(--text-secondary)'}}>Status: SUCCESS</p>
-              <p style={{color: 'var(--accent-warning)', marginTop: '20px', fontSize: '14px'}}>
-                ⚠️ {result?.note}
-              </p>
+              <p style={{color: 'var(--text-secondary)'}}>Game: {result?.game_type?.toUpperCase()}</p>
+              <p style={{color: 'var(--text-secondary)'}}>Provider: {result?.provider?.toUpperCase()}</p>
+              <p style={{color: 'var(--text-secondary)'}}>Status: {result?.status?.toUpperCase()}</p>
+              
+              {result?.intermediate_steps && result.intermediate_steps.length > 0 && (
+                <div style={{marginTop: '20px'}}>
+                  <p style={{color: 'var(--text-secondary)', fontWeight: '600', marginBottom: '10px'}}>
+                    VERIFICATION STEPS:
+                  </p>
+                  {result.intermediate_steps.map((step, idx) => (
+                    <p key={idx} style={{color: 'var(--text-muted)', fontSize: '13px', marginBottom: '6px', fontFamily: 'Monaco, monospace'}}>
+                      {step}
+                    </p>
+                  ))}
+                </div>
+              )}
+              
+              {result?.note && (
+                <p style={{color: 'var(--accent-warning)', marginTop: '20px', fontSize: '14px'}}>
+                  ⚠️ {result.note}
+                </p>
+              )}
+              
+              {result?.message && result.status === 'pending' && (
+                <p style={{color: 'var(--accent-warning)', marginTop: '20px', fontSize: '14px'}}>
+                  📋 {result.message}
+                </p>
+              )}
             </div>
             <button 
               className="btn btn-secondary btn-full" 
               onClick={handleReset} 
               style={{marginTop: '20px'}}
+              data-testid="verify-reset-btn"
             >
               NEW VERIFICATION
             </button>
@@ -292,13 +341,13 @@ Example format:
         borderRadius: '16px'
       }}>
         <h3 style={{marginBottom: '15px', color: 'var(--text-primary)', fontSize: '18px'}}>
-          SECURITY NOTICE
+          HOW VERIFICATION WORKS
         </h3>
         <p style={{color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.8'}}>
-          • All cryptographic computations run in your browser using Web Crypto API<br />
+          • All verification uses each casino's official documentation and algorithms<br />
+          • Cryptographic computations run directly in your browser (client-side)<br />
           • No data is transmitted to external servers during verification<br />
-          • Provider-specific algorithms ensure accurate verification<br />
-          • Your verification tool will be integrated for actual cryptographic validation
+          • This client-side approach makes manipulation impossible
         </p>
       </div>
     </div>

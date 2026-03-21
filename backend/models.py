@@ -109,3 +109,22 @@ class ProviderUpdateRequest(BaseModel):
     supported_games: Optional[List[str]] = None
     verification_code: Optional[str] = None
     is_active: Optional[bool] = None
+
+
+class ProvablyFairVerifyRequest(BaseModel):
+    """Provably fair verification request"""
+    provider: str = Field(min_length=2, max_length=100)
+    game_type: str = Field(min_length=2, max_length=50)
+    payload: dict  # Raw export data from casino
+    options: Optional[dict] = None  # Additional options (strict_mode, include_steps, etc.)
+
+class ProvablyFairVerifyResponse(BaseModel):
+    """Provably fair verification response"""
+    status: str  # 'success', 'fail', 'error', 'pending'
+    game_type: str
+    provider: str
+    message: str
+    details: dict = {}
+    intermediate_steps: List[str] = []
+    safe_log: dict = {}
+    timestamp: str

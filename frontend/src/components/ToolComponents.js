@@ -43,6 +43,7 @@ function HashCalculator() {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Enter text to hash..."
             style={{minHeight: '100px', fontFamily: 'Monaco, monospace'}}
+            data-testid="hash-calc-input"
           />
         </div>
 
@@ -54,10 +55,11 @@ function HashCalculator() {
             value={secret}
             onChange={(e) => setSecret(e.target.value)}
             placeholder="Optional: Enter secret key for HMAC-SHA256"
+            data-testid="hash-calc-secret"
           />
         </div>
 
-        <button onClick={calculateHashes} className="btn btn-primary btn-full">
+        <button onClick={calculateHashes} className="btn btn-primary btn-full" data-testid="hash-calc-submit">
           CALCULATE HASHES
         </button>
 
@@ -66,11 +68,11 @@ function HashCalculator() {
             <div style={{marginBottom: '20px', padding: '20px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '12px'}}>
               <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px'}}>
                 <h3 style={{fontSize: '16px', color: 'var(--text-primary)'}}>SHA256 Hash</h3>
-                <button onClick={() => copyToClipboard(sha256Result)} className="btn btn-secondary" style={{padding: '6px 16px', fontSize: '12px'}}>
+                <button onClick={() => copyToClipboard(sha256Result)} className="btn btn-secondary" style={{padding: '6px 16px', fontSize: '12px'}} data-testid="hash-calc-copy-sha256">
                   COPY
                 </button>
               </div>
-              <code style={{color: 'var(--accent-primary)', wordBreak: 'break-all', fontFamily: 'Monaco, monospace', fontSize: '13px'}}>
+              <code style={{color: 'var(--accent-primary)', wordBreak: 'break-all', fontFamily: 'Monaco, monospace', fontSize: '13px'}} data-testid="hash-calc-sha256-result">
                 {sha256Result}
               </code>
             </div>
@@ -79,12 +81,12 @@ function HashCalculator() {
               <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px'}}>
                 <h3 style={{fontSize: '16px', color: 'var(--text-primary)'}}>HMAC-SHA256</h3>
                 {hmacResult !== 'Secret key required for HMAC' && (
-                  <button onClick={() => copyToClipboard(hmacResult)} className="btn btn-secondary" style={{padding: '6px 16px', fontSize: '12px'}}>
+                  <button onClick={() => copyToClipboard(hmacResult)} className="btn btn-secondary" style={{padding: '6px 16px', fontSize: '12px'}} data-testid="hash-calc-copy-hmac">
                     COPY
                   </button>
                 )}
               </div>
-              <code style={{color: hmacResult === 'Secret key required for HMAC' ? 'var(--accent-warning)' : 'var(--accent-primary)', wordBreak: 'break-all', fontFamily: 'Monaco, monospace', fontSize: '13px'}}>
+              <code style={{color: hmacResult === 'Secret key required for HMAC' ? 'var(--accent-warning)' : 'var(--accent-primary)', wordBreak: 'break-all', fontFamily: 'Monaco, monospace', fontSize: '13px'}} data-testid="hash-calc-hmac-result">
                 {hmacResult}
               </code>
             </div>
@@ -190,6 +192,7 @@ function SeedAnalyzer() {
             onChange={(e) => setServerSeed(e.target.value)}
             placeholder="Enter server seed to analyze..."
             style={{fontFamily: 'Monaco, monospace'}}
+            data-testid="seed-analyzer-server"
           />
         </div>
 
@@ -202,10 +205,11 @@ function SeedAnalyzer() {
             onChange={(e) => setClientSeed(e.target.value)}
             placeholder="Enter client seed to analyze..."
             style={{fontFamily: 'Monaco, monospace'}}
+            data-testid="seed-analyzer-client"
           />
         </div>
 
-        <button onClick={analyzeSeed} className="btn btn-primary btn-full">
+        <button onClick={analyzeSeed} className="btn btn-primary btn-full" data-testid="seed-analyzer-submit">
           ANALYZE SEEDS
         </button>
 
@@ -337,7 +341,7 @@ function MonitorModal({ isOpen, onClose }) {
             borderRadius: '50%',
             cursor: 'pointer',
             fontSize: '20px'
-          }}>×</button>
+          }} data-testid="monitor-modal-close">×</button>
         </div>
 
         <p style={{color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.7'}}>
@@ -382,6 +386,7 @@ function MonitorModal({ isOpen, onClose }) {
                       }}
                       className="btn btn-secondary"
                       style={{padding: '6px 16px', fontSize: '12px'}}
+                      data-testid={`monitor-copy-${site.name.toLowerCase().replace('.', '')}`}
                     >
                       COPY SCRIPT
                     </button>

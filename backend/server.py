@@ -11,10 +11,12 @@ from models import (
     User, EmailVerificationToken, VerificationLog, Promotion, Provider,
     UserRegisterRequest, UserLoginRequest, TokenResponse, VerifyEmailRequest,
     PromotionCreateRequest, PromotionUpdateRequest,
-    ProviderCreateRequest, ProviderUpdateRequest
+    ProviderCreateRequest, ProviderUpdateRequest,
+    ProvablyFairVerifyRequest, ProvablyFairVerifyResponse
 )
 from auth import hash_password, verify_password, create_access_token, decode_access_token
 from email_service import email_service
+from verification_engine import verification_engine
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -42,11 +44,70 @@ db = None
 
 @app.on_event("startup")
 async def startup_db_client():
-    """Initialize MongoDB connection"""
+    """Initialize MongoDB connection and seed default data"""
     global mongo_client, db
     mongo_client = AsyncIOMotorClient(settings.MONGO_URL)
     db = mongo_client[settings.DATABASE_NAME]
     logger.info(f"Connected to MongoDB: {settings.DATABASE_NAME}")
+    
+    # Seed default providers if none exist
+    provider_count = await db.providers.count_documents({})
+    if provider_count == 0:
+        logger.info("Seeding default providers...")
+        default_providers = [
+            {
+                "name": "Stake.com",
+                "slug": "stake",
+                "logo_url": None,
+                "supported_games": ["limbo", "dice", "blackjack", "keno", "mines", "plinko"],
+                "verification_code": None,
+                "is_active": True,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "name": "Shuffle.com",
+                "slug": "shuffle",
+                "logo_url": None,
+                "supported_games": ["limbo", "dice", "blackjack", "keno", "mines", "plinko"],
+                "verification_code": None,
+                "is_active": True,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "name": "BC.Game",
+                "slug": "bcgame",
+                "logo_url": None,
+                "supported_games": ["limbo", "dice", "blackjack", "keno", "mines", "plinko"],
+                "verification_code": None,
+                "is_active": True,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "name": "Rollbit",
+                "slug": "rollbit",
+                "logo_url": None,
+                "supported_games": ["limbo", "dice", "blackjack", "keno", "mines", "plinko"],
+                "verification_code": None,
+                "is_active": True,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "name": "Roobet",
+                "slug": "roobet",
+                "logo_url": None,
+                "supported_games": ["limbo", "dice", "blackjack", "keno", "mines", "plinko"],
+                "verification_code": None,
+                "is_active": True,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            }
+        ]
+        await db.providers.insert_many(default_providers)
+        logger.info(f"Seeded {len(default_providers)} default providers")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
@@ -348,26 +409,67 @@ async def get_statistics():
         logger.error(f"Statistics error: {e}")
         raise HTTPException(status_code=500, detail="Failed to retrieve statistics")
 
-# Verification tool endpoints (placeholder for user's tool)
+# Verification tool endpoints
+@app.post("/api/verify/provably-fair", response_model=ProvablyFairVerifyResponse)
+async def verify_provably_fair(request: ProvablyFairVerifyRequest):
+    """
+    Provably fair verification endpoint
+    
+    Uses provider-specific algorithms to verify game results.
+    All verification logic follows each casino's official documentation.
+    """
+    try:
+        # Execute verification using the engine
+        result = verification_engine.verify(
+            provider=request.provider,
+            game_type=request.game_type,
+            payload=request.payload,
+            options=request.options
+        )
+        
+        # Log the verification attempt (safe metadata only)
+        await db.verification_logs.insert_one({
+            "game_type": request.game_type,
+            "provider": request.provider,
+            "result": result.status,
+            "timestamp": datetime.now(timezone.utc),
+            "duration_ms": 0,
+            "module_used": f"{request.provider}_{request.game_type}"
+        })
+        
+        return result.to_dict()
+        
+    except Exception as e:
+        logger.error(f"Provably fair verification error: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Verification failed: {str(e)}"
+        )
+
+@app.get("/api/verify/supported")
+async def get_supported_verifications():
+    """Get list of all supported provider/game combinations"""
+    try:
+        supported = verification_engine.get_supported_combinations()
+        return {
+            "supported": supported,
+            "total_providers": len(supported),
+            "total_combinations": sum(len(games) for games in supported.values())
+        }
+    except Exception as e:
+        logger.error(f"Get supported combinations error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/api/verify/hmac-sha256")
 async def verify_hmac_sha256(data: dict):
-    """HMAC-SHA256 verification (placeholder)"""
-    # This will be integrated with user's tool later
-    return {
-        "status": "pending",
-        "message": "Verification tool will be integrated here",
-        "module": "HMAC-SHA256"
-    }
-
-@app.post("/api/verify/provably-fair")
-async def verify_provably_fair(data: dict):
-    """Provably fair verification (placeholder)"""
-    # This will be integrated with user's tool later
-    return {
-        "status": "pending",
-        "message": "Verification tool will be integrated here",
-        "module": "Provably Fair"
-    }
+    """HMAC-SHA256 verification (legacy endpoint, redirects to main endpoint)"""
+    # Redirect to main provably-fair endpoint
+    request = ProvablyFairVerifyRequest(
+        provider=data.get("provider", "generic"),
+        game_type=data.get("game_type", "generic"),
+        payload=data
+    )
+    return await verify_provably_fair(request)
 
 # Promotions Endpoints
 @app.get("/api/promotions")

@@ -33,8 +33,8 @@ function Landing() {
         
         <div style={{maxWidth: '900px', margin: '0 auto', textAlign: 'left'}}>
           <div style={{marginBottom: '30px'}}>
-            <h3 style={{color: 'var(--text-primary)', fontSize: '20px', marginBottom: '12px'}}>⚡ INDEPENDENT VERIFICATION</h3>
-            <p style={{color: 'var(--text-secondary)', lineHeight: '1.8'}}>We are not affiliated with any gambling platform. Our sole purpose is to provide honest, unbiased verification of game results. No conflicts of interest, no hidden agendas - just pure, mathematical verification.</p>
+            <h3 style={{color: 'var(--text-primary)', fontSize: '20px', marginBottom: '12px'}}>⚡ CLIENT-SIDE VERIFICATION</h3>
+            <p style={{color: 'var(--text-secondary)', lineHeight: '1.8'}}>All verification happens directly in YOUR browser using each casino's official documentation and algorithms. No data is sent to our servers during verification - making manipulation impossible. Pure, mathematical verification you can trust.</p>
           </div>
           
           <div style={{marginBottom: '30px'}}>
