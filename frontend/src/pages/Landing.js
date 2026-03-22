@@ -19,7 +19,8 @@ const casinoDetails = [
     rakeback: 10,
     bonus: 'Up to $3,000',
     description: "World's largest crypto casino. Known for Stake Originals, instant payouts, and industry-leading sports betting odds.",
-    highlights: ['#1 Crypto Casino', 'Instant Withdrawals', 'Stake Originals', 'Sports Betting']
+    highlights: ['#1 Crypto Casino', 'Instant Withdrawals', 'Stake Originals', 'Sports Betting'],
+    ctaText: 'Play Stake + Get 10% Back'
   },
   {
     slug: 'shuffle',
@@ -28,7 +29,8 @@ const casinoDetails = [
     rakeback: 15,
     bonus: 'Up to $1,500 + 100 FS',
     description: 'Provably fair crypto casino with transparent RTP. Best known for high-stakes games and VIP rewards.',
-    highlights: ['Provably Fair', 'High RTP', 'VIP Rewards', 'Fast Payouts']
+    highlights: ['Provably Fair', 'High RTP', 'VIP Rewards', 'Fast Payouts'],
+    ctaText: 'Unlock 15% Rakeback'
   },
   {
     slug: 'rainbet',
@@ -37,7 +39,8 @@ const casinoDetails = [
     rakeback: 12,
     bonus: 'Up to $1,000 + Daily Rakeback',
     description: 'Community-driven casino with daily rakeback and frequent promotions. Strong on slots and live casino.',
-    highlights: ['Daily Rakeback', 'Active Community', 'Slots Focus', 'Live Casino']
+    highlights: ['Daily Rakeback', 'Active Community', 'Slots Focus', 'Live Casino'],
+    ctaText: 'Join & Stack Rewards'
   },
   {
     slug: 'fortunejack',
@@ -46,7 +49,8 @@ const casinoDetails = [
     rakeback: 8,
     bonus: 'Up to 6 BTC + 350 FS',
     description: 'One of the oldest crypto casinos (est. 2014). Massive game library with 3,000+ titles and lottery games.',
-    highlights: ['Est. 2014', '3,000+ Games', 'Lottery Games', 'Dice & Crash']
+    highlights: ['Est. 2014', '3,000+ Games', 'Lottery Games', 'Dice & Crash'],
+    ctaText: 'Claim Up to 6 BTC + Rakeback'
   },
   {
     slug: 'bitstarz',
@@ -55,7 +59,8 @@ const casinoDetails = [
     rakeback: 10,
     bonus: 'Up to 5 BTC + 180 FS',
     description: 'Award-winning casino with fast withdrawals (avg 10 min). Top choice for slots and table games.',
-    highlights: ['Award-Winning', '10 Min Withdrawals', 'Slots Leader', '4,000+ Games']
+    highlights: ['Award-Winning', '10 Min Withdrawals', 'Slots Leader', '4,000+ Games'],
+    ctaText: 'Get 5 BTC + Extra Rakeback'
   },
   {
     slug: '1win',
@@ -64,7 +69,8 @@ const casinoDetails = [
     rakeback: 12,
     bonus: 'Up to $10,000',
     description: 'Global sportsbook and casino with competitive odds. Excellent for esports and live betting.',
-    highlights: ['Sports & Casino', 'Esports Focus', 'Live Betting', 'High Limits']
+    highlights: ['Sports & Casino', 'Esports Focus', 'Live Betting', 'High Limits'],
+    ctaText: 'Bet Sports + Earn 12% Back'
   },
   {
     slug: '1xbet',
@@ -73,7 +79,8 @@ const casinoDetails = [
     rakeback: 8,
     bonus: 'Up to $1,500 + 150 FS',
     description: 'Leading global bookmaker with 1,000+ daily events. Wide crypto support and competitive odds.',
-    highlights: ['1,000+ Events/Day', 'Best Odds', 'Multi-Currency', 'Live Streaming']
+    highlights: ['1,000+ Events/Day', 'Best Odds', 'Multi-Currency', 'Live Streaming'],
+    ctaText: 'Start Betting Smarter'
   },
   {
     slug: 'royalpartners',
@@ -82,7 +89,8 @@ const casinoDetails = [
     rakeback: 15,
     bonus: 'Up to $3,000 + Cashback',
     description: 'Premium VIP-focused casino with generous cashback and dedicated account managers.',
-    highlights: ['VIP Program', 'Personal Manager', 'Cashback Rewards', 'Exclusive Bonuses']
+    highlights: ['VIP Program', 'Personal Manager', 'Cashback Rewards', 'Exclusive Bonuses'],
+    ctaText: 'Go VIP + 15% Rakeback'
   }
 ];
 
@@ -638,7 +646,7 @@ function Landing() {
                       }}
                     >
                       <Zap size={18} />
-                      Claim {casinoData.rakeback}% Rakeback + Bonus
+                      {casinoData.ctaText}
                       <ArrowRight size={18} />
                     </button>
                   </div>
@@ -819,7 +827,7 @@ function Landing() {
                 color: '#ffffff',
                 marginBottom: '8px'
               }}>
-                The Math is Simple
+                It's Free. Why Wouldn't You?
               </div>
               <p style={{
                 fontSize: '16px',
@@ -828,8 +836,8 @@ function Landing() {
                 maxWidth: '500px',
                 margin: '0 auto 24px'
               }}>
-                Bet $10,000/month → Get <span style={{color: '#ffd700', fontWeight: '800'}}>$1,500 back</span> at Diamond level.<br/>
-                That's money you'd never see playing direct.
+                Same casinos. Same bonuses. Same games.<br/>
+                <span style={{color: '#ffd700', fontWeight: '800'}}>Up to 15% extra</span> just for signing up through us.
               </p>
               <Link 
                 to="/vip"
@@ -849,7 +857,7 @@ function Landing() {
                 }}
               >
                 <Crown size={20} />
-                Start Earning Rakeback Now
+                Join the VIP Club
                 <ArrowRight size={20} />
               </Link>
             </div>

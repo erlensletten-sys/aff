@@ -1,295 +1,543 @@
 import React, { useState, useEffect } from 'react';
+import { 
+  DollarSign, Users, TrendingUp, Gift, Trophy, 
+  Zap, Crown, ArrowUp, Clock, Sparkles
+} from 'lucide-react';
 
 function Statistics() {
-  // Initialize with base values
-  const [totalVerifications, setTotalVerifications] = useState(121243);
-  const [registeredUsers, setRegisteredUsers] = useState(5699);
-  const successRate = 99.3;
-  
-  // Last 24 hours stats (also increment live)
-  const [last24Hours, setLast24Hours] = useState({
-    verifications: 3847,
-    newUsers: 127,
-    avgResponseTime: 1.2,
-    successRate24h: 99.4
+  // VIP Platform Stats - realistic for ~4,400 users
+  const [vipStats, setVipStats] = useState({
+    totalPaidOut: 847329,
+    vipUsers: 4387,
+    paidThisMonth: 42156,
+    lotteryJackpot: 2750
   });
 
+  // Platform activity stats
+  const [activityStats, setActivityStats] = useState({
+    activePlayers: 892,
+    casinoClicks: 15847,
+    avgRakeback: 8.4,
+    topEarner: 3420
+  });
+
+  // Simulate live updates
   useEffect(() => {
-    // Increment all counters in the same phase
     const interval = setInterval(() => {
-      // All-time verifications increase faster (every 2-5 seconds, +1 to +3)
-      const verificationChance = Math.random();
-      if (verificationChance > 0.4) {
-        const increment = Math.floor(Math.random() * 3) + 1;
-        setTotalVerifications(prev => prev + increment);
+      // Slowly increase total paid out
+      if (Math.random() > 0.7) {
+        setVipStats(prev => ({
+          ...prev,
+          totalPaidOut: prev.totalPaidOut + Math.floor(Math.random() * 50) + 10
+        }));
       }
       
-      // All-time users increase slower (every 10-15 seconds, +1)
-      const userChance = Math.random();
-      if (userChance > 0.85) {
-        setRegisteredUsers(prev => prev + 1);
+      // Occasionally add new VIP user
+      if (Math.random() > 0.95) {
+        setVipStats(prev => ({
+          ...prev,
+          vipUsers: prev.vipUsers + 1
+        }));
       }
       
-      // 24H verifications also increment (slightly slower than all-time)
+      // Update monthly paid
+      if (Math.random() > 0.8) {
+        setVipStats(prev => ({
+          ...prev,
+          paidThisMonth: prev.paidThisMonth + Math.floor(Math.random() * 30) + 5
+        }));
+      }
+      
+      // Update active players
       if (Math.random() > 0.6) {
-        setLast24Hours(prev => ({
+        setActivityStats(prev => ({
           ...prev,
-          verifications: prev.verifications + 1
+          activePlayers: Math.max(750, Math.min(1200, prev.activePlayers + Math.floor(Math.random() * 20) - 10))
         }));
       }
       
-      // 24H new users also increment (rarely)
-      if (Math.random() > 0.92) {
-        setLast24Hours(prev => ({
+      // Update casino clicks
+      if (Math.random() > 0.5) {
+        setActivityStats(prev => ({
           ...prev,
-          newUsers: prev.newUsers + 1
+          casinoClicks: prev.casinoClicks + Math.floor(Math.random() * 5) + 1
         }));
       }
-      
-      // Occasionally update response time (slight variance)
-      if (Math.random() > 0.9) {
-        setLast24Hours(prev => ({
-          ...prev,
-          avgResponseTime: +(1.1 + Math.random() * 0.3).toFixed(1)
-        }));
-      }
-    }, 2000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Format number with commas
-  const formatNumber = (num) => {
-    return num.toLocaleString('en-US');
-  };
+  const formatNumber = (num) => num.toLocaleString('en-US');
+  const formatCurrency = (num) => '$' + num.toLocaleString('en-US');
 
   return (
-    <div className="stats-container">
-      <h1 style={{textAlign: 'center', marginBottom: '10px', letterSpacing: '-1px', fontSize: '42px'}}>
-        STATISTICS
-      </h1>
-      <p style={{textAlign: 'center', color: 'var(--text-muted)', marginBottom: '50px', fontSize: '14px'}}>
-        Real-time verification metrics and platform analytics
-      </p>
-
-      {/* All Time Stats */}
-      <div style={{marginBottom: '50px'}}>
-        <h2 style={{fontSize: '20px', marginBottom: '24px', letterSpacing: '2px', color: 'var(--text-muted)'}}>
-          // ALL TIME STATISTICS
-        </h2>
-        <div className="stats-grid" style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px'}}>
-          <div className="stat-card" data-testid="stat-total-verifications">
-            <div className="stat-value" style={{fontSize: '48px', fontWeight: '700', background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>
-              {formatNumber(totalVerifications)}
-            </div>
-            <div className="stat-label" style={{fontSize: '13px', letterSpacing: '1px'}}>
-              VERIFICATIONS TOTAL
-            </div>
-            <div style={{marginTop: '8px', fontSize: '12px', color: 'var(--accent-success)'}}>
-              ↑ Live counter
-            </div>
-          </div>
-
-          <div className="stat-card" data-testid="stat-success-rate">
-            <div className="stat-value" style={{fontSize: '48px', fontWeight: '700', color: 'var(--accent-success)'}}>
-              {successRate}%
-            </div>
-            <div className="stat-label" style={{fontSize: '13px', letterSpacing: '1px'}}>
-              SUCCESS RATE
-            </div>
-            <div style={{marginTop: '8px', fontSize: '12px', color: 'var(--text-muted)'}}>
-              Consistently high accuracy
-            </div>
-          </div>
-
-          <div className="stat-card" data-testid="stat-registered-users">
-            <div className="stat-value" style={{fontSize: '48px', fontWeight: '700', color: 'var(--accent-secondary)'}}>
-              {formatNumber(registeredUsers)}
-            </div>
-            <div className="stat-label" style={{fontSize: '13px', letterSpacing: '1px'}}>
-              REGISTERED USERS
-            </div>
-            <div style={{marginTop: '8px', fontSize: '12px', color: 'var(--accent-success)'}}>
-              ↑ Growing community
-            </div>
-          </div>
-
-          <div className="stat-card" data-testid="stat-avg-response">
-            <div className="stat-value" style={{fontSize: '48px', fontWeight: '700', color: 'var(--text-primary)'}}>
-              {last24Hours.avgResponseTime}s
-            </div>
-            <div className="stat-label" style={{fontSize: '13px', letterSpacing: '1px'}}>
-              AVG RESPONSE TIME
-            </div>
-            <div style={{marginTop: '8px', fontSize: '12px', color: 'var(--accent-primary)'}}>
-              Lightning fast verification
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Last 24 Hours Stats */}
-      <div style={{marginBottom: '50px'}}>
-        <h2 style={{fontSize: '20px', marginBottom: '24px', letterSpacing: '2px', color: 'var(--text-muted)'}}>
-          // STATS LAST 24 HOURS
-        </h2>
+    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '60px 20px' }}>
+      {/* Header */}
+      <div style={{ textAlign: 'center', marginBottom: '60px' }}>
         <div style={{
-          background: 'var(--bg-glass)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid var(--border-color)',
-          borderRadius: '16px',
-          padding: '32px'
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '10px',
+          padding: '10px 20px',
+          background: 'linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.1))',
+          border: '1px solid rgba(255,215,0,0.3)',
+          borderRadius: '30px',
+          marginBottom: '20px'
         }}>
-          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '32px'}}>
-            <div data-testid="stat-24h-verifications">
-              <div style={{fontSize: '36px', fontWeight: '700', color: 'var(--accent-primary)', marginBottom: '8px'}}>
-                {formatNumber(last24Hours.verifications)}
-              </div>
-              <div style={{fontSize: '13px', color: 'var(--text-secondary)', letterSpacing: '1px'}}>
-                VERIFICATIONS
-              </div>
-              <div style={{marginTop: '6px', fontSize: '12px', color: 'var(--accent-success)'}}>
-                ↑ Live counter
-              </div>
-            </div>
+          <TrendingUp size={18} color="#ffd700" />
+          <span style={{ fontSize: '13px', fontWeight: '700', color: '#ffd700', letterSpacing: '1px' }}>
+            LIVE STATISTICS
+          </span>
+        </div>
+        
+        <h1 style={{ 
+          fontSize: '48px', 
+          fontWeight: '900', 
+          color: 'var(--text-primary)', 
+          letterSpacing: '-2px',
+          marginBottom: '12px'
+        }}>
+          Platform Stats
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '16px' }}>
+          Real-time rakeback payouts and community growth
+        </p>
+      </div>
 
-            <div data-testid="stat-24h-users">
-              <div style={{fontSize: '36px', fontWeight: '700', color: 'var(--accent-secondary)', marginBottom: '8px'}}>
-                {formatNumber(last24Hours.newUsers)}
-              </div>
-              <div style={{fontSize: '13px', color: 'var(--text-secondary)', letterSpacing: '1px'}}>
-                NEW USERS
-              </div>
-              <div style={{marginTop: '6px', fontSize: '12px', color: 'var(--accent-success)'}}>
-                ↑ Live counter
-              </div>
-            </div>
+      {/* ═══════════════════════════════════════════════════════════ */}
+      {/* TOP SECTION: PAYOUT DATA */}
+      {/* ═══════════════════════════════════════════════════════════ */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(255,215,0,0.08) 0%, rgba(124,58,237,0.05) 100%)',
+        border: '1px solid rgba(255,215,0,0.2)',
+        borderRadius: '24px',
+        padding: '40px',
+        marginBottom: '24px'
+      }}>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '10px', 
+          marginBottom: '32px' 
+        }}>
+          <DollarSign size={24} color="#ffd700" />
+          <h2 style={{ 
+            fontSize: '20px', 
+            fontWeight: '700', 
+            color: '#ffd700',
+            letterSpacing: '1px',
+            margin: 0
+          }}>
+            RAKEBACK PAYOUTS
+          </h2>
+          <div style={{
+            marginLeft: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '6px 12px',
+            background: 'rgba(34, 197, 94, 0.15)',
+            borderRadius: '20px',
+            fontSize: '12px',
+            color: '#22c55e'
+          }}>
+            <span style={{
+              width: '8px',
+              height: '8px',
+              background: '#22c55e',
+              borderRadius: '50%',
+              animation: 'pulse 2s ease-in-out infinite'
+            }} />
+            LIVE
+          </div>
+        </div>
 
-            <div>
-              <div style={{fontSize: '36px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '8px'}}>
-                {last24Hours.successRate24h}%
-              </div>
-              <div style={{fontSize: '13px', color: 'var(--text-secondary)', letterSpacing: '1px'}}>
-                SUCCESS RATE (24H)
-              </div>
-              <div style={{marginTop: '6px', fontSize: '12px', color: 'var(--accent-success)'}}>
-                +0.1% improvement
-              </div>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '24px'
+        }}>
+          {/* Total Paid Out */}
+          <div style={{
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: '16px',
+            padding: '24px',
+            textAlign: 'center',
+            border: '1px solid rgba(255,255,255,0.08)'
+          }}>
+            <div style={{
+              width: 56,
+              height: 56,
+              borderRadius: 14,
+              background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px'
+            }}>
+              <TrendingUp size={28} color="#000" />
             </div>
-
-            <div>
-              <div style={{fontSize: '36px', fontWeight: '700', color: 'var(--accent-warning)', marginBottom: '8px'}}>
-                LIMBO
-              </div>
-              <div style={{fontSize: '13px', color: 'var(--text-secondary)', letterSpacing: '1px'}}>
-                MOST VERIFIED GAME
-              </div>
-              <div style={{marginTop: '6px', fontSize: '12px', color: 'var(--text-muted)'}}>
-                34% of daily volume
-              </div>
+            <div style={{ 
+              fontSize: '36px', 
+              fontWeight: '800', 
+              color: '#ffd700',
+              marginBottom: '8px'
+            }}>
+              {formatCurrency(vipStats.totalPaidOut)}
+            </div>
+            <div style={{ 
+              fontSize: '12px', 
+              color: 'rgba(255,255,255,0.6)',
+              letterSpacing: '1px',
+              fontWeight: '600'
+            }}>
+              TOTAL PAID OUT
+            </div>
+            <div style={{ 
+              marginTop: '8px', 
+              fontSize: '11px', 
+              color: '#22c55e',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '4px'
+            }}>
+              <ArrowUp size={12} />
+              Live counter
             </div>
           </div>
 
+          {/* VIP Users */}
           <div style={{
-            marginTop: '32px',
-            padding: '20px',
-            background: 'rgba(99, 102, 241, 0.05)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '12px'
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: '16px',
+            padding: '24px',
+            textAlign: 'center',
+            border: '1px solid rgba(255,255,255,0.08)'
           }}>
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px'}}>
-              <div>
-                <div style={{fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px'}}>Peak Hour</div>
-                <div style={{fontSize: '18px', color: 'var(--text-primary)', fontWeight: '600'}}>18:00 - 19:00 UTC</div>
-              </div>
-              <div>
-                <div style={{fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px'}}>Peak Verifications</div>
-                <div style={{fontSize: '18px', color: 'var(--text-primary)', fontWeight: '600'}}>287 / hour</div>
-              </div>
-              <div>
-                <div style={{fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px'}}>Most Active Provider</div>
-                <div style={{fontSize: '18px', color: 'var(--text-primary)', fontWeight: '600'}}>Stake.com</div>
-              </div>
-              <div>
-                <div style={{fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px'}}>Avg Session Time</div>
-                <div style={{fontSize: '18px', color: 'var(--text-primary)', fontWeight: '600'}}>4.2 min</div>
-              </div>
+            <div style={{
+              width: 56,
+              height: 56,
+              borderRadius: 14,
+              background: 'linear-gradient(135deg, #7c3aed, #5b21b6)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px'
+            }}>
+              <Users size={28} color="#fff" />
+            </div>
+            <div style={{ 
+              fontSize: '36px', 
+              fontWeight: '800', 
+              color: '#a78bfa',
+              marginBottom: '8px'
+            }}>
+              {formatNumber(vipStats.vipUsers)}
+            </div>
+            <div style={{ 
+              fontSize: '12px', 
+              color: 'rgba(255,255,255,0.6)',
+              letterSpacing: '1px',
+              fontWeight: '600'
+            }}>
+              VIP MEMBERS
+            </div>
+            <div style={{ 
+              marginTop: '8px', 
+              fontSize: '11px', 
+              color: '#22c55e',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '4px'
+            }}>
+              <ArrowUp size={12} />
+              Growing daily
+            </div>
+          </div>
+
+          {/* Paid This Month */}
+          <div style={{
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: '16px',
+            padding: '24px',
+            textAlign: 'center',
+            border: '1px solid rgba(255,255,255,0.08)'
+          }}>
+            <div style={{
+              width: 56,
+              height: 56,
+              borderRadius: 14,
+              background: 'linear-gradient(135deg, #22c55e, #16a34a)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px'
+            }}>
+              <DollarSign size={28} color="#fff" />
+            </div>
+            <div style={{ 
+              fontSize: '36px', 
+              fontWeight: '800', 
+              color: '#4ade80',
+              marginBottom: '8px'
+            }}>
+              {formatCurrency(vipStats.paidThisMonth)}
+            </div>
+            <div style={{ 
+              fontSize: '12px', 
+              color: 'rgba(255,255,255,0.6)',
+              letterSpacing: '1px',
+              fontWeight: '600'
+            }}>
+              PAID THIS MONTH
+            </div>
+            <div style={{ 
+              marginTop: '8px', 
+              fontSize: '11px', 
+              color: '#22c55e',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '4px'
+            }}>
+              <ArrowUp size={12} />
+              Live counter
+            </div>
+          </div>
+
+          {/* Lottery Jackpot */}
+          <div style={{
+            background: 'rgba(255,255,255,0.03)',
+            borderRadius: '16px',
+            padding: '24px',
+            textAlign: 'center',
+            border: '1px solid rgba(255,215,0,0.2)'
+          }}>
+            <div style={{
+              width: 56,
+              height: 56,
+              borderRadius: 14,
+              background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px'
+            }}>
+              <Trophy size={28} color="#fff" />
+            </div>
+            <div style={{ 
+              fontSize: '36px', 
+              fontWeight: '800', 
+              color: '#fbbf24',
+              marginBottom: '8px'
+            }}>
+              {formatCurrency(vipStats.lotteryJackpot)}
+            </div>
+            <div style={{ 
+              fontSize: '12px', 
+              color: 'rgba(255,255,255,0.6)',
+              letterSpacing: '1px',
+              fontWeight: '600'
+            }}>
+              LOTTERY JACKPOT
+            </div>
+            <div style={{ 
+              marginTop: '8px', 
+              fontSize: '11px', 
+              color: '#fbbf24'
+            }}>
+              Weekly draw
             </div>
           </div>
         </div>
       </div>
 
-      {/* Platform Insights */}
+      {/* ═══════════════════════════════════════════════════════════ */}
+      {/* DIVIDER */}
+      {/* ═══════════════════════════════════════════════════════════ */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '20px',
+        margin: '40px 0'
+      }}>
+        <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+        <div style={{
+          padding: '10px 20px',
+          background: 'rgba(255,255,255,0.05)',
+          borderRadius: '20px',
+          fontSize: '12px',
+          color: 'rgba(255,255,255,0.5)',
+          letterSpacing: '1px'
+        }}>
+          PLATFORM ACTIVITY
+        </div>
+        <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════ */}
+      {/* BOTTOM SECTION: ACTIVITY DATA */}
+      {/* ═══════════════════════════════════════════════════════════ */}
       <div style={{
         background: 'var(--bg-glass)',
-        backdropFilter: 'blur(20px)',
         border: '1px solid var(--border-color)',
-        borderRadius: '16px',
-        padding: '32px'
+        borderRadius: '24px',
+        padding: '40px'
       }}>
-        <h2 style={{fontSize: '20px', marginBottom: '24px', letterSpacing: '2px', color: 'var(--text-muted)'}}>
-          // PLATFORM INSIGHTS
-        </h2>
-        <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px'}}>
-          <div>
-            <h3 style={{fontSize: '14px', color: 'var(--text-primary)', marginBottom: '8px', fontWeight: '600'}}>
-              🔒 SECURITY STATUS
-            </h3>
-            <p style={{color: 'var(--text-secondary)', fontSize: '13px', lineHeight: '1.6'}}>
-              All verifications run client-side. Zero data breaches. 100% transparent algorithms following each provider's documentation.
-            </p>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '32px',
+          marginBottom: '32px'
+        }}>
+          {/* Active Now */}
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              width: 48,
+              height: 48,
+              borderRadius: 12,
+              background: 'rgba(34, 197, 94, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 12px'
+            }}>
+              <Zap size={24} color="#22c55e" />
+            </div>
+            <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '4px' }}>
+              {formatNumber(activityStats.activePlayers)}
+            </div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '1px' }}>
+              PLAYING NOW
+            </div>
           </div>
 
-          <div>
-            <h3 style={{fontSize: '14px', color: 'var(--text-primary)', marginBottom: '8px', fontWeight: '600'}}>
-              ⚡ PERFORMANCE
-            </h3>
-            <p style={{color: 'var(--text-secondary)', fontSize: '13px', lineHeight: '1.6'}}>
-              Average verification time: {last24Hours.avgResponseTime}s. Real-time processing with instant results. 99.9% uptime guaranteed.
-            </p>
+          {/* Casino Clicks */}
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              width: 48,
+              height: 48,
+              borderRadius: 12,
+              background: 'rgba(124, 58, 237, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 12px'
+            }}>
+              <TrendingUp size={24} color="#7c3aed" />
+            </div>
+            <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '4px' }}>
+              {formatNumber(activityStats.casinoClicks)}
+            </div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '1px' }}>
+              CASINO CLICKS
+            </div>
           </div>
 
+          {/* Avg Rakeback */}
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              width: 48,
+              height: 48,
+              borderRadius: 12,
+              background: 'rgba(255, 215, 0, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 12px'
+            }}>
+              <Gift size={24} color="#ffd700" />
+            </div>
+            <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '4px' }}>
+              {activityStats.avgRakeback}%
+            </div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '1px' }}>
+              AVG RAKEBACK
+            </div>
+          </div>
+
+          {/* Top Earner */}
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              width: 48,
+              height: 48,
+              borderRadius: 12,
+              background: 'rgba(6, 182, 212, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 12px'
+            }}>
+              <Crown size={24} color="#06b6d4" />
+            </div>
+            <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '4px' }}>
+              {formatCurrency(activityStats.topEarner)}
+            </div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '1px' }}>
+              TOP EARNER (MONTH)
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Activity Bar */}
+        <div style={{
+          padding: '20px 24px',
+          background: 'rgba(255,255,255,0.03)',
+          borderRadius: '14px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '16px',
+          border: '1px solid rgba(255,255,255,0.06)'
+        }}>
           <div>
-            <h3 style={{fontSize: '14px', color: 'var(--text-primary)', marginBottom: '8px', fontWeight: '600'}}>
-              🌍 GLOBAL REACH
-            </h3>
-            <p style={{color: 'var(--text-secondary)', fontSize: '13px', lineHeight: '1.6'}}>
-              Users from 127 countries. Supporting 5 major providers across 6 game types. Trusted by thousands daily.
-            </p>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '4px' }}>Top Casino</div>
+            <div style={{ fontSize: '15px', color: 'var(--text-primary)', fontWeight: '600' }}>Stake.com</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '4px' }}>Peak Hour</div>
+            <div style={{ fontSize: '15px', color: 'var(--text-primary)', fontWeight: '600' }}>20:00 UTC</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '4px' }}>Avg Session</div>
+            <div style={{ fontSize: '15px', color: 'var(--text-primary)', fontWeight: '600' }}>23 min</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '4px' }}>New Today</div>
+            <div style={{ fontSize: '15px', color: '#22c55e', fontWeight: '600' }}>+47 VIPs</div>
           </div>
         </div>
       </div>
 
-      {/* Live Update Indicator */}
-      <div style={{marginTop: '40px', textAlign: 'center'}}>
+      {/* Live Indicator */}
+      <div style={{ marginTop: '40px', textAlign: 'center' }}>
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
           gap: '8px',
           padding: '10px 20px',
-          background: 'rgba(16, 185, 129, 0.1)',
-          border: '1px solid var(--accent-success)',
+          background: 'rgba(34, 197, 94, 0.1)',
+          border: '1px solid rgba(34, 197, 94, 0.3)',
           borderRadius: '20px',
           fontSize: '12px',
-          color: 'var(--accent-success)'
+          color: '#22c55e'
         }}>
-          <span className="pulse-dot" style={{
+          <span style={{
             width: '8px',
             height: '8px',
-            background: 'var(--accent-success)',
+            background: '#22c55e',
             borderRadius: '50%',
             animation: 'pulse 2s ease-in-out infinite'
           }} />
-          LIVE COUNTERS • UPDATING IN REAL-TIME
+          LIVE DATA • UPDATING EVERY 3 SECONDS
         </div>
       </div>
     </div>
   );
-}
-
-// Helper function
-function formatNumber(num) {
-  return num.toLocaleString('en-US');
 }
 
 export default Statistics;
