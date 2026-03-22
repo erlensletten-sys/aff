@@ -152,7 +152,7 @@ mongodb:  RUNNING (Database)
 ## 🚀 How to Use Right Now
 
 ### For Testing:
-1. Visit: https://gamble-tools-hub.preview.emergentagent.com
+1. Visit: https://vip-engine-test.preview.emergentagent.com
 2. Go to `/verify` page
 3. Complete CAPTCHA (guest) or login
 4. Select game + provider
@@ -170,7 +170,7 @@ mongodb:  RUNNING (Database)
 
 ### For API Testing:
 ```bash
-curl -X POST "https://gamble-tools-hub.preview.emergentagent.com/api/verify/provably-fair" \
+curl -X POST "https://vip-engine-test.preview.emergentagent.com/api/verify/provably-fair" \
   -H "Content-Type: application/json" \
   -d '{
     "provider": "stake",

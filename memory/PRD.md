@@ -39,10 +39,10 @@ Rakestake.com is a **crypto casino affiliate aggregator** platform that maximize
 ## Core Features
 
 ### 1. Theme System
-- **Main (🎰)**: Original dark purple theme
-- **Dark (🌙)**: Deep black theme
-- **Light (☀️)**: Light gray/blue theme
-- Theme toggle in header, persists to localStorage
+- **Main**: Original dark purple theme
+- **Dark**: Deep black theme
+- **Light**: Light gray/blue theme
+- Theme toggle in header using `lucide-react` icons, persists to localStorage
 
 ### 2. XP-Based VIP System
 5 VIP Levels with progressive rakeback rates:
@@ -60,29 +60,45 @@ Rakestake.com is a **crypto casino affiliate aggregator** platform that maximize
 ### 3. Homepage Features
 - **Hero Section**: "Earn Extra Rakeback on Top Crypto Casinos"
 - **XP Progress Widget**: Shows current level, XP, progress to next level
-- **Casino Comparison Table**: All 3 casinos with:
+- **Casino Comparison Table**: All 8 casinos with:
   - Welcome bonus value
   - Rakeback percentage
   - Min deposit
-  - Supported cryptos (BTC, ETH, LTC, etc.)
-  - PLAY NOW buttons with affiliate links
+  - "Play & Earn More" buttons that open conversion modals
 - **VIP Tiers Preview**: 5 levels with rakeback rates
 - **How It Works**: 3-step onboarding flow
 
-### 4. VIP Club Page (/vip)
+### 4. Conversion-Optimized Casino Modals (NEW - Dec 2025)
+When clicking a casino card, a modal opens with:
+- **Logo**: Letter-based SVG logo
+- **Headline**: Casino-specific headline (e.g., "Play on Stake with Extra Rewards")
+- **Subheadline**: Value proposition
+- **Benefits**: 3 checkmarked bullet points
+- **Rakestake Boost Section**: Extra rewards messaging with golden accent
+- **Live Stats**: Playing Now (dynamic count), Rewards Today (dynamic $)
+- **Personalized Estimate**: "~$XX/week" based on rakeback rate
+- **Strong CTA**: Action-oriented button (e.g., "Play on Stake → Earn More")
+- **Trust Badge**: "Verified Partner • Secure Tracking"
+
+**Casino-Specific Copy:**
+- **Stake**: "Play on Stake with Extra Rewards" / Industry-leading payouts, Massive game selection, Trusted by millions
+- **Shuffle**: "Provably Fair Gaming with Extra Rewards" / Fully provably fair system, Fast crypto deposits, Competitive RTP
+- **Rainbet**: "Play & Earn in a Community-Driven Casino" / Frequent bonuses, Engaged player base, Smooth UX
+- **Default**: "Maximize Your Rewards" for other casinos
+
+### 5. VIP Club Page (/vip)
 - XP progress display
 - All 5 VIP tier cards with benefits
-- "CONNECT CASINO" buttons (unlocked based on XP)
-- Partner casino cards with affiliate links
+- Partner casino cards with conversion modals (same as homepage)
 - Weekly VIP Lottery ($1,000/$500/$250 prizes)
 
-### 5. Game Calculators (/calculators)
+### 6. Game Calculators (/calculators)
 12 calculators in 3 categories:
 - **Game Calculators**: Mines, Dice, Limbo, Plinko, HiLo
 - **Strategy & Bankroll**: Kelly Criterion, Bankroll Mgmt, Risk of Ruin, Variance, Monthly Boost
 - **Sports Betting**: Parlay & Arbitrage, Odds Converter
 
-### 6. Provably Fair Verifiers (/verifiers)
+### 7. Provably Fair Verifiers (/verifiers)
 - Stake.com verifiers for Dice, Limbo, Mines, Plinko
 - Client-side cryptographic verification
 
@@ -90,13 +106,16 @@ Rakestake.com is a **crypto casino affiliate aggregator** platform that maximize
 
 ## Completed Work
 
-### Phase 1 (Current - December 2025)
-- ✅ **Theme Toggle**: Main/Dark/Light with CSS variables
+### Phase 1 (December 2025)
+- ✅ **Theme Toggle**: Main/Dark/Light with lucide-react icons
 - ✅ **Real Affiliate Links**: Stake, Shuffle, Rainbet with correct URLs
 - ✅ **Casino Comparison Table**: Bonus, rakeback, cryptos, PLAY NOW buttons
 - ✅ **XP-Based VIP System**: 5 levels (Bronze→Diamond), progress widget
 - ✅ **VIP Page Redesign**: Level cards, partner casinos, lottery
 - ✅ **Rebrand to Rakestake**: All pages updated
+- ✅ **UI Refresh with lucide-react**: All icons replaced with clean Lucide icons
+- ✅ **Uniform Casino Logos**: Letter-based SVG logos for consistent branding
+- ✅ **Conversion-Optimized Modals**: Casino-specific copy, live stats, personalized estimates, strong CTAs
 
 ### Previous Sessions
 - User authentication (register/login/JWT)

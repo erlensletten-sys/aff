@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { 
+  Crown, Star, Trophy, Gift, TrendingUp, Search, X,
+  ExternalLink, ChevronRight, Sparkles, Zap
+} from 'lucide-react';
+import { CasinoLogo, IconBadge, LiveIndicator } from '../components/AnimatedElements';
+import CasinoModal from '../components/CasinoModal';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -7,18 +13,17 @@ function VIPHub() {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [selectedTier, setSelectedTier] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [userXP, setUserXP] = useState(0);
+  const [selectedCasino, setSelectedCasino] = useState(null);
   const isAuthenticated = !!localStorage.getItem('token');
 
-  // VIP Levels with XP requirements
   const vipLevels = [
-    { id: 'bronze', name: 'Bronze', xp: 0, rakeback: 2, color: '#cd7f32', gradient: 'linear-gradient(135deg, #cd7f32, #8b4513)', icon: '🥉', benefits: ['2% Instant Rakeback', 'Monthly Lottery Entry', 'Community Access'] },
-    { id: 'silver', name: 'Silver', xp: 1000, rakeback: 5, color: '#c0c0c0', gradient: 'linear-gradient(135deg, #c0c0c0, #808080)', icon: '🥈', benefits: ['5% Instant Rakeback', '2x Lottery Entries', 'Priority Support', 'Exclusive Promos'] },
-    { id: 'gold', name: 'Gold', xp: 10000, rakeback: 8, color: '#ffd700', gradient: 'linear-gradient(135deg, #ffd700, #ff8c00)', icon: '🥇', benefits: ['8% Instant Rakeback', '5x Lottery Entries', 'VIP Support 24/7', 'Personal Bonuses', 'Birthday Rewards'] },
-    { id: 'platinum', name: 'Platinum', xp: 50000, rakeback: 12, color: '#e5e4e2', gradient: 'linear-gradient(135deg, #e5e4e2, #b8b8b8)', icon: '💎', benefits: ['12% Instant Rakeback', '10x Lottery Entries', 'Dedicated Manager', 'Custom Rewards', 'Exclusive Events'] },
-    { id: 'diamond', name: 'Diamond', xp: 100000, rakeback: 15, color: '#b9f2ff', gradient: 'linear-gradient(135deg, #b9f2ff, #00bfff)', icon: '👑', benefits: ['15% Instant Rakeback', '25x Lottery Entries', 'VIP Host', 'Custom Requests', 'Luxury Rewards', 'Priority Withdrawals'] }
+    { id: 'bronze', name: 'Bronze', xp: 0, rakeback: 2, color: '#cd7f32', benefits: ['2% Rakeback', 'Monthly Lottery Entry', 'Community Access'] },
+    { id: 'silver', name: 'Silver', xp: 1000, rakeback: 5, color: '#c0c0c0', benefits: ['5% Rakeback', '2x Lottery Entries', 'Priority Support'] },
+    { id: 'gold', name: 'Gold', xp: 10000, rakeback: 8, color: '#ffd700', benefits: ['8% Rakeback', '5x Lottery Entries', 'VIP Support'] },
+    { id: 'platinum', name: 'Platinum', xp: 50000, rakeback: 12, color: '#e5e4e2', benefits: ['12% Rakeback', '10x Lottery Entries', 'Personal Manager'] },
+    { id: 'diamond', name: 'Diamond', xp: 100000, rakeback: 15, color: '#b9f2ff', benefits: ['15% Rakeback', '25x Lottery Entries', 'VIP Host', 'Priority Withdrawals'] }
   ];
 
   const getCurrentLevel = (xp) => {
@@ -61,17 +66,6 @@ function VIPHub() {
     }
   };
 
-  const handleRedeemClick = (tier) => {
-    setSelectedTier(tier);
-    setSearchQuery('');
-    setShowModal(true);
-  };
-
-  const handleCasinoSelect = (campaign) => {
-    window.open(campaign.referral_link, '_blank', 'noopener,noreferrer');
-    setShowModal(false);
-  };
-
   const filteredCampaigns = campaigns.filter(c => 
     c.casino_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -79,123 +73,115 @@ function VIPHub() {
   const formatNumber = (num) => num.toLocaleString('en-US');
 
   return (
-    <div style={{maxWidth: '1400px', margin: '0 auto', padding: '40px 20px'}}>
-      {/* Hero Section */}
+    <div style={{maxWidth: '1200px', margin: '0 auto', padding: '40px 20px'}}>
+      {/* Hero */}
       <div style={{
         textAlign: 'center',
         marginBottom: '60px',
-        padding: '60px 40px',
-        background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.05) 100%)',
-        borderRadius: '24px',
-        border: '1px solid rgba(255, 215, 0, 0.3)',
-        position: 'relative'
+        padding: '48px 40px',
+        background: 'var(--bg-glass)',
+        border: '1px solid var(--border-color)',
+        borderRadius: '20px'
       }}>
+        <div style={{marginBottom: '16px'}}>
+          <IconBadge icon={Crown} text="VIP CLUB" color="#ffd700" />
+        </div>
+        
         <h1 style={{
-          fontSize: '52px',
+          fontSize: '42px',
           fontWeight: '900',
-          marginBottom: '16px',
-          letterSpacing: '-2px',
-          background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text'
+          marginBottom: '12px',
+          color: 'var(--text-primary)'
         }}>
-          Rakestake VIP CLUB
+          Rakestake VIP
         </h1>
         
         <p style={{
-          fontSize: '20px',
+          fontSize: '16px',
           color: 'var(--text-secondary)',
-          marginBottom: '24px',
-          maxWidth: '700px',
-          margin: '0 auto 24px'
+          marginBottom: '32px',
+          maxWidth: '500px',
+          margin: '0 auto 32px'
         }}>
-          Earn XP from every wager. Level up for higher rakeback rates.
+          Up to 15% rakeback on top of casino bonuses. Earn XP from every wager.
         </p>
 
         {/* XP Progress */}
         <div style={{
-          maxWidth: '500px',
-          margin: '32px auto',
-          padding: '20px',
-          background: 'var(--bg-glass)',
-          borderRadius: '16px',
-          border: '1px solid var(--border-color)'
+          maxWidth: '400px',
+          margin: '0 auto',
+          padding: '16px 20px',
+          background: 'var(--bg-tertiary)',
+          borderRadius: '12px'
         }}>
-          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px'}}>
-            <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-              <span style={{fontSize: '28px'}}>{currentLevel.icon}</span>
-              <span style={{fontWeight: '700', color: currentLevel.color, fontSize: '18px'}}>{currentLevel.name}</span>
+          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px'}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+              <div style={{
+                width: 32,
+                height: 32,
+                borderRadius: 8,
+                background: `linear-gradient(135deg, ${currentLevel.color}, ${currentLevel.color}80)`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Star size={16} color="#fff" />
+              </div>
+              <span style={{fontWeight: '700', color: currentLevel.color}}>{currentLevel.name}</span>
             </div>
-            <div style={{textAlign: 'right'}}>
-              <div style={{fontWeight: '700', color: 'var(--accent-primary)', fontSize: '20px'}}>{formatNumber(userXP)} XP</div>
-              {nextLevel && (
-                <div style={{fontSize: '11px', color: 'var(--text-muted)'}}>
-                  {formatNumber(nextLevel.xp - userXP)} to {nextLevel.name}
-                </div>
-              )}
-            </div>
+            <span style={{fontWeight: '700', color: 'var(--accent-primary)'}}>{formatNumber(userXP)} XP</span>
           </div>
-          <div style={{height: '8px', background: 'var(--bg-tertiary)', borderRadius: '4px', overflow: 'hidden'}}>
+          <div style={{height: 6, background: 'var(--bg-primary)', borderRadius: 3, overflow: 'hidden'}}>
             <div style={{
               height: '100%',
               width: `${progressToNext}%`,
-              background: currentLevel.gradient,
-              borderRadius: '4px'
+              background: `linear-gradient(90deg, ${currentLevel.color}, ${nextLevel?.color || currentLevel.color})`,
+              borderRadius: 3
             }} />
           </div>
+          {nextLevel && (
+            <div style={{fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px', textAlign: 'right'}}>
+              {formatNumber(nextLevel.xp - userXP)} XP to {nextLevel.name}
+            </div>
+          )}
         </div>
-        
+
+        {/* Stats */}
         <div style={{
           display: 'flex',
-          gap: '40px',
+          gap: '32px',
           justifyContent: 'center',
           marginTop: '32px',
           flexWrap: 'wrap'
         }}>
           <div style={{textAlign: 'center'}}>
-            <div style={{fontSize: '32px', fontWeight: '800', color: 'var(--accent-success)'}}>
-              {campaigns.length}
-            </div>
-            <div style={{fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '1px'}}>
-              PARTNER CASINOS
-            </div>
+            <div style={{color: '#ffd700', marginBottom: '4px'}}><Trophy size={20} /></div>
+            <div style={{fontSize: '24px', fontWeight: '800', color: 'var(--text-primary)'}}>{campaigns.length}</div>
+            <div style={{fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '1px'}}>CASINOS</div>
           </div>
           <div style={{textAlign: 'center'}}>
-            <div style={{fontSize: '32px', fontWeight: '800', color: '#ffd700'}}>
-              15%
-            </div>
-            <div style={{fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '1px'}}>
-              MAX RAKEBACK
-            </div>
+            <div style={{color: 'var(--accent-success)', marginBottom: '4px'}}><TrendingUp size={20} /></div>
+            <div style={{fontSize: '24px', fontWeight: '800', color: 'var(--text-primary)'}}>15%</div>
+            <div style={{fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '1px'}}>MAX RAKEBACK</div>
           </div>
           <div style={{textAlign: 'center'}}>
-            <div style={{fontSize: '32px', fontWeight: '800', color: 'var(--accent-cyan)'}}>
-              $1,750
-            </div>
-            <div style={{fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '1px'}}>
-              WEEKLY LOTTERY
-            </div>
+            <div style={{color: 'var(--accent-cyan)', marginBottom: '4px'}}><Gift size={20} /></div>
+            <div style={{fontSize: '24px', fontWeight: '800', color: 'var(--text-primary)'}}>$1,750</div>
+            <div style={{fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '1px'}}>WEEKLY LOTTERY</div>
           </div>
         </div>
       </div>
 
       {/* VIP Tiers */}
-      <div style={{marginBottom: '80px'}}>
-        <h2 style={{
-          fontSize: '32px',
-          fontWeight: '700',
-          textAlign: 'center',
-          marginBottom: '40px',
-          color: 'var(--text-primary)'
-        }}>
-          VIP Levels & Rakeback Rates
+      <div style={{marginBottom: '60px'}}>
+        <h2 style={{fontSize: '28px', fontWeight: '700', textAlign: 'center', marginBottom: '32px', color: 'var(--text-primary)'}}>
+          VIP Levels
         </h2>
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: '20px'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '16px'
         }}>
           {vipLevels.map((tier) => {
             const isUnlocked = userXP >= tier.xp;
@@ -206,79 +192,38 @@ function VIPHub() {
                 key={tier.id}
                 style={{
                   background: 'var(--bg-glass)',
-                  backdropFilter: 'blur(20px)',
                   border: isCurrent ? `2px solid ${tier.color}` : '1px solid var(--border-color)',
-                  borderRadius: '20px',
+                  borderRadius: '16px',
                   overflow: 'hidden',
-                  opacity: isUnlocked ? 1 : 0.6,
-                  transition: 'all 0.3s ease',
-                  position: 'relative'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = `0 12px 40px ${tier.color}30`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
+                  opacity: isUnlocked ? 1 : 0.5
                 }}
               >
-                {isCurrent && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '12px',
-                    right: '12px',
-                    padding: '4px 10px',
-                    background: tier.color,
-                    borderRadius: '20px',
-                    fontSize: '10px',
-                    fontWeight: '700',
-                    color: tier.id === 'gold' || tier.id === 'bronze' ? '#000' : '#fff'
-                  }}>
-                    CURRENT
-                  </div>
-                )}
-
                 <div style={{
-                  background: tier.gradient,
-                  padding: '24px',
+                  padding: '20px',
+                  background: `linear-gradient(135deg, ${tier.color}20, ${tier.color}10)`,
+                  borderBottom: '1px solid var(--border-color)',
                   textAlign: 'center'
                 }}>
-                  <div style={{fontSize: '44px', marginBottom: '4px'}}>{tier.icon}</div>
-                  <h3 style={{
-                    fontSize: '20px',
-                    fontWeight: '800',
-                    color: tier.id === 'gold' || tier.id === 'bronze' ? '#000' : '#fff',
-                    letterSpacing: '1px'
-                  }}>
-                    {tier.name}
-                  </h3>
                   <div style={{
-                    fontSize: '36px',
-                    fontWeight: '900',
-                    color: tier.id === 'gold' || tier.id === 'bronze' ? '#000' : '#fff',
-                    marginTop: '4px'
+                    width: 40,
+                    height: 40,
+                    borderRadius: 10,
+                    background: `linear-gradient(135deg, ${tier.color}, ${tier.color}80)`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 8px'
                   }}>
-                    {tier.rakeback}%
+                    <Star size={20} color="#fff" />
                   </div>
-                  <div style={{
-                    fontSize: '11px',
-                    color: tier.id === 'gold' || tier.id === 'bronze' ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.7)'
-                  }}>
-                    INSTANT RAKEBACK
+                  <div style={{fontSize: '16px', fontWeight: '700', color: tier.color}}>{tier.name}</div>
+                  <div style={{fontSize: '28px', fontWeight: '900', color: 'var(--text-primary)'}}>{tier.rakeback}%</div>
+                  <div style={{fontSize: '11px', color: 'var(--text-muted)'}}>
+                    {tier.xp === 0 ? 'Starting Level' : `${formatNumber(tier.xp)} XP`}
                   </div>
                 </div>
 
-                <div style={{padding: '20px'}}>
-                  <div style={{
-                    fontSize: '12px',
-                    color: 'var(--text-muted)',
-                    marginBottom: '12px',
-                    textAlign: 'center'
-                  }}>
-                    {tier.xp === 0 ? 'Starting Level' : `Requires ${formatNumber(tier.xp)} XP`}
-                  </div>
-
+                <div style={{padding: '16px'}}>
                   <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
                     {tier.benefits.map((benefit, idx) => (
                       <li key={idx} style={{
@@ -290,31 +235,11 @@ function VIPHub() {
                         fontSize: '13px',
                         color: 'var(--text-secondary)'
                       }}>
-                        <span style={{color: tier.color}}>✓</span>
+                        <Zap size={12} color={tier.color} />
                         {benefit}
                       </li>
                     ))}
                   </ul>
-
-                  <button
-                    onClick={() => handleRedeemClick(tier)}
-                    disabled={!isUnlocked}
-                    style={{
-                      width: '100%',
-                      marginTop: '16px',
-                      padding: '12px',
-                      background: isUnlocked ? tier.gradient : 'var(--bg-tertiary)',
-                      border: 'none',
-                      borderRadius: '10px',
-                      color: isUnlocked ? (tier.id === 'gold' || tier.id === 'bronze' ? '#000' : '#fff') : 'var(--text-muted)',
-                      fontSize: '13px',
-                      fontWeight: '700',
-                      cursor: isUnlocked ? 'pointer' : 'not-allowed',
-                      transition: 'all 0.3s ease'
-                    }}
-                  >
-                    {isUnlocked ? 'CONNECT CASINO' : `UNLOCK AT ${formatNumber(tier.xp)} XP`}
-                  </button>
                 </div>
               </div>
             );
@@ -323,352 +248,199 @@ function VIPHub() {
       </div>
 
       {/* Partner Casinos */}
-      <div style={{marginBottom: '80px'}}>
-        <h2 style={{
-          fontSize: '32px',
-          fontWeight: '700',
-          textAlign: 'center',
-          marginBottom: '16px',
-          color: 'var(--text-primary)'
-        }}>
+      <div style={{marginBottom: '60px'}}>
+        <h2 style={{fontSize: '28px', fontWeight: '700', textAlign: 'center', marginBottom: '12px', color: 'var(--text-primary)'}}>
           Partner Casinos
         </h2>
-        <p style={{
-          textAlign: 'center',
-          color: 'var(--text-muted)',
-          marginBottom: '40px',
-          fontSize: '15px'
-        }}>
-          Connect through Rakestake for exclusive bonuses and rakeback
+        <p style={{textAlign: 'center', color: 'var(--text-muted)', marginBottom: '32px', fontSize: '14px'}}>
+          Connect through Rakestake for extra rakeback on top of casino bonuses
         </p>
+
+        {/* Search */}
+        <div style={{maxWidth: '400px', margin: '0 auto 24px', position: 'relative'}}>
+          <Search size={18} style={{position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)'}} />
+          <input
+            type="text"
+            placeholder="Search casinos..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '12px 14px 12px 44px',
+              background: 'var(--bg-tertiary)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '10px',
+              color: 'var(--text-primary)',
+              fontSize: '14px',
+              outline: 'none'
+            }}
+          />
+        </div>
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: '24px'
+          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+          gap: '16px'
         }}>
           {loading ? (
-            <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '60px', color: 'var(--text-muted)'}}>
+            <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: 'var(--text-muted)'}}>
               Loading casinos...
             </div>
           ) : (
-            campaigns.map((casino) => (
+            filteredCampaigns.map((casino) => (
               <div
                 key={casino.casino_slug}
+                data-testid={`vip-casino-card-${casino.casino_slug}`}
+                onClick={() => setSelectedCasino(casino)}
                 style={{
                   background: 'var(--bg-glass)',
                   border: '1px solid var(--border-color)',
-                  borderRadius: '20px',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease'
+                  borderRadius: '14px',
+                  padding: '20px',
+                  transition: 'all 0.2s ease',
+                  cursor: 'pointer'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 12px 40px rgba(99, 102, 241, 0.2)';
+                  e.currentTarget.style.borderColor = 'var(--accent-primary)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
                 }}
               >
-                <div style={{padding: '24px'}}>
-                  <div style={{display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px'}}>
-                    <div style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-cyan))',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '24px',
-                      fontWeight: '800',
-                      color: '#fff'
-                    }}>
-                      {casino.casino_name.charAt(0)}
-                    </div>
-                    <div>
-                      <h3 style={{fontSize: '20px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '4px'}}>
-                        {casino.casino_name}
-                      </h3>
-                      <div style={{fontSize: '13px', color: 'var(--accent-success)', fontWeight: '600'}}>
-                        {casino.bonus_title}
-                      </div>
-                    </div>
+                <div style={{display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px'}}>
+                  <CasinoLogo name={casino.casino_name} size={44} />
+                  <div style={{flex: 1}}>
+                    <h3 style={{fontSize: '16px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '2px'}}>
+                      {casino.casino_name}
+                    </h3>
+                    <LiveIndicator />
                   </div>
-
                   <div style={{
-                    padding: '16px',
-                    background: 'var(--bg-tertiary)',
-                    borderRadius: '12px',
-                    marginBottom: '16px'
+                    padding: '4px 10px',
+                    background: 'var(--accent-success)',
+                    borderRadius: '6px',
+                    fontSize: '12px',
+                    fontWeight: '700',
+                    color: '#fff'
                   }}>
-                    <div style={{fontSize: '24px', fontWeight: '800', color: 'var(--accent-success)', marginBottom: '4px'}}>
-                      {casino.bonus_value}
-                    </div>
-                    {casino.exclusive_extra && (
-                      <div style={{fontSize: '12px', color: '#ffd700', fontWeight: '600'}}>
-                        + {casino.exclusive_extra}
-                      </div>
-                    )}
+                    +{casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}%
                   </div>
-
-                  <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px'}}>
-                    <div>
-                      <div style={{fontSize: '10px', color: 'var(--text-muted)', marginBottom: '4px'}}>MIN DEPOSIT</div>
-                      <div style={{fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)'}}>{casino.min_deposit}</div>
-                    </div>
-                    <div>
-                      <div style={{fontSize: '10px', color: 'var(--text-muted)', marginBottom: '4px'}}>WAGERING</div>
-                      <div style={{fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)'}}>{casino.wagering_requirement}</div>
-                    </div>
-                  </div>
-
-                  <a
-                    href={casino.referral_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'block',
-                      width: '100%',
-                      padding: '14px',
-                      background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
-                      border: 'none',
-                      borderRadius: '12px',
-                      color: '#fff',
-                      fontSize: '14px',
-                      fontWeight: '700',
-                      textAlign: 'center',
-                      textDecoration: 'none',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    PLAY AT {casino.casino_name.toUpperCase()}
-                  </a>
                 </div>
+
+                <div style={{
+                  padding: '12px',
+                  background: 'var(--bg-tertiary)',
+                  borderRadius: '8px',
+                  marginBottom: '14px',
+                  textAlign: 'center'
+                }}>
+                  <div style={{fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px'}}>Rakestake Bonus</div>
+                  <div style={{fontSize: '15px', fontWeight: '700', color: 'var(--accent-success)'}}>
+                    Up to {casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}% Rakeback
+                  </div>
+                  <div style={{fontSize: '12px', color: 'var(--text-secondary)'}}>
+                    + {casino.bonus_value}
+                  </div>
+                </div>
+
+                <button
+                  data-testid={`vip-casino-cta-${casino.casino_slug}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedCasino(casino);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    width: '100%',
+                    padding: '10px',
+                    background: 'var(--accent-primary)',
+                    borderRadius: '8px',
+                    border: 'none',
+                    color: '#fff',
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Play & Earn More
+                  <ChevronRight size={14} />
+                </button>
               </div>
             ))
           )}
         </div>
       </div>
 
-      {/* Lottery Section */}
+      {/* Lottery */}
       <div style={{
-        marginBottom: '80px',
-        padding: '40px',
-        background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
-        borderRadius: '24px',
-        border: '1px solid var(--border-color)'
+        padding: '32px',
+        background: 'var(--bg-glass)',
+        border: '1px solid var(--border-color)',
+        borderRadius: '16px',
+        marginBottom: '40px'
       }}>
-        <div style={{
-          position: 'absolute',
-          top: '20px',
-          right: '20px',
-          padding: '6px 14px',
-          background: 'var(--accent-primary)',
-          borderRadius: '50px',
-          fontSize: '10px',
-          fontWeight: '700',
-          color: '#fff',
-          letterSpacing: '1px'
-        }}>
-          MEMBERS ONLY
+        <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px'}}>
+          <Gift size={20} color="var(--accent-primary)" />
+          <h3 style={{fontSize: '20px', fontWeight: '700', color: 'var(--text-primary)'}}>Weekly VIP Lottery</h3>
+          <span style={{
+            padding: '2px 8px',
+            background: 'var(--accent-primary)',
+            borderRadius: '4px',
+            fontSize: '10px',
+            fontWeight: '600',
+            color: '#fff'
+          }}>
+            MEMBERS ONLY
+          </span>
         </div>
-
-        <h2 style={{
-          fontSize: '32px',
-          fontWeight: '800',
-          marginBottom: '16px',
-          color: 'var(--text-primary)'
-        }}>
-          🎰 Weekly VIP Lottery
-        </h2>
-        <p style={{
-          fontSize: '16px',
-          color: 'var(--text-secondary)',
-          marginBottom: '32px',
-          maxWidth: '600px'
-        }}>
-          Higher VIP levels = more lottery entries. Diamond members get 25x entries!
+        <p style={{fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '20px'}}>
+          Higher VIP level = more lottery entries. Diamond members get 25x entries.
         </p>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: '16px',
-          marginBottom: '32px'
-        }}>
-          <div style={{padding: '20px', background: 'var(--bg-tertiary)', borderRadius: '12px', textAlign: 'center'}}>
-            <div style={{fontSize: '28px', fontWeight: '700', color: '#ffd700'}}>$1,000</div>
+        <div style={{display: 'flex', gap: '16px', flexWrap: 'wrap'}}>
+          <div style={{padding: '16px 24px', background: 'var(--bg-tertiary)', borderRadius: '10px', textAlign: 'center'}}>
+            <div style={{fontSize: '24px', fontWeight: '700', color: '#ffd700'}}>$1,000</div>
             <div style={{fontSize: '11px', color: 'var(--text-muted)'}}>1ST PRIZE</div>
           </div>
-          <div style={{padding: '20px', background: 'var(--bg-tertiary)', borderRadius: '12px', textAlign: 'center'}}>
-            <div style={{fontSize: '28px', fontWeight: '700', color: '#c0c0c0'}}>$500</div>
+          <div style={{padding: '16px 24px', background: 'var(--bg-tertiary)', borderRadius: '10px', textAlign: 'center'}}>
+            <div style={{fontSize: '24px', fontWeight: '700', color: '#c0c0c0'}}>$500</div>
             <div style={{fontSize: '11px', color: 'var(--text-muted)'}}>2ND PRIZE</div>
           </div>
-          <div style={{padding: '20px', background: 'var(--bg-tertiary)', borderRadius: '12px', textAlign: 'center'}}>
-            <div style={{fontSize: '28px', fontWeight: '700', color: '#cd7f32'}}>$250</div>
+          <div style={{padding: '16px 24px', background: 'var(--bg-tertiary)', borderRadius: '10px', textAlign: 'center'}}>
+            <div style={{fontSize: '24px', fontWeight: '700', color: '#cd7f32'}}>$250</div>
             <div style={{fontSize: '11px', color: 'var(--text-muted)'}}>3RD PRIZE</div>
           </div>
         </div>
 
         {!isAuthenticated && (
           <Link to="/register" style={{
-            display: 'inline-block',
-            padding: '14px 28px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginTop: '20px',
+            padding: '10px 20px',
             background: 'var(--accent-primary)',
-            borderRadius: '10px',
+            borderRadius: '8px',
             color: '#fff',
-            fontWeight: '700',
-            fontSize: '14px',
+            fontSize: '13px',
+            fontWeight: '600',
             textDecoration: 'none'
           }}>
-            REGISTER TO ENTER LOTTERY
+            Register to Enter
+            <ChevronRight size={16} />
           </Link>
         )}
       </div>
 
-      {/* Casino Selection Modal */}
-      {showModal && (
-        <div 
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0, 0, 0, 0.85)',
-            backdropFilter: 'blur(10px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            padding: '20px'
-          }}
-          onClick={() => setShowModal(false)}
-        >
-          <div 
-            style={{
-              background: 'var(--bg-secondary)',
-              borderRadius: '24px',
-              border: `2px solid ${selectedTier?.color || 'var(--border-color)'}`,
-              maxWidth: '500px',
-              width: '100%',
-              maxHeight: '80vh',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div style={{
-              padding: '24px',
-              background: selectedTier?.gradient || 'var(--bg-tertiary)',
-              textAlign: 'center'
-            }}>
-              <div style={{fontSize: '40px', marginBottom: '8px'}}>{selectedTier?.icon}</div>
-              <h3 style={{
-                fontSize: '20px',
-                fontWeight: '700',
-                color: selectedTier?.id === 'gold' || selectedTier?.id === 'bronze' ? '#000' : '#fff'
-              }}>
-                Connect Casino
-              </h3>
-              <p style={{
-                fontSize: '14px',
-                color: selectedTier?.id === 'gold' || selectedTier?.id === 'bronze' ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.7)',
-                marginTop: '4px'
-              }}>
-                {selectedTier?.rakeback}% rakeback at {selectedTier?.name} level
-              </p>
-            </div>
-
-            <button
-              onClick={() => setShowModal(false)}
-              style={{
-                position: 'absolute',
-                top: '16px',
-                right: '16px',
-                background: 'rgba(0,0,0,0.3)',
-                border: 'none',
-                borderRadius: '50%',
-                width: '36px',
-                height: '36px',
-                color: '#fff',
-                fontSize: '18px',
-                cursor: 'pointer'
-              }}
-            >✕</button>
-
-            <div style={{padding: '20px 24px 0'}}>
-              <input
-                type="text"
-                placeholder="Search casinos..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  background: 'var(--bg-tertiary)',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: '10px',
-                  color: 'var(--text-primary)',
-                  fontSize: '14px',
-                  outline: 'none'
-                }}
-              />
-            </div>
-
-            <div style={{padding: '20px 24px', overflowY: 'auto', flex: 1}}>
-              {filteredCampaigns.map((casino) => (
-                <a
-                  key={casino.casino_slug}
-                  href={casino.referral_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setShowModal(false)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    padding: '14px',
-                    background: 'var(--bg-tertiary)',
-                    borderRadius: '12px',
-                    marginBottom: '10px',
-                    textDecoration: 'none',
-                    transition: 'background 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-glass)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'var(--bg-tertiary)'}
-                >
-                  <div style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '10px',
-                    background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-cyan))',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '18px',
-                    fontWeight: '800',
-                    color: '#fff'
-                  }}>
-                    {casino.casino_name.charAt(0)}
-                  </div>
-                  <div style={{flex: 1}}>
-                    <div style={{fontWeight: '600', color: 'var(--text-primary)', fontSize: '15px'}}>
-                      {casino.casino_name}
-                    </div>
-                    <div style={{fontSize: '12px', color: 'var(--accent-success)'}}>
-                      {casino.bonus_value}
-                    </div>
-                  </div>
-                  <span style={{color: 'var(--text-muted)'}}>→</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
+      {/* Casino Modal */}
+      {selectedCasino && (
+        <CasinoModal
+          casino={selectedCasino}
+          onClose={() => setSelectedCasino(null)}
+        />
       )}
     </div>
   );

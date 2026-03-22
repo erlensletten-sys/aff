@@ -1,104 +1,114 @@
 import React from 'react';
+import { 
+  Zap, Trophy, Star, TrendingUp, Wallet, Gift, 
+  Crown, Sparkles, ChevronRight, ExternalLink,
+  Moon, Sun, Palette, Search, X, Check,
+  Dice1, Target, Award, Gem, Shield
+} from 'lucide-react';
 
-// Animated casino logo with gradient and pulse effect
-export function CasinoLogo({ name, size = 48, gradient, animated = true }) {
-  const defaultGradients = {
-    'Stake': ['#00d4aa', '#00a67d'],
-    'Shuffle': ['#ff6b35', '#f7931a'],
-    'Rainbet': ['#667eea', '#764ba2'],
-    'FortuneJack': ['#f7931a', '#ff6b00'],
-    'BitStarz': ['#00d4ff', '#0099ff'],
-    '1win': ['#00c853', '#00e676'],
-    '1xBet': ['#1e88e5', '#42a5f5'],
-    'RoyalPartners': ['#9c27b0', '#e040fb'],
-  };
-
-  const colors = gradient || defaultGradients[name] || ['#6366f1', '#8b5cf6'];
-  const letter = name?.charAt(0) || '?';
-
+// Consistent Casino Logo Component
+export function CasinoLogo({ name, size = 48 }) {
+  const letter = name?.charAt(0)?.toUpperCase() || '?';
+  
   return (
-    <div
-      className={animated ? 'casino-logo-animated' : ''}
-      style={{
-        width: size,
-        height: size,
-        borderRadius: size * 0.25,
-        background: `linear-gradient(135deg, ${colors[0]}, ${colors[1]})`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: size * 0.45,
-        fontWeight: '900',
-        color: '#fff',
-        textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-        boxShadow: `0 4px 20px ${colors[0]}50`,
-        position: 'relative',
-        overflow: 'hidden'
-      }}
-    >
-      {/* Shine effect */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: '-100%',
-        width: '100%',
-        height: '100%',
-        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-        animation: animated ? 'shine 3s infinite' : 'none'
-      }} />
-      
-      {/* Glow ring */}
-      <div style={{
-        position: 'absolute',
-        inset: -2,
-        borderRadius: size * 0.28,
-        background: `linear-gradient(135deg, ${colors[0]}, ${colors[1]})`,
-        opacity: 0.5,
-        filter: 'blur(8px)',
-        zIndex: -1,
-        animation: animated ? 'pulse-glow 2s ease-in-out infinite' : 'none'
-      }} />
-      
+    <div style={{
+      width: size,
+      height: size,
+      borderRadius: 12,
+      background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: size * 0.45,
+      fontWeight: '800',
+      color: '#fff',
+      flexShrink: 0
+    }}>
       {letter}
     </div>
   );
 }
 
-// Animated stats counter
-export function AnimatedCounter({ value, label, color, icon }) {
+// Animated Icon Wrapper
+export function AnimatedIcon({ icon: Icon, size = 20, color = 'currentColor', animate = false }) {
+  return (
+    <span style={{
+      display: 'inline-flex',
+      animation: animate ? 'pulse-glow 2s ease-in-out infinite' : 'none'
+    }}>
+      <Icon size={size} color={color} />
+    </span>
+  );
+}
+
+// Badge with Lucide icon
+export function IconBadge({ icon: Icon, text, color = '#ffd700', size = 'normal' }) {
+  const padding = size === 'small' ? '4px 10px' : '6px 14px';
+  const fontSize = size === 'small' ? '11px' : '12px';
+  const iconSize = size === 'small' ? 12 : 14;
+  
+  return (
+    <span style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '6px',
+      padding: padding,
+      background: `${color}15`,
+      border: `1px solid ${color}40`,
+      borderRadius: '6px',
+      fontSize: fontSize,
+      fontWeight: '600',
+      color: color
+    }}>
+      {Icon && <Icon size={iconSize} />}
+      {text}
+    </span>
+  );
+}
+
+// Live Status Indicator
+export function LiveIndicator() {
+  return (
+    <span style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '6px',
+      fontSize: '11px',
+      color: 'var(--accent-success)'
+    }}>
+      <span style={{
+        width: 6,
+        height: 6,
+        borderRadius: '50%',
+        background: 'var(--accent-success)',
+        animation: 'pulse-glow 1.5s ease-in-out infinite'
+      }} />
+      LIVE
+    </span>
+  );
+}
+
+// Stats Card with Icon
+export function StatCard({ icon: Icon, value, label, color }) {
   return (
     <div style={{
-      padding: '24px',
-      background: 'var(--bg-glass)',
-      border: '1px solid var(--border-color)',
-      borderRadius: '16px',
       textAlign: 'center',
-      position: 'relative',
-      overflow: 'hidden'
+      padding: '20px'
     }}>
-      {/* Background pulse */}
-      <div style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '100px',
-        height: '100px',
-        background: `radial-gradient(circle, ${color}20, transparent)`,
-        animation: 'pulse-bg 3s ease-in-out infinite'
-      }} />
-      
-      <div style={{fontSize: '24px', marginBottom: '8px'}}>{icon}</div>
+      {Icon && (
+        <div style={{ marginBottom: '8px', color: color }}>
+          <Icon size={24} />
+        </div>
+      )}
       <div style={{
         fontSize: '32px',
         fontWeight: '800',
-        color: color,
-        position: 'relative'
+        color: color
       }}>
         {value}
       </div>
       <div style={{
-        fontSize: '12px',
+        fontSize: '11px',
         color: 'var(--text-muted)',
         letterSpacing: '1px',
         marginTop: '4px'
@@ -109,99 +119,21 @@ export function AnimatedCounter({ value, label, color, icon }) {
   );
 }
 
-// Glowing badge
-export function GlowBadge({ text, color = '#ffd700', size = 'normal' }) {
-  const padding = size === 'small' ? '4px 10px' : '6px 16px';
-  const fontSize = size === 'small' ? '10px' : '12px';
-  
-  return (
-    <span style={{
-      display: 'inline-block',
-      padding: padding,
-      background: `linear-gradient(135deg, ${color}, ${color}cc)`,
-      borderRadius: '50px',
-      fontSize: fontSize,
-      fontWeight: '700',
-      color: '#000',
-      letterSpacing: '0.5px',
-      boxShadow: `0 0 20px ${color}50`,
-      animation: 'badge-glow 2s ease-in-out infinite'
-    }}>
-      {text}
-    </span>
-  );
+// Theme Toggle with Lucide Icons
+export function ThemeToggleIcon({ theme }) {
+  const icons = {
+    main: Palette,
+    dark: Moon,
+    light: Sun
+  };
+  const Icon = icons[theme] || Palette;
+  return <Icon size={16} />;
 }
 
-// Floating particles background
-export function FloatingParticles() {
-  return (
-    <div style={{
-      position: 'absolute',
-      inset: 0,
-      overflow: 'hidden',
-      pointerEvents: 'none',
-      zIndex: 0
-    }}>
-      {[...Array(20)].map((_, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            width: Math.random() * 6 + 2 + 'px',
-            height: Math.random() * 6 + 2 + 'px',
-            background: `rgba(255, 215, 0, ${Math.random() * 0.3 + 0.1})`,
-            borderRadius: '50%',
-            left: Math.random() * 100 + '%',
-            top: Math.random() * 100 + '%',
-            animation: `float ${Math.random() * 10 + 10}s linear infinite`,
-            animationDelay: `-${Math.random() * 10}s`
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-// CSS animations - add these to your App.css
-export const animationStyles = `
-@keyframes shine {
-  0% { left: -100%; }
-  20% { left: 100%; }
-  100% { left: 100%; }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.05); }
-}
-
-@keyframes pulse-bg {
-  0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
-}
-
-@keyframes badge-glow {
-  0%, 100% { box-shadow: 0 0 10px currentColor; }
-  50% { box-shadow: 0 0 25px currentColor; }
-}
-
-@keyframes float {
-  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.casino-logo-animated:hover {
-  transform: scale(1.1) rotate(5deg);
-  transition: transform 0.3s ease;
-}
-`;
-
-export default { CasinoLogo, AnimatedCounter, GlowBadge, FloatingParticles };
+// Export all Lucide icons we use
+export {
+  Zap, Trophy, Star, TrendingUp, Wallet, Gift,
+  Crown, Sparkles, ChevronRight, ExternalLink,
+  Moon, Sun, Palette, Search, X, Check,
+  Dice1, Target, Award, Gem, Shield
+};
