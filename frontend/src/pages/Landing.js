@@ -530,23 +530,24 @@ function Landing() {
                   <div style={{ 
                     display: 'flex', 
                     alignItems: 'flex-start', 
-                    gap: '20px',
+                    gap: '16px',
                     marginBottom: '20px',
-                    position: 'relative'
+                    position: 'relative',
+                    flexWrap: 'wrap'
                   }}>
-                    <OfficialCasinoLogo slug={casinoData.slug} size={72} />
+                    <OfficialCasinoLogo slug={casinoData.slug} size={64} />
                     
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                        <h3 style={{ fontSize: '24px', fontWeight: '800', color: '#ffffff', margin: 0 }}>
+                    <div style={{ flex: 1, minWidth: '200px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                        <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#ffffff', margin: 0 }}>
                           {casinoData.name}
                         </h3>
                         <div style={{
-                          padding: '5px 14px',
+                          padding: '4px 12px',
                           background: `${brand.accentColor}20`,
                           border: `1px solid ${brand.accentColor}50`,
                           borderRadius: '20px',
-                          fontSize: '13px',
+                          fontSize: '12px',
                           fontWeight: '700',
                           color: brand.accentColor
                         }}>
@@ -556,11 +557,10 @@ function Landing() {
                       </div>
                       
                       <p style={{ 
-                        fontSize: '15px', 
+                        fontSize: '14px', 
                         color: 'rgba(255,255,255,0.7)', 
                         margin: 0,
-                        lineHeight: '1.6',
-                        maxWidth: '500px'
+                        lineHeight: '1.6'
                       }}>
                         {casinoData.description}
                       </p>
@@ -568,16 +568,17 @@ function Landing() {
 
                     {/* Bonus Badge */}
                     <div style={{ 
-                      textAlign: 'right',
+                      textAlign: 'center',
                       background: 'rgba(255,255,255,0.05)',
-                      padding: '12px 18px',
-                      borderRadius: '14px',
-                      border: '1px solid rgba(255,255,255,0.1)'
+                      padding: '10px 16px',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      minWidth: '120px'
                     }}>
-                      <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)', letterSpacing: '1px', marginBottom: '4px' }}>
+                      <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.5)', letterSpacing: '1px', marginBottom: '4px' }}>
                         WELCOME BONUS
                       </div>
-                      <div style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff' }}>
+                      <div style={{ fontSize: '15px', fontWeight: '800', color: '#ffffff' }}>
                         {casinoData.bonus}
                       </div>
                     </div>
@@ -586,28 +587,28 @@ function Landing() {
                   {/* Tags/Highlights */}
                   <div style={{ 
                     display: 'flex', 
-                    gap: '10px', 
+                    gap: '8px', 
                     flexWrap: 'wrap',
-                    marginBottom: '24px',
+                    marginBottom: '20px',
                     justifyContent: 'center'
                   }}>
-                    {casinoData.highlights.map((highlight, hidx) => (
+                    {casinoData.highlights.slice(0, 4).map((highlight, hidx) => (
                       <span
                         key={hidx}
                         style={{
-                          padding: '8px 16px',
+                          padding: '6px 12px',
                           background: 'rgba(255,255,255,0.06)',
-                          borderRadius: '10px',
-                          fontSize: '13px',
+                          borderRadius: '8px',
+                          fontSize: '11px',
                           fontWeight: '600',
                           color: 'rgba(255,255,255,0.85)',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '8px',
+                          gap: '6px',
                           border: '1px solid rgba(255,255,255,0.08)'
                         }}
                       >
-                        <Star size={14} color={brand.accentColor} />
+                        <Star size={12} color={brand.accentColor} />
                         {highlight}
                       </span>
                     ))}
