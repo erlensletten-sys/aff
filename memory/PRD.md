@@ -143,6 +143,11 @@ Developer-focused page for B2B partnerships:
 - ✅ **Gamified Dashboard**: Multi-tab layout (Overview, Casinos, Referrals, History), connected casinos tracking, transaction history
 - ✅ **Mobile Menu Fix**: Hamburger menu now opens and closes properly with smooth CSS transitions
 - ✅ **Header Blog Link**: Blog added to both desktop and mobile navigation
+- ✅ **2026 Blog Articles**: 6 new articles dated March/April 2026 - casino comparisons, bonus rankings, strategies
+- ✅ **Removed Emergent Badge**: Clean footer without third-party branding
+- ✅ **Back to Top Button**: Smooth scroll-to-top button in bottom right corner
+- ✅ **Smooth Scrolling**: CSS smooth scroll behavior enabled globally
+- ✅ **Production Ready**: Cleaned up index.html, removed tracking scripts
 
 ### Previous Sessions
 - User authentication (register/login/JWT)

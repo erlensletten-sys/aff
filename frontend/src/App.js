@@ -8,6 +8,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
+import BackToTop from './components/BackToTop';
 
 // Pages
 import Landing from './pages/Landing';
@@ -130,6 +131,7 @@ function App() {
             </Routes>
           </main>
           <Footer />
+          <BackToTop />
         </div>
       </Router>
     </ThemeProvider>
