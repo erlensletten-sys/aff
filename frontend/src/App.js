@@ -27,6 +27,7 @@ import Offers from './pages/Offers';
 import Guide from './pages/Guide';
 import VIPHub from './pages/VIPHub';
 import SlotsAPI from './pages/SlotsAPI';
+import Blog from './pages/Blog';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -99,6 +100,8 @@ function App() {
               <Route path="/offers" element={<Offers />} />
               <Route path="/vip" element={<VIPHub />} />
               <Route path="/slots-api" element={<SlotsAPI />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<Blog />} />
               <Route 
                 path="/dashboard" 
                 element={
