@@ -49,11 +49,11 @@ function Dashboard() {
 
   // Connected casinos
   const connectedCasinos = [
-    { name: 'Stake', slug: 'stake', rakeback: 10, link: 'https://stake.com/?c=rakestakevip', bonus: 'Up to $3,000' },
-    { name: 'Shuffle', slug: 'shuffle', rakeback: 15, link: 'https://shuffle.com/?r=rakestakevip', bonus: 'Up to $1,500 + 100 FS' },
-    { name: 'Duel', slug: 'duel', rakeback: 10, link: 'https://duel.com/?a=rakestakevip', bonus: 'Up to $2,000 + 200 FS' },
-    { name: 'Rainbet', slug: 'rainbet', rakeback: 12, link: 'https://rainbet.com/?r=rakestakevip', bonus: 'Up to $1,000' },
-    { name: 'FortuneJack', slug: 'fortunejack', rakeback: 8, link: 'https://fortunejack.com/?ref=rakestakevip', bonus: 'Up to 6 BTC' },
+    { name: 'Stake', slug: 'stake', rakeback: 10, link: 'https://stake.com/?c=rakestakevip', bonus: '200% up to $1,000' },
+    { name: 'Shuffle', slug: 'shuffle', rakeback: 15, link: 'https://shuffle.com/?r=rakestakevip', bonus: '100% up to $500' },
+    { name: 'Duel', slug: 'duel', rakeback: 10, link: 'https://duel.com/?a=rakestakevip', bonus: '100% up to $500' },
+    { name: 'Rainbet', slug: 'rainbet', rakeback: 12, link: 'https://rainbet.com/?r=rakestakevip', bonus: '100% up to $500' },
+    { name: 'FortuneJack', slug: 'fortunejack', rakeback: 8, link: 'https://fortunejack.com/?ref=rakestakevip', bonus: '150% up to 1 BTC' },
   ];
 
   // Referrals

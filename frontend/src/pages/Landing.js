@@ -18,7 +18,7 @@ const casinoDetails = [
     name: 'Stake',
     link: 'https://stake.com/?c=rakestakevip',
     rakeback: 10,
-    bonus: 'Up to $3,000',
+    bonus: '200% up to $1,000',
     description: "World's largest crypto casino. Known for Stake Originals, instant payouts, and industry-leading sports betting odds.",
     highlights: ['#1 Crypto Casino', 'Instant Withdrawals', 'Stake Originals', 'Sports Betting'],
     ctaText: 'Play Stake + Get 10% Back'
@@ -28,7 +28,7 @@ const casinoDetails = [
     name: 'Shuffle',
     link: 'https://shuffle.com/?r=rakestakevip',
     rakeback: 15,
-    bonus: 'Up to $1,500 + 100 FS',
+    bonus: '100% up to $500',
     description: 'Provably fair crypto casino with transparent RTP. Best known for high-stakes games and VIP rewards.',
     highlights: ['Provably Fair', 'High RTP', 'VIP Rewards', 'Fast Payouts'],
     ctaText: 'Unlock 15% Rakeback'
@@ -38,7 +38,7 @@ const casinoDetails = [
     name: 'Duel',
     link: 'https://duel.com/?a=rakestakevip',
     rakeback: 10,
-    bonus: 'Up to $2,000 + 200 FS',
+    bonus: '100% up to $500',
     description: 'Fast-growing crypto casino with innovative originals and competitive rakeback. Popular for Crash and Dice.',
     highlights: ['Duel Originals', 'Crash & Dice', 'Fast Withdrawals', 'Active Community'],
     ctaText: 'Duel & Earn 10% Back'
@@ -48,7 +48,7 @@ const casinoDetails = [
     name: 'Rainbet',
     link: 'https://rainbet.com/?r=rakestakevip',
     rakeback: 12,
-    bonus: 'Up to $1,000 + Daily Rakeback',
+    bonus: '100% up to $500 + Daily Rakeback',
     description: 'Community-driven casino with daily rakeback and frequent promotions. Strong on slots and live casino.',
     highlights: ['Daily Rakeback', 'Active Community', 'Slots Focus', 'Live Casino'],
     ctaText: 'Join & Stack Rewards'
@@ -58,27 +58,27 @@ const casinoDetails = [
     name: 'FortuneJack',
     link: 'https://fortunejack.com/?ref=rakestakevip',
     rakeback: 8,
-    bonus: 'Up to 6 BTC + 350 FS',
+    bonus: '150% up to 1 BTC',
     description: 'One of the oldest crypto casinos (est. 2014). Massive game library with 3,000+ titles and lottery games.',
     highlights: ['Est. 2014', '3,000+ Games', 'Lottery Games', 'Dice & Crash'],
-    ctaText: 'Claim Up to 6 BTC + Rakeback'
+    ctaText: 'Claim Bonus + Rakeback'
   },
   {
     slug: 'bitstarz',
     name: 'BitStarz',
     link: 'https://bitstarz.com/?ref=rakestakevip',
     rakeback: 10,
-    bonus: 'Up to 5 BTC + 180 FS',
+    bonus: '100% up to 1 BTC + 180 FS',
     description: 'Award-winning casino with fast withdrawals (avg 10 min). Top choice for slots and table games.',
     highlights: ['Award-Winning', '10 Min Withdrawals', 'Slots Leader', '4,000+ Games'],
-    ctaText: 'Get 5 BTC + Extra Rakeback'
+    ctaText: 'Get Bonus + Extra Rakeback'
   },
   {
     slug: '1win',
     name: '1win',
     link: 'https://1win.com/?ref=rakestakevip',
     rakeback: 12,
-    bonus: 'Up to $10,000',
+    bonus: '500% up to $1,000',
     description: 'Global sportsbook and casino with competitive odds. Excellent for esports and live betting.',
     highlights: ['Sports & Casino', 'Esports Focus', 'Live Betting', 'High Limits'],
     ctaText: 'Bet Sports + Earn 12% Back'
@@ -88,7 +88,7 @@ const casinoDetails = [
     name: '1xBet',
     link: 'https://1xbet.com/?ref=rakestakevip',
     rakeback: 8,
-    bonus: 'Up to $1,500 + 150 FS',
+    bonus: '100% up to $500 + 150 FS',
     description: 'Leading global bookmaker with 1,000+ daily events. Wide crypto support and competitive odds.',
     highlights: ['1,000+ Events/Day', 'Best Odds', 'Multi-Currency', 'Live Streaming'],
     ctaText: 'Start Betting Smarter'
@@ -98,7 +98,7 @@ const casinoDetails = [
     name: 'RoyalPartners',
     link: 'https://royalpartners.com/?ref=rakestakevip',
     rakeback: 15,
-    bonus: 'Up to $3,000 + Cashback',
+    bonus: '150% up to $500 + Cashback',
     description: 'Premium VIP-focused casino with generous cashback and dedicated account managers.',
     highlights: ['VIP Program', 'Personal Manager', 'Cashback Rewards', 'Exclusive Bonuses'],
     ctaText: 'Go VIP + 15% Rakeback'

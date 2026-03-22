@@ -18,7 +18,7 @@ const casinoLogos = {
   },
   duel: {
     name: 'Duel',
-    logoUrl: 'https://duel.com/logo.svg',
+    logoUrl: null, // Use letter fallback - Duel doesn't have easily accessible logo
     primaryColor: '#0d0d1a',
     accentColor: '#00e5ff',
     bgColor: '#080812'
