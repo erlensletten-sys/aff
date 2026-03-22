@@ -7,6 +7,7 @@ import {
 import { IconBadge, LiveIndicator } from '../components/AnimatedElements';
 import { OfficialCasinoLogo, getCasinoBrand } from '../components/CasinoLogos';
 import CasinoModal from '../components/CasinoModal';
+import { trackAffiliateClick } from '../utils/tracking';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -25,7 +26,7 @@ const casinoDetails = [
   {
     slug: 'shuffle',
     name: 'Shuffle',
-    link: 'https://shuffle.com?r=rakestakevip',
+    link: 'https://shuffle.com/?r=rakestakevip',
     rakeback: 15,
     bonus: 'Up to $1,500 + 100 FS',
     description: 'Provably fair crypto casino with transparent RTP. Best known for high-stakes games and VIP rewards.',
@@ -35,7 +36,7 @@ const casinoDetails = [
   {
     slug: 'rainbet',
     name: 'Rainbet',
-    link: 'https://rainbet.com?r=rakestakevip',
+    link: 'https://rainbet.com/?r=rakestakevip',
     rakeback: 12,
     bonus: 'Up to $1,000 + Daily Rakeback',
     description: 'Community-driven casino with daily rakeback and frequent promotions. Strong on slots and live casino.',
@@ -45,7 +46,7 @@ const casinoDetails = [
   {
     slug: 'fortunejack',
     name: 'FortuneJack',
-    link: 'https://fortunejack.com/?ref=rakestake',
+    link: 'https://fortunejack.com/?ref=rakestakevip',
     rakeback: 8,
     bonus: 'Up to 6 BTC + 350 FS',
     description: 'One of the oldest crypto casinos (est. 2014). Massive game library with 3,000+ titles and lottery games.',
@@ -55,7 +56,7 @@ const casinoDetails = [
   {
     slug: 'bitstarz',
     name: 'BitStarz',
-    link: 'https://bitstarz.com/?ref=rakestake',
+    link: 'https://bitstarz.com/?ref=rakestakevip',
     rakeback: 10,
     bonus: 'Up to 5 BTC + 180 FS',
     description: 'Award-winning casino with fast withdrawals (avg 10 min). Top choice for slots and table games.',
@@ -65,7 +66,7 @@ const casinoDetails = [
   {
     slug: '1win',
     name: '1win',
-    link: 'https://1win.com/?ref=rakestake',
+    link: 'https://1win.com/?ref=rakestakevip',
     rakeback: 12,
     bonus: 'Up to $10,000',
     description: 'Global sportsbook and casino with competitive odds. Excellent for esports and live betting.',
@@ -75,7 +76,7 @@ const casinoDetails = [
   {
     slug: '1xbet',
     name: '1xBet',
-    link: 'https://1xbet.com/?ref=rakestake',
+    link: 'https://1xbet.com/?ref=rakestakevip',
     rakeback: 8,
     bonus: 'Up to $1,500 + 150 FS',
     description: 'Leading global bookmaker with 1,000+ daily events. Wide crypto support and competitive odds.',
@@ -85,7 +86,7 @@ const casinoDetails = [
   {
     slug: 'royalpartners',
     name: 'RoyalPartners',
-    link: 'https://royalpartners.com/?ref=rakestake',
+    link: 'https://royalpartners.com/?ref=rakestakevip',
     rakeback: 15,
     bonus: 'Up to $3,000 + Cashback',
     description: 'Premium VIP-focused casino with generous cashback and dedicated account managers.',

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Check, Users, DollarSign, TrendingUp, ExternalLink, Sparkles, Shield, Star } from 'lucide-react';
 import { OfficialCasinoLogo, getCasinoBrand } from './CasinoLogos';
+import { trackAffiliateClick } from '../utils/tracking';
 
 const casinoContent = {
   'stake': {
@@ -61,6 +62,8 @@ function CasinoModal({ casino, onClose }) {
   }, [casino]);
 
   const handlePlayClick = () => {
+    // Track the click before opening the link
+    trackAffiliateClick(casino.casino_slug || slug, casino.casino_name || casino.name);
     window.open(casino.referral_link, '_blank', 'noopener,noreferrer');
   };
 

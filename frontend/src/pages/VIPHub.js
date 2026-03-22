@@ -8,6 +8,7 @@ import {
 import { IconBadge, LiveIndicator } from '../components/AnimatedElements';
 import { OfficialCasinoLogo, getCasinoBrand } from '../components/CasinoLogos';
 import CasinoModal from '../components/CasinoModal';
+import { trackAffiliateClick } from '../utils/tracking';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 

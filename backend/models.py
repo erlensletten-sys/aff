@@ -165,6 +165,25 @@ class VIPCampaignUpdateRequest(BaseModel):
     is_active: Optional[bool] = None
     sort_order: Optional[int] = None
 
+class AffiliateClick(BaseModel):
+    """Affiliate click tracking model"""
+    casino_slug: str
+    casino_name: str
+    user_id: Optional[str] = None  # User email if logged in
+    session_id: str  # Anonymous session tracking
+    referrer: Optional[str] = None
+    user_agent: Optional[str] = None
+    ip_hash: Optional[str] = None  # Hashed IP for privacy
+    country: Optional[str] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class AffiliateClickRequest(BaseModel):
+    """Affiliate click tracking request"""
+    casino_slug: str
+    casino_name: str
+    session_id: str
+    referrer: Optional[str] = None
+
 class ProvablyFairVerifyRequest(BaseModel):
     """Provably fair verification request"""
     provider: str = Field(min_length=2, max_length=100)

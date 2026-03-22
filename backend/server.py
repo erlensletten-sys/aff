@@ -13,7 +13,8 @@ from models import (
     PromotionCreateRequest, PromotionUpdateRequest,
     ProviderCreateRequest, ProviderUpdateRequest,
     ProvablyFairVerifyRequest, ProvablyFairVerifyResponse,
-    VIPCampaign, VIPCampaignCreateRequest, VIPCampaignUpdateRequest
+    VIPCampaign, VIPCampaignCreateRequest, VIPCampaignUpdateRequest,
+    AffiliateClick, AffiliateClickRequest
 )
 from auth import hash_password, verify_password, create_access_token, decode_access_token
 from email_service import email_service
@@ -324,11 +325,7 @@ async def login(request: UserLoginRequest):
         if not verify_password(request.password, user["hashed_password"]):
             raise HTTPException(status_code=401, detail="Invalid email or password")
         
-        # Check email verification
-        if not user.get("is_email_verified", False):
-            raise HTTPException(status_code=403, detail="Email not verified. Please check your email.")
-        
-        # Create access token
+        # Create access token (allow login without email verification)
         access_token = create_access_token(data={"sub": user["email"]})
         
         # Update last login
@@ -975,6 +972,122 @@ async def delete_vip_campaign(slug: str, user: dict = Depends(get_current_user))
     except Exception as e:
         logger.error(f"Delete VIP campaign error: {e}")
         raise HTTPException(status_code=500, detail="Failed to delete VIP campaign")
+
+# Affiliate Click Tracking Endpoints
+@app.post("/api/tracking/click")
+async def track_affiliate_click(
+    request: AffiliateClickRequest,
+    authorization: Optional[str] = Header(None),
+    user_agent: Optional[str] = Header(None, alias="User-Agent"),
+    x_forwarded_for: Optional[str] = Header(None, alias="X-Forwarded-For")
+):
+    """Track affiliate link clicks"""
+    try:
+        # Get user if logged in
+        user = await get_current_user(authorization)
+        user_id = user.get("email") if user else None
+        
+        # Hash IP for privacy
+        import hashlib
+        ip_raw = x_forwarded_for.split(",")[0].strip() if x_forwarded_for else "unknown"
+        ip_hash = hashlib.sha256(ip_raw.encode()).hexdigest()[:16]
+        
+        click_data = AffiliateClick(
+            casino_slug=request.casino_slug,
+            casino_name=request.casino_name,
+            user_id=user_id,
+            session_id=request.session_id,
+            referrer=request.referrer,
+            user_agent=user_agent,
+            ip_hash=ip_hash,
+            created_at=datetime.now(timezone.utc)
+        )
+        
+        await db.affiliate_clicks.insert_one(click_data.model_dump())
+        
+        logger.info(f"Affiliate click tracked: {request.casino_slug} by {user_id or 'anonymous'}")
+        
+        return {"status": "tracked", "casino": request.casino_slug}
+    
+    except Exception as e:
+        logger.error(f"Click tracking error: {e}")
+        # Don't fail the request, just log the error
+        return {"status": "error", "message": "Failed to track click"}
+
+@app.get("/api/tracking/stats")
+async def get_tracking_stats(authorization: Optional[str] = Header(None)):
+    """Get affiliate click statistics (admin only)"""
+    user = await get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    if user.get("email") not in settings.ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        # Total clicks
+        total_clicks = await db.affiliate_clicks.count_documents({})
+        
+        # Clicks by casino
+        pipeline = [
+            {"$group": {"_id": "$casino_slug", "count": {"$sum": 1}, "name": {"$first": "$casino_name"}}},
+            {"$sort": {"count": -1}}
+        ]
+        by_casino = await db.affiliate_clicks.aggregate(pipeline).to_list(length=50)
+        
+        # Clicks in last 24 hours
+        yesterday = datetime.now(timezone.utc) - timedelta(hours=24)
+        clicks_24h = await db.affiliate_clicks.count_documents({"created_at": {"$gte": yesterday}})
+        
+        # Clicks in last 7 days
+        week_ago = datetime.now(timezone.utc) - timedelta(days=7)
+        clicks_7d = await db.affiliate_clicks.count_documents({"created_at": {"$gte": week_ago}})
+        
+        # Unique sessions
+        unique_sessions = len(await db.affiliate_clicks.distinct("session_id"))
+        
+        # Logged in vs anonymous
+        logged_in_clicks = await db.affiliate_clicks.count_documents({"user_id": {"$ne": None}})
+        
+        return {
+            "total_clicks": total_clicks,
+            "clicks_24h": clicks_24h,
+            "clicks_7d": clicks_7d,
+            "unique_sessions": unique_sessions,
+            "logged_in_clicks": logged_in_clicks,
+            "anonymous_clicks": total_clicks - logged_in_clicks,
+            "by_casino": by_casino,
+            "last_updated": datetime.now(timezone.utc).isoformat()
+        }
+    
+    except Exception as e:
+        logger.error(f"Tracking stats error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve tracking stats")
+
+@app.get("/api/tracking/recent")
+async def get_recent_clicks(
+    authorization: Optional[str] = Header(None),
+    limit: int = 50
+):
+    """Get recent affiliate clicks (admin only)"""
+    user = await get_current_user(authorization)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    if user.get("email") not in settings.ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        clicks = await db.affiliate_clicks.find(
+            {},
+            {"_id": 0, "ip_hash": 0}  # Don't expose IP hashes
+        ).sort("created_at", -1).to_list(length=limit)
+        
+        return {"clicks": clicks, "count": len(clicks)}
+    
+    except Exception as e:
+        logger.error(f"Recent clicks error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve recent clicks")
 
 if __name__ == "__main__":
     import uvicorn
