@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Crown, Star, Trophy, Gift, TrendingUp, Search, X,
-  ExternalLink, ChevronRight, Sparkles, Zap
+  ExternalLink, ChevronRight, Sparkles, Zap, ArrowRight
 } from 'lucide-react';
-import { CasinoLogo, IconBadge, LiveIndicator } from '../components/AnimatedElements';
+import { IconBadge, LiveIndicator } from '../components/AnimatedElements';
+import { OfficialCasinoLogo, getCasinoBrand } from '../components/CasinoLogos';
 import CasinoModal from '../components/CasinoModal';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
@@ -287,89 +288,99 @@ function VIPHub() {
               Loading casinos...
             </div>
           ) : (
-            filteredCampaigns.map((casino) => (
-              <div
-                key={casino.casino_slug}
-                data-testid={`vip-casino-card-${casino.casino_slug}`}
-                onClick={() => setSelectedCasino(casino)}
-                style={{
-                  background: 'var(--bg-glass)',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: '14px',
-                  padding: '20px',
-                  transition: 'all 0.2s ease',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--accent-primary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--border-color)';
-                }}
-              >
-                <div style={{display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px'}}>
-                  <CasinoLogo name={casino.casino_name} size={44} />
-                  <div style={{flex: 1}}>
-                    <h3 style={{fontSize: '16px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '2px'}}>
-                      {casino.casino_name}
-                    </h3>
-                    <LiveIndicator />
-                  </div>
-                  <div style={{
-                    padding: '4px 10px',
-                    background: 'var(--accent-success)',
-                    borderRadius: '6px',
-                    fontSize: '12px',
-                    fontWeight: '700',
-                    color: '#fff'
-                  }}>
-                    +{casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}%
-                  </div>
-                </div>
-
-                <div style={{
-                  padding: '12px',
-                  background: 'var(--bg-tertiary)',
-                  borderRadius: '8px',
-                  marginBottom: '14px',
-                  textAlign: 'center'
-                }}>
-                  <div style={{fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px'}}>Rakestake Bonus</div>
-                  <div style={{fontSize: '15px', fontWeight: '700', color: 'var(--accent-success)'}}>
-                    Up to {casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}% Rakeback
-                  </div>
-                  <div style={{fontSize: '12px', color: 'var(--text-secondary)'}}>
-                    + {casino.bonus_value}
-                  </div>
-                </div>
-
-                <button
-                  data-testid={`vip-casino-cta-${casino.casino_slug}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedCasino(casino);
-                  }}
+            filteredCampaigns.map((casino) => {
+              const brand = getCasinoBrand(casino.casino_slug);
+              return (
+                <div
+                  key={casino.casino_slug}
+                  data-testid={`vip-casino-card-${casino.casino_slug}`}
+                  onClick={() => setSelectedCasino(casino)}
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    width: '100%',
-                    padding: '10px',
-                    background: 'var(--accent-primary)',
-                    borderRadius: '8px',
-                    border: 'none',
-                    color: '#fff',
-                    fontSize: '13px',
-                    fontWeight: '600',
+                    background: `linear-gradient(160deg, ${brand.primaryColor}ee 0%, #0a0a0f 100%)`,
+                    border: `1px solid ${brand.accentColor}30`,
+                    borderRadius: '16px',
+                    padding: '20px',
+                    transition: 'all 0.3s ease',
                     cursor: 'pointer'
                   }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = `${brand.accentColor}60`;
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = `0 12px 30px ${brand.accentColor}20`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = `${brand.accentColor}30`;
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
                 >
-                  Play & Earn More
-                  <ChevronRight size={14} />
-                </button>
-              </div>
-            ))
+                  <div style={{display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px'}}>
+                    <OfficialCasinoLogo slug={casino.casino_slug} size={48} />
+                    <div style={{flex: 1}}>
+                      <h3 style={{fontSize: '17px', fontWeight: '700', color: '#ffffff', marginBottom: '4px'}}>
+                        {casino.casino_name}
+                      </h3>
+                      <LiveIndicator />
+                    </div>
+                    <div style={{
+                      padding: '6px 12px',
+                      background: `${brand.accentColor}20`,
+                      border: `1px solid ${brand.accentColor}40`,
+                      borderRadius: '20px',
+                      fontSize: '12px',
+                      fontWeight: '700',
+                      color: brand.accentColor
+                    }}>
+                      +{casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}%
+                    </div>
+                  </div>
+
+                  <div style={{
+                    padding: '14px',
+                    background: 'rgba(255,255,255,0.05)',
+                    borderRadius: '10px',
+                    marginBottom: '14px',
+                    textAlign: 'center',
+                    border: '1px solid rgba(255,255,255,0.08)'
+                  }}>
+                    <div style={{fontSize: '11px', color: 'rgba(255,255,255,0.5)', marginBottom: '4px', fontWeight: '600', letterSpacing: '0.5px'}}>RAKESTAKE BONUS</div>
+                    <div style={{fontSize: '16px', fontWeight: '700', color: brand.accentColor}}>
+                      Up to {casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}% Rakeback
+                    </div>
+                    <div style={{fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '4px'}}>
+                      + {casino.bonus_value}
+                    </div>
+                  </div>
+
+                  <button
+                    data-testid={`vip-casino-cta-${casino.casino_slug}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedCasino(casino);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '10px',
+                      width: '100%',
+                      padding: '12px',
+                      background: brand.accentColor,
+                      borderRadius: '10px',
+                      border: 'none',
+                      color: brand.primaryColor === '#0f0f1a' ? '#ffffff' : '#000000',
+                      fontSize: '14px',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    Play & Earn More
+                    <ArrowRight size={16} />
+                  </button>
+                </div>
+              );
+            })
           )}
         </div>
       </div>

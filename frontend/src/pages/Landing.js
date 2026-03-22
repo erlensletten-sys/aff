@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Zap, Trophy, TrendingUp, Wallet, Gift, ChevronRight, 
-  ExternalLink, Sparkles, Crown, Star
+  ExternalLink, Sparkles, Crown, Star, Users, ArrowRight
 } from 'lucide-react';
-import { CasinoLogo, IconBadge, LiveIndicator } from '../components/AnimatedElements';
+import { IconBadge, LiveIndicator } from '../components/AnimatedElements';
+import { OfficialCasinoLogo, getCasinoBrand } from '../components/CasinoLogos';
 import CasinoModal from '../components/CasinoModal';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
@@ -212,174 +213,196 @@ function Landing() {
         margin: '0 auto 100px',
         padding: '0 20px'
       }}>
-        <div style={{textAlign: 'center', marginBottom: '40px'}}>
-          <h2 style={{fontSize: '36px', fontWeight: '800', marginBottom: '12px', color: 'var(--text-primary)'}}>
-            Partner Casinos
+        <div style={{textAlign: 'center', marginBottom: '48px'}}>
+          <div style={{marginBottom: '16px'}}>
+            <IconBadge icon={Trophy} text="PARTNER CASINOS" color="var(--accent-primary)" />
+          </div>
+          <h2 style={{fontSize: '40px', fontWeight: '800', marginBottom: '14px', color: 'var(--text-primary)', letterSpacing: '-1px'}}>
+            Play Smarter, Earn More
           </h2>
-          <p style={{color: 'var(--text-secondary)', fontSize: '15px'}}>
-            All standard casino bonuses apply. Rakestake adds extra rakeback on top.
+          <p style={{color: 'var(--text-secondary)', fontSize: '16px', maxWidth: '500px', margin: '0 auto'}}>
+            Connect through Rakestake for exclusive rakeback on top of casino bonuses
           </p>
         </div>
 
+        {/* Featured Casinos - Top Row */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-          gap: '20px'
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '16px',
+          marginBottom: '16px'
         }}>
           {loading ? (
             <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '60px', color: 'var(--text-muted)'}}>
               Loading casinos...
             </div>
           ) : (
-            campaigns.map((casino) => (
+            campaigns.slice(0, 3).map((casino) => {
+              const brand = getCasinoBrand(casino.casino_slug);
+              return (
+                <div
+                  key={casino.casino_slug}
+                  data-testid={`casino-card-${casino.casino_slug}`}
+                  onClick={() => setSelectedCasino(casino)}
+                  style={{
+                    background: `linear-gradient(160deg, ${brand.primaryColor} 0%, #0a0a0f 100%)`,
+                    border: `1px solid ${brand.accentColor}30`,
+                    borderRadius: '20px',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    position: 'relative'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-6px)';
+                    e.currentTarget.style.boxShadow = `0 20px 40px ${brand.accentColor}25`;
+                    e.currentTarget.style.borderColor = `${brand.accentColor}60`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.borderColor = `${brand.accentColor}30`;
+                  }}
+                >
+                  {/* Glow Effect */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '120px',
+                    background: `linear-gradient(180deg, ${brand.accentColor}15 0%, transparent 100%)`,
+                    pointerEvents: 'none'
+                  }} />
+
+                  <div style={{padding: '28px 24px', position: 'relative'}}>
+                    {/* Header */}
+                    <div style={{display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '20px'}}>
+                      <OfficialCasinoLogo slug={casino.casino_slug} size={56} />
+                      <div style={{
+                        padding: '6px 14px',
+                        background: `${brand.accentColor}20`,
+                        border: `1px solid ${brand.accentColor}40`,
+                        borderRadius: '20px',
+                        fontSize: '13px',
+                        fontWeight: '700',
+                        color: brand.accentColor
+                      }}>
+                        +{casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}% Rakeback
+                      </div>
+                    </div>
+
+                    {/* Casino Name */}
+                    <h3 style={{fontSize: '22px', fontWeight: '800', color: '#ffffff', marginBottom: '6px'}}>
+                      {casino.casino_name}
+                    </h3>
+                    <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px'}}>
+                      <LiveIndicator />
+                      <span style={{fontSize: '12px', color: 'rgba(255,255,255,0.5)'}}>•</span>
+                      <span style={{fontSize: '12px', color: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', gap: '4px'}}>
+                        <Users size={12} />
+                        {Math.floor(Math.random() * 500 + 800).toLocaleString()} playing
+                      </span>
+                    </div>
+
+                    {/* Bonus */}
+                    <div style={{
+                      padding: '14px 16px',
+                      background: 'rgba(255,255,255,0.06)',
+                      borderRadius: '12px',
+                      marginBottom: '16px',
+                      border: '1px solid rgba(255,255,255,0.08)'
+                    }}>
+                      <div style={{fontSize: '11px', color: 'rgba(255,255,255,0.5)', marginBottom: '4px', fontWeight: '600', letterSpacing: '0.5px'}}>
+                        WELCOME BONUS
+                      </div>
+                      <div style={{fontSize: '16px', fontWeight: '700', color: '#ffffff'}}>
+                        {casino.bonus_value}
+                      </div>
+                    </div>
+
+                    {/* CTA */}
+                    <button
+                      data-testid={`casino-cta-${casino.casino_slug}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedCasino(casino);
+                      }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '10px',
+                        width: '100%',
+                        padding: '14px',
+                        background: brand.accentColor,
+                        borderRadius: '12px',
+                        border: 'none',
+                        color: brand.primaryColor === '#0f0f1a' ? '#ffffff' : '#000000',
+                        fontSize: '14px',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      Play & Earn More
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* Secondary Casinos - Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '12px'
+        }}>
+          {!loading && campaigns.slice(3).map((casino) => {
+            const brand = getCasinoBrand(casino.casino_slug);
+            return (
               <div
                 key={casino.casino_slug}
                 data-testid={`casino-card-${casino.casino_slug}`}
                 onClick={() => setSelectedCasino(casino)}
                 style={{
-                  background: 'var(--bg-glass)',
-                  border: '1px solid var(--border-color)',
+                  background: `linear-gradient(160deg, ${brand.primaryColor}dd 0%, #0a0a0f 100%)`,
+                  border: `1px solid ${brand.accentColor}25`,
                   borderRadius: '16px',
-                  overflow: 'hidden',
-                  transition: 'all 0.2s ease',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--accent-primary)';
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--border-color)';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                {/* Card Header */}
-                <div style={{
                   padding: '20px',
-                  borderBottom: '1px solid var(--border-color)',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between'
-                }}>
-                  <div style={{display: 'flex', alignItems: 'center', gap: '14px'}}>
-                    <CasinoLogo name={casino.casino_name} size={48} />
-                    <div>
-                      <h3 style={{fontSize: '18px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '2px'}}>
-                        {casino.casino_name}
-                      </h3>
-                      <LiveIndicator />
-                    </div>
-                  </div>
-                  <div style={{
-                    padding: '6px 12px',
-                    background: 'var(--accent-success)',
-                    borderRadius: '6px',
-                    fontSize: '13px',
-                    fontWeight: '700',
-                    color: '#fff'
-                  }}>
-                    +{casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}%
+                  gap: '16px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.borderColor = `${brand.accentColor}50`;
+                  e.currentTarget.style.boxShadow = `0 12px 30px ${brand.accentColor}15`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = `${brand.accentColor}25`;
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                <OfficialCasinoLogo slug={casino.casino_slug} size={48} />
+                <div style={{flex: 1}}>
+                  <h4 style={{fontSize: '16px', fontWeight: '700', color: '#ffffff', marginBottom: '4px'}}>
+                    {casino.casino_name}
+                  </h4>
+                  <div style={{fontSize: '13px', color: brand.accentColor, fontWeight: '600'}}>
+                    +{casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}% Rakeback
                   </div>
                 </div>
-
-                {/* Card Body */}
-                <div style={{padding: '20px'}}>
-                  {/* Main Benefit */}
-                  <div style={{
-                    padding: '16px',
-                    background: 'var(--bg-tertiary)',
-                    borderRadius: '10px',
-                    marginBottom: '16px',
-                    textAlign: 'center'
-                  }}>
-                    <div style={{fontSize: '14px', color: 'var(--text-muted)', marginBottom: '6px'}}>
-                      Rakestake Exclusive
-                    </div>
-                    <div style={{fontSize: '18px', fontWeight: '700', color: 'var(--accent-success)'}}>
-                      Up to {casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}% Rakeback
-                    </div>
-                    <div style={{fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px'}}>
-                      on top of {casino.casino_name} bonus
-                    </div>
-                  </div>
-
-                  {/* Casino Bonus */}
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    marginBottom: '16px',
-                    padding: '12px',
-                    background: 'var(--bg-primary)',
-                    borderRadius: '8px',
-                    border: '1px solid var(--border-color)'
-                  }}>
-                    <Gift size={18} color="var(--accent-primary)" />
-                    <div>
-                      <div style={{fontSize: '12px', color: 'var(--text-muted)'}}>Casino Bonus</div>
-                      <div style={{fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)'}}>{casino.bonus_value}</div>
-                    </div>
-                  </div>
-
-                  {/* Quick Info */}
-                  <div style={{
-                    display: 'flex',
-                    gap: '8px',
-                    flexWrap: 'wrap',
-                    marginBottom: '16px'
-                  }}>
-                    <span style={{
-                      padding: '4px 10px',
-                      background: 'var(--bg-primary)',
-                      border: '1px solid var(--border-color)',
-                      borderRadius: '4px',
-                      fontSize: '11px',
-                      color: 'var(--text-secondary)'
-                    }}>
-                      Min: {casino.min_deposit}
-                    </span>
-                    <span style={{
-                      padding: '4px 10px',
-                      background: 'var(--bg-primary)',
-                      border: '1px solid var(--border-color)',
-                      borderRadius: '4px',
-                      fontSize: '11px',
-                      color: 'var(--text-secondary)'
-                    }}>
-                      {casino.wagering_requirement}
-                    </span>
-                  </div>
-
-                  {/* CTA */}
-                  <button
-                    data-testid={`casino-cta-${casino.casino_slug}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedCasino(casino);
-                    }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      width: '100%',
-                      padding: '12px',
-                      background: 'var(--accent-primary)',
-                      borderRadius: '8px',
-                      border: 'none',
-                      color: '#fff',
-                      fontSize: '14px',
-                      fontWeight: '600',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    Play & Earn More
-                    <ChevronRight size={16} />
-                  </button>
-                </div>
+                <ChevronRight size={20} color="rgba(255,255,255,0.4)" />
               </div>
-            ))
-          )}
+            );
+          })}
         </div>
       </div>
 

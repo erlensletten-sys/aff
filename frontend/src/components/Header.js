@@ -30,7 +30,7 @@ function Header({ isAuthenticated, isAdmin, onLogout }) {
             fontWeight: '600'
           }}>VIP CLUB</Link>
           <Link to="/verifiers" className="nav-link">VERIFIERS</Link>
-          <Link to="/calculators" className="nav-link">CALCULATORS</Link>
+          <Link to="/slots-api" className="nav-link">SLOTS & SPORTSBOOK API</Link>
           <Link to="/stats" className="nav-link">STATS</Link>
           {isAuthenticated ? (
             <>

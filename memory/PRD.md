@@ -92,11 +92,15 @@ When clicking a casino card, a modal opens with:
 - Partner casino cards with conversion modals (same as homepage)
 - Weekly VIP Lottery ($1,000/$500/$250 prizes)
 
-### 6. Game Calculators (/calculators)
-12 calculators in 3 categories:
-- **Game Calculators**: Mines, Dice, Limbo, Plinko, HiLo
-- **Strategy & Bankroll**: Kelly Criterion, Bankroll Mgmt, Risk of Ruin, Variance, Monthly Boost
-- **Sports Betting**: Parlay & Arbitrage, Odds Converter
+### 6. Slots & Sportsbook API Page (/slots-api)
+Developer-focused page for B2B partnerships:
+- 10,000+ Slots integration
+- Live Sportsbook API
+- Multi-Currency support (BTC, ETH, USDT)
+- Provably Fair verification
+- 99.9% Uptime SLA
+- Curacao eGaming licensed
+- Code examples with SDK usage
 
 ### 7. Provably Fair Verifiers (/verifiers)
 - Stake.com verifiers for Dice, Limbo, Mines, Plinko
@@ -116,6 +120,9 @@ When clicking a casino card, a modal opens with:
 - ✅ **UI Refresh with lucide-react**: All icons replaced with clean Lucide icons
 - ✅ **Uniform Casino Logos**: Letter-based SVG logos for consistent branding
 - ✅ **Conversion-Optimized Modals**: Casino-specific copy, live stats, personalized estimates, strong CTAs
+- ✅ **Elegant Casino Section Redesign**: Premium card design with brand-specific colors and official logos
+- ✅ **Official Casino Logos**: Custom SVG logos for each casino (Stake chart, Shuffle grid, Rainbet rain, etc.)
+- ✅ **Slots & Sportsbook API Page**: New B2B developer page replacing Calculators in navigation
 
 ### Previous Sessions
 - User authentication (register/login/JWT)
