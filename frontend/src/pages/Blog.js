@@ -86,7 +86,7 @@ Winners know when to walk away.
     `,
     category: 'Strategy',
     author: 'Rakestake Team',
-    date: '2026-04-10',
+    date: '2026-03-22',
     readTime: '10 min read',
     tags: ['strategy', '2026', 'crypto casino', 'tips', 'bankroll'],
     featured: true
@@ -177,7 +177,7 @@ The best bonus program in 2026 is the one that matches your play style. But alwa
     `,
     category: 'Reviews',
     author: 'Rakestake Team',
-    date: '2026-04-05',
+    date: '2026-03-18',
     readTime: '12 min read',
     tags: ['bonus', 'rankings', '2026', 'casino reviews', 'welcome bonus'],
     featured: true
@@ -292,7 +292,7 @@ All three are excellent choices. The real winner is using Rakestake to play all 
     `,
     category: 'Comparisons',
     author: 'Rakestake Team',
-    date: '2026-03-28',
+    date: '2026-03-15',
     readTime: '11 min read',
     tags: ['stake', 'shuffle', 'rainbet', 'comparison', '2026'],
     featured: true
@@ -392,7 +392,7 @@ Rakeback is the closest thing to "guaranteed" profit in gambling. Stack your sou
     `,
     category: 'Strategy',
     author: 'Rakestake Team',
-    date: '2026-03-20',
+    date: '2026-03-10',
     readTime: '9 min read',
     tags: ['rakeback', 'strategy', 'maximizing', 'guide', '2026'],
     featured: false
@@ -491,7 +491,7 @@ New doesn't mean better. Rakestake partners are vetted and proven. Your bankroll
     `,
     category: 'Reviews',
     author: 'Rakestake Team',
-    date: '2026-04-12',
+    date: '2026-03-05',
     readTime: '8 min read',
     tags: ['new casinos', 'reviews', 'april 2026', 'first look'],
     featured: false
@@ -599,7 +599,7 @@ Your edge isn't just in picking winners—it's in maximizing value on every bet 
     `,
     category: 'Guides',
     author: 'Rakestake Team',
-    date: '2026-03-15',
+    date: '2026-03-01',
     readTime: '10 min read',
     tags: ['sports betting', 'crypto', 'sportsbook', 'guide', '2026'],
     featured: false

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   Crown, Star, Trophy, Gift, TrendingUp, Search, X,
   ExternalLink, ChevronRight, Sparkles, Zap, ArrowRight,
-  Clock, Users, Target, Award, Flame, Shield, Rocket
+  Clock, Users, Target, Award, Flame, Shield, Rocket, MessageCircle
 } from 'lucide-react';
 import { IconBadge, LiveIndicator } from '../components/AnimatedElements';
 import { OfficialCasinoLogo, getCasinoBrand } from '../components/CasinoLogos';
@@ -167,7 +167,45 @@ function VIPHub() {
             Up to 15% rakeback on top of casino bonuses. Complete challenges, earn XP, and unlock exclusive rewards.
           </p>
 
-          {/* XP Progress Card */}
+          {/* Telegram CTA for non-logged in users */}
+          {!isAuthenticated && (
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '16px'
+            }}>
+              <a
+                href="https://t.me/rakestakevip"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="telegram-cta"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '14px 28px',
+                  background: 'linear-gradient(135deg, #0088cc, #00a8e8)',
+                  borderRadius: '12px',
+                  color: '#fff',
+                  fontWeight: '700',
+                  fontSize: '15px',
+                  textDecoration: 'none',
+                  boxShadow: '0 4px 20px rgba(0,136,204,0.3)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <MessageCircle size={20} />
+                Join VIP Telegram
+              </a>
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                Get exclusive deals & instant support
+              </p>
+            </div>
+          )}
+
+          {/* XP Progress Card - Only show when logged in */}
+          {isAuthenticated && (
           <div style={{
             maxWidth: '500px',
             margin: '0 auto',
@@ -239,10 +277,12 @@ function VIPHub() {
               <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>• Bonus XP Active</span>
             </div>
           </div>
+          )}
         </div>
       </div>
 
-      {/* Daily Challenges */}
+      {/* Daily Challenges - Only show when logged in */}
+      {isAuthenticated && (
       <div style={{ marginBottom: '48px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
           <h2 style={{ fontSize: '22px', fontWeight: '700', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -354,8 +394,10 @@ function VIPHub() {
           })}
         </div>
       </div>
+      )}
 
-      {/* Weekly Missions */}
+      {/* Weekly Missions - Only show when logged in */}
+      {isAuthenticated && (
       <div style={{ marginBottom: '48px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
           <h2 style={{ fontSize: '22px', fontWeight: '700', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -446,6 +488,7 @@ function VIPHub() {
           })}
         </div>
       </div>
+      )}
 
       {/* VIP Tiers */}
       <div style={{marginBottom: '60px'}}>
@@ -462,8 +505,8 @@ function VIPHub() {
           gap: '16px'
         }}>
           {vipLevels.map((tier) => {
-            const isUnlocked = userXP >= tier.xp;
-            const isCurrent = currentLevel.id === tier.id;
+            const isUnlocked = isAuthenticated ? userXP >= tier.xp : true;
+            const isCurrent = isAuthenticated && currentLevel.id === tier.id;
             const TierIcon = tier.icon;
             
             return (
@@ -477,7 +520,7 @@ function VIPHub() {
                   border: isCurrent ? `2px solid ${tier.color}` : '1px solid var(--border-color)',
                   borderRadius: '16px',
                   overflow: 'hidden',
-                  opacity: isUnlocked ? 1 : 0.6,
+                  opacity: 1,
                   position: 'relative',
                   transition: 'all 0.3s ease'
                 }}
@@ -514,7 +557,7 @@ function VIPHub() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: '0 auto 12px',
-                    boxShadow: isUnlocked ? `0 0 20px ${tier.color}40` : 'none'
+                    boxShadow: `0 0 20px ${tier.color}40`
                   }}>
                     <TierIcon size={24} color="#fff" />
                   </div>
