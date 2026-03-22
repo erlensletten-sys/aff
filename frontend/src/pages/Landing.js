@@ -34,9 +34,9 @@ const casinoDetails = [
     ctaText: 'Unlock 15% Rakeback'
   },
   {
-    slug: 'duelbits',
-    name: 'Duelbits',
-    link: 'https://duelbits.com/?a=rakestakevip',
+    slug: 'duel',
+    name: 'Duel',
+    link: 'https://duel.com/?a=rakestakevip',
     rakeback: 10,
     bonus: 'Up to $2,000 + 200 FS',
     description: 'Fast-growing crypto casino with innovative originals and competitive rakeback. Popular for Crash and Dice.',

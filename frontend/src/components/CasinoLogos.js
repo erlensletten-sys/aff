@@ -16,9 +16,9 @@ const casinoLogos = {
     accentColor: '#7c3aed',
     bgColor: '#0a0a12'
   },
-  duelbits: {
-    name: 'Duelbits',
-    logoUrl: 'https://duelbits.com/img/logo.svg',
+  duel: {
+    name: 'Duel',
+    logoUrl: 'https://duel.com/logo.svg',
     primaryColor: '#0d0d1a',
     accentColor: '#00e5ff',
     bgColor: '#080812'

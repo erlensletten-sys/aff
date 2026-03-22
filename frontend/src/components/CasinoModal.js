@@ -18,12 +18,12 @@ const casinoContent = {
     boostText: "Stack additional rakeback rewards on top of Shuffle's system.",
     cta: 'Play on Shuffle'
   },
-  'duelbits': {
+  'duel': {
     headline: 'Duel Your Way to Bigger Rewards',
     subheadline: 'Fast-growing crypto casino with innovative originals and competitive rakeback.',
     benefits: ['Duel Originals (Crash, Dice)', 'Fast withdrawals', 'Active community'],
     boostText: 'Earn up to 10% extra rakeback through Rakestake on every bet.',
-    cta: 'Play on Duelbits'
+    cta: 'Play on Duel'
   },
   'rainbet': {
     headline: 'Play & Earn in a Community-Driven Casino',

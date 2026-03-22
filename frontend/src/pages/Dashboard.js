@@ -51,7 +51,7 @@ function Dashboard() {
   const connectedCasinos = [
     { name: 'Stake', slug: 'stake', rakeback: 10, link: 'https://stake.com/?c=rakestakevip', bonus: 'Up to $3,000' },
     { name: 'Shuffle', slug: 'shuffle', rakeback: 15, link: 'https://shuffle.com/?r=rakestakevip', bonus: 'Up to $1,500 + 100 FS' },
-    { name: 'Duelbits', slug: 'duelbits', rakeback: 10, link: 'https://duelbits.com/?a=rakestakevip', bonus: 'Up to $2,000 + 200 FS' },
+    { name: 'Duel', slug: 'duel', rakeback: 10, link: 'https://duel.com/?a=rakestakevip', bonus: 'Up to $2,000 + 200 FS' },
     { name: 'Rainbet', slug: 'rainbet', rakeback: 12, link: 'https://rainbet.com/?r=rakestakevip', bonus: 'Up to $1,000' },
     { name: 'FortuneJack', slug: 'fortunejack', rakeback: 8, link: 'https://fortunejack.com/?ref=rakestakevip', bonus: 'Up to 6 BTC' },
   ];
