@@ -1,137 +1,148 @@
 import React from 'react';
 
-// Official Casino Brand Colors and Logos
-const casinoBrands = {
+// Official Casino Logo URLs
+const casinoLogos = {
   stake: {
     name: 'Stake',
+    logoUrl: null, // Use custom SVG below
     primaryColor: '#1a1a2e',
     accentColor: '#00d4aa',
-    textColor: '#ffffff',
-    logo: (size) => (
-      <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-        <rect width="100" height="100" rx="16" fill="#1a1a2e"/>
-        <path d="M25 65 L40 35 L55 55 L70 25 L85 45" stroke="#00d4aa" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-        <circle cx="25" cy="65" r="4" fill="#00d4aa"/>
-        <circle cx="70" cy="25" r="4" fill="#00d4aa"/>
-      </svg>
-    )
+    bgColor: '#0d1117',
+    customLogo: true
   },
   shuffle: {
     name: 'Shuffle',
+    logoUrl: 'https://shuffle.com/icons/logo.svg',
     primaryColor: '#0f0f1a',
     accentColor: '#7c3aed',
-    textColor: '#ffffff',
-    logo: (size) => (
-      <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-        <rect width="100" height="100" rx="16" fill="#0f0f1a"/>
-        <rect x="20" y="25" width="25" height="25" rx="4" fill="#7c3aed" opacity="0.8"/>
-        <rect x="55" y="25" width="25" height="25" rx="4" fill="#a855f7" opacity="0.6"/>
-        <rect x="20" y="55" width="25" height="25" rx="4" fill="#a855f7" opacity="0.6"/>
-        <rect x="55" y="55" width="25" height="25" rx="4" fill="#7c3aed" opacity="0.8"/>
-      </svg>
-    )
+    bgColor: '#0a0a12'
   },
   rainbet: {
     name: 'Rainbet',
+    logoUrl: 'https://gamblersconnect.com/wp-content/uploads/2025/05/New-Project-11-135x135.png',
     primaryColor: '#0a1628',
     accentColor: '#22c55e',
-    textColor: '#ffffff',
-    logo: (size) => (
-      <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-        <rect width="100" height="100" rx="16" fill="#0a1628"/>
-        <path d="M50 20 L50 45" stroke="#22c55e" strokeWidth="4" strokeLinecap="round"/>
-        <path d="M35 30 L35 55" stroke="#22c55e" strokeWidth="4" strokeLinecap="round" opacity="0.7"/>
-        <path d="M65 30 L65 55" stroke="#22c55e" strokeWidth="4" strokeLinecap="round" opacity="0.7"/>
-        <path d="M20 40 L20 65" stroke="#22c55e" strokeWidth="4" strokeLinecap="round" opacity="0.5"/>
-        <path d="M80 40 L80 65" stroke="#22c55e" strokeWidth="4" strokeLinecap="round" opacity="0.5"/>
-        <ellipse cx="50" cy="70" rx="35" ry="10" fill="#22c55e" opacity="0.3"/>
-      </svg>
-    )
+    bgColor: '#0a1420'
   },
   fortunejack: {
     name: 'FortuneJack',
+    logoUrl: 'https://bestcrypto.casino/wp-content/uploads/2023/10/fortune-Jack.png',
     primaryColor: '#1a1a1a',
     accentColor: '#f59e0b',
-    textColor: '#ffffff',
-    logo: (size) => (
-      <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-        <rect width="100" height="100" rx="16" fill="#1a1a1a"/>
-        <text x="50" y="62" textAnchor="middle" fill="#f59e0b" fontSize="40" fontWeight="900" fontFamily="Arial">FJ</text>
-        <circle cx="50" cy="25" r="8" fill="#f59e0b"/>
-      </svg>
-    )
+    bgColor: '#141414'
   },
   bitstarz: {
     name: 'BitStarz',
+    logoUrl: null, // No URL provided, use fallback
     primaryColor: '#1e1e2f',
     accentColor: '#ff6b35',
-    textColor: '#ffffff',
-    logo: (size) => (
-      <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-        <rect width="100" height="100" rx="16" fill="#1e1e2f"/>
-        <polygon points="50,15 61,40 88,40 67,55 76,82 50,67 24,82 33,55 12,40 39,40" fill="#ff6b35"/>
-      </svg>
-    )
+    bgColor: '#16161f'
   },
   '1win': {
     name: '1win',
+    logoUrl: 'https://customer-assets.emergentagent.com/job_7806151f-febd-4834-b0eb-9dcec45c7d18/artifacts/10xhnlev_image.png',
     primaryColor: '#0a2540',
     accentColor: '#00a3ff',
-    textColor: '#ffffff',
-    logo: (size) => (
-      <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-        <rect width="100" height="100" rx="16" fill="#0a2540"/>
-        <text x="50" y="65" textAnchor="middle" fill="#00a3ff" fontSize="36" fontWeight="900" fontFamily="Arial">1W</text>
-      </svg>
-    )
+    bgColor: '#071a2e'
   },
   '1xbet': {
     name: '1xBet',
+    logoUrl: 'https://raw.githubusercontent.com/2fasvg/2fasvg.github.io/master/assets/img/logo/1xbit.com/1xbit.com.svg',
     primaryColor: '#1a5276',
     accentColor: '#00bcd4',
-    textColor: '#ffffff',
-    logo: (size) => (
-      <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-        <rect width="100" height="100" rx="16" fill="#1a5276"/>
-        <text x="50" y="65" textAnchor="middle" fill="#00bcd4" fontSize="32" fontWeight="900" fontFamily="Arial">1X</text>
-      </svg>
-    )
+    bgColor: '#12405c'
   },
   royalpartners: {
     name: 'RoyalPartners',
+    logoUrl: 'https://leadshub.ru/assets/royalpartners-bd9fab3f.svg',
     primaryColor: '#2d1b4e',
     accentColor: '#ffd700',
-    textColor: '#ffffff',
-    logo: (size) => (
-      <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-        <rect width="100" height="100" rx="16" fill="#2d1b4e"/>
-        <polygon points="50,20 56,35 72,35 59,45 64,62 50,52 36,62 41,45 28,35 44,35" fill="#ffd700"/>
-        <rect x="35" y="65" width="30" height="15" rx="2" fill="#ffd700" opacity="0.8"/>
-      </svg>
-    )
+    bgColor: '#1f1338'
   }
 };
 
 export function getCasinoBrand(slug) {
   const normalizedSlug = slug?.toLowerCase().replace(/[^a-z0-9]/g, '') || '';
-  return casinoBrands[normalizedSlug] || {
+  return casinoLogos[normalizedSlug] || {
     name: slug,
+    logoUrl: null,
     primaryColor: '#1a1a2e',
     accentColor: '#ffd700',
-    textColor: '#ffffff',
-    logo: (size) => (
-      <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-        <rect width="100" height="100" rx="16" fill="#1a1a2e"/>
-        <text x="50" y="62" textAnchor="middle" fill="#ffd700" fontSize="36" fontWeight="900" fontFamily="Arial">
-          {slug?.charAt(0)?.toUpperCase() || '?'}
-        </text>
-      </svg>
-    )
+    bgColor: '#0d0d14'
   };
 }
 
 export function OfficialCasinoLogo({ slug, size = 56 }) {
   const brand = getCasinoBrand(slug);
+  
+  // Custom Stake logo (line chart design)
+  if (slug?.toLowerCase() === 'stake') {
+    return (
+      <div style={{
+        width: size,
+        height: size,
+        borderRadius: 14,
+        overflow: 'hidden',
+        flexShrink: 0,
+        background: '#0d1117',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 4px 20px rgba(0,212,170,0.3)'
+      }}>
+        <svg width={size * 0.7} height={size * 0.7} viewBox="0 0 100 100" fill="none">
+          <path 
+            d="M10 70 L30 45 L50 60 L70 25 L90 40" 
+            stroke="#00d4aa" 
+            strokeWidth="6" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            fill="none"
+          />
+          <circle cx="10" cy="70" r="5" fill="#00d4aa"/>
+          <circle cx="30" cy="45" r="5" fill="#00d4aa"/>
+          <circle cx="50" cy="60" r="5" fill="#00d4aa"/>
+          <circle cx="70" cy="25" r="5" fill="#00d4aa"/>
+          <circle cx="90" cy="40" r="5" fill="#00d4aa"/>
+        </svg>
+      </div>
+    );
+  }
+  
+  if (brand.logoUrl) {
+    return (
+      <div style={{
+        width: size,
+        height: size,
+        borderRadius: 14,
+        overflow: 'hidden',
+        flexShrink: 0,
+        background: brand.bgColor,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 8,
+        boxShadow: `0 4px 20px ${brand.accentColor}30`
+      }}>
+        <img 
+          src={brand.logoUrl} 
+          alt={brand.name}
+          style={{
+            maxWidth: '100%',
+            maxHeight: '100%',
+            objectFit: 'contain'
+          }}
+          onError={(e) => {
+            // Fallback to letter if image fails
+            e.target.style.display = 'none';
+            e.target.parentElement.innerHTML = `<span style="font-size: ${size * 0.4}px; font-weight: 800; color: ${brand.accentColor}">${brand.name?.charAt(0) || '?'}</span>`;
+          }}
+        />
+      </div>
+    );
+  }
+
+  // Fallback letter logo
   return (
     <div style={{
       width: size,
@@ -139,16 +150,26 @@ export function OfficialCasinoLogo({ slug, size = 56 }) {
       borderRadius: 14,
       overflow: 'hidden',
       flexShrink: 0,
-      boxShadow: '0 4px 20px ' + brand.accentColor + '30'
+      background: `linear-gradient(135deg, ${brand.primaryColor}, ${brand.bgColor})`,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxShadow: `0 4px 20px ${brand.accentColor}30`
     }}>
-      {brand.logo(size)}
+      <span style={{
+        fontSize: size * 0.4,
+        fontWeight: 800,
+        color: brand.accentColor
+      }}>
+        {brand.name?.charAt(0)?.toUpperCase() || '?'}
+      </span>
     </div>
   );
 }
 
 export function getCasinoGradient(slug) {
   const brand = getCasinoBrand(slug);
-  return 'linear-gradient(135deg, ' + brand.primaryColor + ', ' + brand.primaryColor + 'dd)';
+  return `linear-gradient(160deg, ${brand.primaryColor} 0%, ${brand.bgColor} 100%)`;
 }
 
 export function getCasinoAccent(slug) {
@@ -156,4 +177,4 @@ export function getCasinoAccent(slug) {
   return brand.accentColor;
 }
 
-export default casinoBrands;
+export default casinoLogos;

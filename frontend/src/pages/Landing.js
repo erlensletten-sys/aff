@@ -68,97 +68,260 @@ function Landing() {
 
   return (
     <div className="landing">
-      {/* Hero Section */}
+      {/* Animated Hero Section */}
       <div style={{
+        position: 'relative',
         textAlign: 'center',
-        padding: '80px 20px 60px',
-        maxWidth: '900px',
-        margin: '0 auto'
+        padding: '100px 20px 80px',
+        maxWidth: '1000px',
+        margin: '0 auto',
+        overflow: 'hidden'
       }}>
-        <div style={{marginBottom: '20px'}}>
-          <IconBadge icon={Zap} text="CRYPTO CASINO AGGREGATOR" color="#ffd700" />
-        </div>
-        
-        <h1 style={{
-          fontSize: '64px',
-          fontWeight: '900',
-          letterSpacing: '-3px',
-          marginBottom: '20px',
-          lineHeight: '1.1',
-          color: 'var(--text-primary)'
+        {/* Animated Background Elements */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          zIndex: 0
         }}>
-          Up to 15% Rakeback
-          <br />
-          <span style={{color: 'var(--accent-primary)'}}>on Top Crypto Casinos</span>
-        </h1>
-        
-        <p style={{
-          fontSize: '18px',
-          color: 'var(--text-secondary)',
-          maxWidth: '600px',
-          margin: '0 auto 36px',
-          lineHeight: '1.7'
-        }}>
-          Join Rakestake VIP and earn extra rakeback on top of your favorite casino's existing bonuses.
-        </p>
-        
-        <div style={{display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap'}}>
-          <Link to="/vip" style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
-            color: '#000',
-            fontWeight: '700',
-            padding: '16px 32px',
-            fontSize: '15px',
-            border: 'none',
-            borderRadius: '10px',
-            textDecoration: 'none'
-          }}>
-            <Crown size={18} />
-            JOIN VIP
-          </Link>
-          <a href="#casinos" style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '16px 32px',
-            fontSize: '15px',
-            borderRadius: '10px',
-            background: 'var(--bg-tertiary)',
-            border: '1px solid var(--border-color)',
-            color: 'var(--text-primary)',
-            textDecoration: 'none',
-            fontWeight: '600'
-          }}>
-            VIEW CASINOS
-            <ChevronRight size={18} />
-          </a>
+          {/* Glowing Orbs */}
+          <div style={{
+            position: 'absolute',
+            top: '10%',
+            left: '10%',
+            width: '300px',
+            height: '300px',
+            background: 'radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%)',
+            borderRadius: '50%',
+            animation: 'float 8s ease-in-out infinite'
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '30%',
+            right: '5%',
+            width: '200px',
+            height: '200px',
+            background: 'radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%)',
+            borderRadius: '50%',
+            animation: 'float 6s ease-in-out infinite reverse'
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: '10%',
+            left: '20%',
+            width: '250px',
+            height: '250px',
+            background: 'radial-gradient(circle, rgba(34,197,94,0.1) 0%, transparent 70%)',
+            borderRadius: '50%',
+            animation: 'float 10s ease-in-out infinite'
+          }} />
+          
+          {/* Floating Particles */}
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              style={{
+                position: 'absolute',
+                width: '4px',
+                height: '4px',
+                background: i % 2 === 0 ? '#ffd700' : '#7c3aed',
+                borderRadius: '50%',
+                top: `${20 + Math.random() * 60}%`,
+                left: `${10 + Math.random() * 80}%`,
+                opacity: 0.6,
+                animation: `particle ${4 + Math.random() * 4}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 2}s`
+              }}
+            />
+          ))}
         </div>
 
-        {/* Stats Row */}
-        <div style={{
-          display: 'flex',
-          gap: '48px',
-          justifyContent: 'center',
-          marginTop: '60px',
-          flexWrap: 'wrap'
-        }}>
-          <div style={{textAlign: 'center'}}>
-            <div style={{color: '#ffd700', marginBottom: '8px'}}><Trophy size={24} /></div>
-            <div style={{fontSize: '36px', fontWeight: '800', color: 'var(--text-primary)'}}>{campaigns.length}</div>
-            <div style={{fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '1px'}}>CASINOS</div>
+        {/* Content */}
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{
+            marginBottom: '24px',
+            animation: 'fadeInUp 0.6s ease-out'
+          }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '10px 20px',
+              background: 'linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.1))',
+              border: '1px solid rgba(255,215,0,0.3)',
+              borderRadius: '30px',
+              animation: 'glow 3s ease-in-out infinite'
+            }}>
+              <Zap size={18} color="#ffd700" style={{ animation: 'pulse 2s ease-in-out infinite' }} />
+              <span style={{ fontSize: '13px', fontWeight: '700', color: '#ffd700', letterSpacing: '1px' }}>
+                CRYPTO CASINO AGGREGATOR
+              </span>
+            </div>
           </div>
-          <div style={{textAlign: 'center'}}>
-            <div style={{color: 'var(--accent-success)', marginBottom: '8px'}}><TrendingUp size={24} /></div>
-            <div style={{fontSize: '36px', fontWeight: '800', color: 'var(--text-primary)'}}>15%</div>
-            <div style={{fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '1px'}}>MAX RAKEBACK</div>
+          
+          <h1 style={{
+            fontSize: 'clamp(40px, 8vw, 72px)',
+            fontWeight: '900',
+            letterSpacing: '-3px',
+            marginBottom: '24px',
+            lineHeight: '1.05',
+            color: 'var(--text-primary)',
+            animation: 'fadeInUp 0.6s ease-out 0.1s both'
+          }}>
+            Up to{' '}
+            <span style={{
+              background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              15% Rakeback
+            </span>
+            <br />
+            <span style={{
+              background: 'linear-gradient(135deg, var(--accent-primary), #7c3aed)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              on Top Crypto Casinos
+            </span>
+          </h1>
+          
+          <p style={{
+            fontSize: '18px',
+            color: 'var(--text-secondary)',
+            maxWidth: '600px',
+            margin: '0 auto 40px',
+            lineHeight: '1.7',
+            animation: 'fadeInUp 0.6s ease-out 0.2s both'
+          }}>
+            Join Rakestake VIP and earn extra rakeback on top of your favorite casino's existing bonuses.
+          </p>
+          
+          <div style={{
+            display: 'flex',
+            gap: '16px',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            animation: 'fadeInUp 0.6s ease-out 0.3s both'
+          }}>
+            <Link to="/vip" style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+              color: '#000',
+              fontWeight: '700',
+              padding: '18px 36px',
+              fontSize: '15px',
+              border: 'none',
+              borderRadius: '14px',
+              textDecoration: 'none',
+              boxShadow: '0 4px 20px rgba(255,215,0,0.3)',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-3px)';
+              e.currentTarget.style.boxShadow = '0 8px 30px rgba(255,215,0,0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(255,215,0,0.3)';
+            }}
+            >
+              <Crown size={20} />
+              JOIN VIP CLUB
+            </Link>
+            <a href="#casinos" style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '18px 36px',
+              fontSize: '15px',
+              borderRadius: '14px',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              color: 'var(--text-primary)',
+              textDecoration: 'none',
+              fontWeight: '600',
+              backdropFilter: 'blur(10px)',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+            }}
+            >
+              VIEW CASINOS
+              <ArrowRight size={18} />
+            </a>
           </div>
-          <div style={{textAlign: 'center'}}>
-            <div style={{color: 'var(--accent-cyan)', marginBottom: '8px'}}><Gift size={24} /></div>
-            <div style={{fontSize: '36px', fontWeight: '800', color: 'var(--text-primary)'}}>$1,750</div>
-            <div style={{fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '1px'}}>WEEKLY LOTTERY</div>
+
+          {/* Stats Row */}
+          <div style={{
+            display: 'flex',
+            gap: '32px',
+            justifyContent: 'center',
+            marginTop: '70px',
+            flexWrap: 'wrap',
+            animation: 'fadeInUp 0.6s ease-out 0.4s both'
+          }}>
+            {[
+              { icon: Trophy, value: campaigns.length || 8, label: 'PARTNER CASINOS', color: '#ffd700' },
+              { icon: TrendingUp, value: '15%', label: 'MAX RAKEBACK', color: '#22c55e' },
+              { icon: Gift, value: '$1,750', label: 'WEEKLY LOTTERY', color: '#06b6d4' }
+            ].map((stat, idx) => (
+              <div 
+                key={idx}
+                style={{
+                  textAlign: 'center',
+                  padding: '24px 32px',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  minWidth: '140px',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                  e.currentTarget.style.borderColor = `${stat.color}40`;
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                <div style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 12,
+                  background: `${stat.color}15`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 12px'
+                }}>
+                  <stat.icon size={24} color={stat.color} />
+                </div>
+                <div style={{fontSize: '32px', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '4px'}}>
+                  {stat.value}
+                </div>
+                <div style={{fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '1.5px', fontWeight: '600'}}>
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
