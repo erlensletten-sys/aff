@@ -4,11 +4,10 @@ import React from 'react';
 const casinoLogos = {
   stake: {
     name: 'Stake',
-    logoUrl: null, // Use custom SVG below
+    logoUrl: 'https://customer-assets.emergentagent.com/job_7806151f-febd-4834-b0eb-9dcec45c7d18/artifacts/q3xw8bm4_stake-logo-white.png',
     primaryColor: '#1a1a2e',
     accentColor: '#00d4aa',
-    bgColor: '#0d1117',
-    customLogo: true
+    bgColor: '#0d1117'
   },
   shuffle: {
     name: 'Shuffle',
@@ -74,40 +73,6 @@ export function getCasinoBrand(slug) {
 
 export function OfficialCasinoLogo({ slug, size = 56 }) {
   const brand = getCasinoBrand(slug);
-  
-  // Custom Stake logo (line chart design)
-  if (slug?.toLowerCase() === 'stake') {
-    return (
-      <div style={{
-        width: size,
-        height: size,
-        borderRadius: 14,
-        overflow: 'hidden',
-        flexShrink: 0,
-        background: '#0d1117',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: '0 4px 20px rgba(0,212,170,0.3)'
-      }}>
-        <svg width={size * 0.7} height={size * 0.7} viewBox="0 0 100 100" fill="none">
-          <path 
-            d="M10 70 L30 45 L50 60 L70 25 L90 40" 
-            stroke="#00d4aa" 
-            strokeWidth="6" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            fill="none"
-          />
-          <circle cx="10" cy="70" r="5" fill="#00d4aa"/>
-          <circle cx="30" cy="45" r="5" fill="#00d4aa"/>
-          <circle cx="50" cy="60" r="5" fill="#00d4aa"/>
-          <circle cx="70" cy="25" r="5" fill="#00d4aa"/>
-          <circle cx="90" cy="40" r="5" fill="#00d4aa"/>
-        </svg>
-      </div>
-    );
-  }
   
   if (brand.logoUrl) {
     return (

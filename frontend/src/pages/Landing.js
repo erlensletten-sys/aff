@@ -10,6 +10,82 @@ import CasinoModal from '../components/CasinoModal';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
+// Detailed casino information with real data
+const casinoDetails = [
+  {
+    slug: 'stake',
+    name: 'Stake',
+    link: 'https://stake.com/?c=rakestakevip',
+    rakeback: 10,
+    bonus: 'Up to $3,000',
+    description: "World's largest crypto casino. Known for Stake Originals, instant payouts, and industry-leading sports betting odds.",
+    highlights: ['#1 Crypto Casino', 'Instant Withdrawals', 'Stake Originals', 'Sports Betting']
+  },
+  {
+    slug: 'shuffle',
+    name: 'Shuffle',
+    link: 'https://shuffle.com?r=rakestakevip',
+    rakeback: 15,
+    bonus: 'Up to $1,500 + 100 FS',
+    description: 'Provably fair crypto casino with transparent RTP. Best known for high-stakes games and VIP rewards.',
+    highlights: ['Provably Fair', 'High RTP', 'VIP Rewards', 'Fast Payouts']
+  },
+  {
+    slug: 'rainbet',
+    name: 'Rainbet',
+    link: 'https://rainbet.com?r=rakestakevip',
+    rakeback: 12,
+    bonus: 'Up to $1,000 + Daily Rakeback',
+    description: 'Community-driven casino with daily rakeback and frequent promotions. Strong on slots and live casino.',
+    highlights: ['Daily Rakeback', 'Active Community', 'Slots Focus', 'Live Casino']
+  },
+  {
+    slug: 'fortunejack',
+    name: 'FortuneJack',
+    link: 'https://fortunejack.com/?ref=rakestake',
+    rakeback: 8,
+    bonus: 'Up to 6 BTC + 350 FS',
+    description: 'One of the oldest crypto casinos (est. 2014). Massive game library with 3,000+ titles and lottery games.',
+    highlights: ['Est. 2014', '3,000+ Games', 'Lottery Games', 'Dice & Crash']
+  },
+  {
+    slug: 'bitstarz',
+    name: 'BitStarz',
+    link: 'https://bitstarz.com/?ref=rakestake',
+    rakeback: 10,
+    bonus: 'Up to 5 BTC + 180 FS',
+    description: 'Award-winning casino with fast withdrawals (avg 10 min). Top choice for slots and table games.',
+    highlights: ['Award-Winning', '10 Min Withdrawals', 'Slots Leader', '4,000+ Games']
+  },
+  {
+    slug: '1win',
+    name: '1win',
+    link: 'https://1win.com/?ref=rakestake',
+    rakeback: 12,
+    bonus: 'Up to $10,000',
+    description: 'Global sportsbook and casino with competitive odds. Excellent for esports and live betting.',
+    highlights: ['Sports & Casino', 'Esports Focus', 'Live Betting', 'High Limits']
+  },
+  {
+    slug: '1xbet',
+    name: '1xBet',
+    link: 'https://1xbet.com/?ref=rakestake',
+    rakeback: 8,
+    bonus: 'Up to $1,500 + 150 FS',
+    description: 'Leading global bookmaker with 1,000+ daily events. Wide crypto support and competitive odds.',
+    highlights: ['1,000+ Events/Day', 'Best Odds', 'Multi-Currency', 'Live Streaming']
+  },
+  {
+    slug: 'royalpartners',
+    name: 'RoyalPartners',
+    link: 'https://royalpartners.com/?ref=rakestake',
+    rakeback: 15,
+    bonus: 'Up to $3,000 + Cashback',
+    description: 'Premium VIP-focused casino with generous cashback and dedicated account managers.',
+    highlights: ['VIP Program', 'Personal Manager', 'Cashback Rewards', 'Exclusive Bonuses']
+  }
+];
+
 function Landing() {
   const [campaigns, setCampaigns] = useState([]);
   const [userXP, setUserXP] = useState(0);
@@ -370,9 +446,9 @@ function Landing() {
         </div>
       </div>
 
-      {/* Casino Cards */}
+      {/* Casino Cards - Professional Stacked Layout */}
       <div id="casinos" style={{
-        maxWidth: '1200px',
+        maxWidth: '1000px',
         margin: '0 auto 100px',
         padding: '0 20px'
       }}>
@@ -388,38 +464,44 @@ function Landing() {
           </p>
         </div>
 
-        {/* Featured Casinos - Top Row */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '16px',
-          marginBottom: '16px'
-        }}>
+        {/* Professional Stacked Casino Cards */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {loading ? (
-            <div style={{gridColumn: '1 / -1', textAlign: 'center', padding: '60px', color: 'var(--text-muted)'}}>
+            <div style={{textAlign: 'center', padding: '60px', color: 'var(--text-muted)'}}>
               Loading casinos...
             </div>
           ) : (
-            campaigns.slice(0, 3).map((casino) => {
-              const brand = getCasinoBrand(casino.casino_slug);
+            casinoDetails.map((casinoData, idx) => {
+              const casino = campaigns.find(c => c.casino_slug === casinoData.slug) || {
+                casino_slug: casinoData.slug,
+                casino_name: casinoData.name,
+                referral_link: casinoData.link,
+                rakeback_rate: casinoData.rakeback / 100,
+                bonus_value: casinoData.bonus
+              };
+              const brand = getCasinoBrand(casinoData.slug);
+              
               return (
                 <div
-                  key={casino.casino_slug}
-                  data-testid={`casino-card-${casino.casino_slug}`}
-                  onClick={() => setSelectedCasino(casino)}
+                  key={casinoData.slug}
+                  data-testid={`casino-card-${casinoData.slug}`}
+                  onClick={() => setSelectedCasino({...casino, ...casinoData})}
                   style={{
-                    background: `linear-gradient(160deg, ${brand.primaryColor} 0%, #0a0a0f 100%)`,
+                    background: `linear-gradient(135deg, ${brand.primaryColor}f0 0%, #0a0a0f 100%)`,
                     border: `1px solid ${brand.accentColor}30`,
                     borderRadius: '20px',
-                    overflow: 'hidden',
+                    padding: '28px 32px',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
-                    position: 'relative'
+                    display: 'grid',
+                    gridTemplateColumns: '80px 1fr auto',
+                    gap: '24px',
+                    alignItems: 'center'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-6px)';
-                    e.currentTarget.style.boxShadow = `0 20px 40px ${brand.accentColor}25`;
-                    e.currentTarget.style.borderColor = `${brand.accentColor}60`;
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = `0 16px 40px ${brand.accentColor}20`;
+                    e.currentTarget.style.borderColor = `${brand.accentColor}50`;
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
@@ -427,88 +509,87 @@ function Landing() {
                     e.currentTarget.style.borderColor = `${brand.accentColor}30`;
                   }}
                 >
-                  {/* Glow Effect */}
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '120px',
-                    background: `linear-gradient(180deg, ${brand.accentColor}15 0%, transparent 100%)`,
-                    pointerEvents: 'none'
-                  }} />
+                  {/* Logo */}
+                  <OfficialCasinoLogo slug={casinoData.slug} size={72} />
 
-                  <div style={{padding: '28px 24px', position: 'relative'}}>
-                    {/* Header */}
-                    <div style={{display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '20px'}}>
-                      <OfficialCasinoLogo slug={casino.casino_slug} size={56} />
+                  {/* Casino Info */}
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                      <h3 style={{ fontSize: '22px', fontWeight: '800', color: '#ffffff', margin: 0 }}>
+                        {casinoData.name}
+                      </h3>
                       <div style={{
-                        padding: '6px 14px',
+                        padding: '4px 12px',
                         background: `${brand.accentColor}20`,
                         border: `1px solid ${brand.accentColor}40`,
                         borderRadius: '20px',
-                        fontSize: '13px',
+                        fontSize: '12px',
                         fontWeight: '700',
                         color: brand.accentColor
                       }}>
-                        +{casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}% Rakeback
+                        +{casinoData.rakeback}% Rakeback
                       </div>
-                    </div>
-
-                    {/* Casino Name */}
-                    <h3 style={{fontSize: '22px', fontWeight: '800', color: '#ffffff', marginBottom: '6px'}}>
-                      {casino.casino_name}
-                    </h3>
-                    <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px'}}>
                       <LiveIndicator />
-                      <span style={{fontSize: '12px', color: 'rgba(255,255,255,0.5)'}}>•</span>
-                      <span style={{fontSize: '12px', color: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', gap: '4px'}}>
-                        <Users size={12} />
-                        {Math.floor(Math.random() * 500 + 800).toLocaleString()} playing
-                      </span>
                     </div>
+                    
+                    <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', marginBottom: '12px', lineHeight: '1.5' }}>
+                      {casinoData.description}
+                    </p>
 
-                    {/* Bonus */}
-                    <div style={{
-                      padding: '14px 16px',
-                      background: 'rgba(255,255,255,0.06)',
-                      borderRadius: '12px',
-                      marginBottom: '16px',
-                      border: '1px solid rgba(255,255,255,0.08)'
-                    }}>
-                      <div style={{fontSize: '11px', color: 'rgba(255,255,255,0.5)', marginBottom: '4px', fontWeight: '600', letterSpacing: '0.5px'}}>
-                        WELCOME BONUS
-                      </div>
-                      <div style={{fontSize: '16px', fontWeight: '700', color: '#ffffff'}}>
-                        {casino.bonus_value}
-                      </div>
+                    {/* Tags/Highlights */}
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                      {casinoData.highlights.map((highlight, hidx) => (
+                        <span
+                          key={hidx}
+                          style={{
+                            padding: '6px 12px',
+                            background: 'rgba(255,255,255,0.08)',
+                            borderRadius: '8px',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            color: 'rgba(255,255,255,0.8)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px'
+                          }}
+                        >
+                          <Star size={12} color={brand.accentColor} />
+                          {highlight}
+                        </span>
+                      ))}
                     </div>
+                  </div>
 
-                    {/* CTA */}
+                  {/* CTA Section */}
+                  <div style={{ textAlign: 'right', minWidth: '160px' }}>
+                    <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', marginBottom: '4px', letterSpacing: '0.5px' }}>
+                      WELCOME BONUS
+                    </div>
+                    <div style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff', marginBottom: '12px' }}>
+                      {casinoData.bonus}
+                    </div>
                     <button
-                      data-testid={`casino-cta-${casino.casino_slug}`}
+                      data-testid={`casino-cta-${casinoData.slug}`}
                       onClick={(e) => {
                         e.stopPropagation();
-                        setSelectedCasino(casino);
+                        setSelectedCasino({...casino, ...casinoData});
                       }}
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '10px',
-                        width: '100%',
-                        padding: '14px',
+                        padding: '12px 24px',
                         background: brand.accentColor,
-                        borderRadius: '12px',
+                        borderRadius: '10px',
                         border: 'none',
                         color: brand.primaryColor === '#0f0f1a' ? '#ffffff' : '#000000',
                         fontSize: '14px',
                         fontWeight: '700',
                         cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
                         transition: 'all 0.2s'
                       }}
                     >
-                      Play & Earn More
+                      Play Now
                       <ArrowRight size={16} />
                     </button>
                   </div>
@@ -516,56 +597,6 @@ function Landing() {
               );
             })
           )}
-        </div>
-
-        {/* Secondary Casinos - Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: '12px'
-        }}>
-          {!loading && campaigns.slice(3).map((casino) => {
-            const brand = getCasinoBrand(casino.casino_slug);
-            return (
-              <div
-                key={casino.casino_slug}
-                data-testid={`casino-card-${casino.casino_slug}`}
-                onClick={() => setSelectedCasino(casino)}
-                style={{
-                  background: `linear-gradient(160deg, ${brand.primaryColor}dd 0%, #0a0a0f 100%)`,
-                  border: `1px solid ${brand.accentColor}25`,
-                  borderRadius: '16px',
-                  padding: '20px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.borderColor = `${brand.accentColor}50`;
-                  e.currentTarget.style.boxShadow = `0 12px 30px ${brand.accentColor}15`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.borderColor = `${brand.accentColor}25`;
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                <OfficialCasinoLogo slug={casino.casino_slug} size={48} />
-                <div style={{flex: 1}}>
-                  <h4 style={{fontSize: '16px', fontWeight: '700', color: '#ffffff', marginBottom: '4px'}}>
-                    {casino.casino_name}
-                  </h4>
-                  <div style={{fontSize: '13px', color: brand.accentColor, fontWeight: '600'}}>
-                    +{casino.rakeback_rate ? `${(casino.rakeback_rate * 100).toFixed(0)}` : '10'}% Rakeback
-                  </div>
-                </div>
-                <ChevronRight size={20} color="rgba(255,255,255,0.4)" />
-              </div>
-            );
-          })}
         </div>
       </div>
 

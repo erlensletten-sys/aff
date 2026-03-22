@@ -137,7 +137,9 @@ const bet = await rakestake.sports.placeBet({
 
         <div style={{display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap'}}>
           <a 
-            href="mailto:api@rakestake.com"
+            href="https://t.me/rakestake"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -157,7 +159,9 @@ const bet = await rakestake.sports.placeBet({
             Request API Access
           </a>
           <a 
-            href="mailto:sales@rakestake.com?subject=Crypto Casino Website Inquiry"
+            href="https://t.me/rakestake"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -213,7 +217,9 @@ const bet = await rakestake.sports.placeBet({
           </p>
         </div>
         <a 
-          href="mailto:sales@rakestake.com?subject=Turnkey Casino Inquiry"
+          href="https://t.me/rakestake"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             padding: '12px 24px',
             background: '#ffd700',
@@ -225,7 +231,7 @@ const bet = await rakestake.sports.placeBet({
             whiteSpace: 'nowrap'
           }}
         >
-          Contact Sales
+          Contact on Telegram
         </a>
       </div>
 
@@ -433,7 +439,9 @@ const bet = await rakestake.sports.placeBet({
         </p>
         <div style={{display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap'}}>
           <a 
-            href="mailto:api@rakestake.com"
+            href="https://t.me/rakestake"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -451,7 +459,9 @@ const bet = await rakestake.sports.placeBet({
             API Documentation
           </a>
           <a 
-            href="mailto:sales@rakestake.com"
+            href="https://t.me/rakestake"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
