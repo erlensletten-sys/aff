@@ -16,6 +16,13 @@ const casinoLogos = {
     accentColor: '#7c3aed',
     bgColor: '#0a0a12'
   },
+  duelbits: {
+    name: 'Duelbits',
+    logoUrl: 'https://duelbits.com/img/logo.svg',
+    primaryColor: '#0d0d1a',
+    accentColor: '#00e5ff',
+    bgColor: '#080812'
+  },
   rainbet: {
     name: 'Rainbet',
     logoUrl: 'https://gamblersconnect.com/wp-content/uploads/2025/05/New-Project-11-135x135.png',
