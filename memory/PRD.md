@@ -125,6 +125,12 @@ Developer-focused page for B2B partnerships:
 - ✅ **Professional Stacked Layout**: Full-width casino cards with detailed info, highlights, and CTAs
 - ✅ **Real Casino Data**: Accurate descriptions and unique selling points for each casino
 - ✅ **Telegram Contact**: All contact buttons now link to https://t.me/rakestake
+- ✅ **Engaging CTAs**: Centered buttons with text "Claim X% Rakeback + Bonus" with Zap icons
+- ✅ **"Why Rakestake?" Section**: Killer sales copy with 3 value props:
+  - "Free Money. Literally." - 100% commission passed to users
+  - "Stack It. Don't Waste It." - Extra rakeback on top of bonuses
+  - "Turn Losses Into Wins" - Insurance that actually pays
+- ✅ **Math Breakdown**: "Bet $10,000/month → Get $1,500 back" conversion CTA
 - ✅ **Slots & Sportsbook API Page**: B2B developer page with complete slots coverage and turnkey casino purchase option
 - ✅ **Animated Hero Section**: Glowing orbs, floating particles, gradient text, fadeIn animations
 - ✅ **Hero Stats Cards**: Animated stat cards with hover effects

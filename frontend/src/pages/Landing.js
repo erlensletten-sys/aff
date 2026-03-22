@@ -448,7 +448,7 @@ function Landing() {
 
       {/* Casino Cards - Professional Stacked Layout */}
       <div id="casinos" style={{
-        maxWidth: '1000px',
+        maxWidth: '900px',
         margin: '0 auto 100px',
         padding: '0 20px'
       }}>
@@ -489,19 +489,17 @@ function Landing() {
                   style={{
                     background: `linear-gradient(135deg, ${brand.primaryColor}f0 0%, #0a0a0f 100%)`,
                     border: `1px solid ${brand.accentColor}30`,
-                    borderRadius: '20px',
-                    padding: '28px 32px',
+                    borderRadius: '24px',
+                    padding: '32px',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
-                    display: 'grid',
-                    gridTemplateColumns: '80px 1fr auto',
-                    gap: '24px',
-                    alignItems: 'center'
+                    position: 'relative',
+                    overflow: 'hidden'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-4px)';
-                    e.currentTarget.style.boxShadow = `0 16px 40px ${brand.accentColor}20`;
-                    e.currentTarget.style.borderColor = `${brand.accentColor}50`;
+                    e.currentTarget.style.boxShadow = `0 20px 50px ${brand.accentColor}25`;
+                    e.currentTarget.style.borderColor = `${brand.accentColor}60`;
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
@@ -509,65 +507,106 @@ function Landing() {
                     e.currentTarget.style.borderColor = `${brand.accentColor}30`;
                   }}
                 >
-                  {/* Logo */}
-                  <OfficialCasinoLogo slug={casinoData.slug} size={72} />
+                  {/* Top Glow */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '100px',
+                    background: `linear-gradient(180deg, ${brand.accentColor}10 0%, transparent 100%)`,
+                    pointerEvents: 'none'
+                  }} />
 
-                  {/* Casino Info */}
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                      <h3 style={{ fontSize: '22px', fontWeight: '800', color: '#ffffff', margin: 0 }}>
-                        {casinoData.name}
-                      </h3>
-                      <div style={{
-                        padding: '4px 12px',
-                        background: `${brand.accentColor}20`,
-                        border: `1px solid ${brand.accentColor}40`,
-                        borderRadius: '20px',
-                        fontSize: '12px',
-                        fontWeight: '700',
-                        color: brand.accentColor
-                      }}>
-                        +{casinoData.rakeback}% Rakeback
-                      </div>
-                      <LiveIndicator />
-                    </div>
+                  {/* Header Row */}
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'flex-start', 
+                    gap: '20px',
+                    marginBottom: '20px',
+                    position: 'relative'
+                  }}>
+                    <OfficialCasinoLogo slug={casinoData.slug} size={72} />
                     
-                    <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', marginBottom: '12px', lineHeight: '1.5' }}>
-                      {casinoData.description}
-                    </p>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                        <h3 style={{ fontSize: '24px', fontWeight: '800', color: '#ffffff', margin: 0 }}>
+                          {casinoData.name}
+                        </h3>
+                        <div style={{
+                          padding: '5px 14px',
+                          background: `${brand.accentColor}20`,
+                          border: `1px solid ${brand.accentColor}50`,
+                          borderRadius: '20px',
+                          fontSize: '13px',
+                          fontWeight: '700',
+                          color: brand.accentColor
+                        }}>
+                          +{casinoData.rakeback}% Rakeback
+                        </div>
+                        <LiveIndicator />
+                      </div>
+                      
+                      <p style={{ 
+                        fontSize: '15px', 
+                        color: 'rgba(255,255,255,0.7)', 
+                        margin: 0,
+                        lineHeight: '1.6',
+                        maxWidth: '500px'
+                      }}>
+                        {casinoData.description}
+                      </p>
+                    </div>
 
-                    {/* Tags/Highlights */}
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      {casinoData.highlights.map((highlight, hidx) => (
-                        <span
-                          key={hidx}
-                          style={{
-                            padding: '6px 12px',
-                            background: 'rgba(255,255,255,0.08)',
-                            borderRadius: '8px',
-                            fontSize: '12px',
-                            fontWeight: '600',
-                            color: 'rgba(255,255,255,0.8)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px'
-                          }}
-                        >
-                          <Star size={12} color={brand.accentColor} />
-                          {highlight}
-                        </span>
-                      ))}
+                    {/* Bonus Badge */}
+                    <div style={{ 
+                      textAlign: 'right',
+                      background: 'rgba(255,255,255,0.05)',
+                      padding: '12px 18px',
+                      borderRadius: '14px',
+                      border: '1px solid rgba(255,255,255,0.1)'
+                    }}>
+                      <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)', letterSpacing: '1px', marginBottom: '4px' }}>
+                        WELCOME BONUS
+                      </div>
+                      <div style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff' }}>
+                        {casinoData.bonus}
+                      </div>
                     </div>
                   </div>
 
-                  {/* CTA Section */}
-                  <div style={{ textAlign: 'right', minWidth: '160px' }}>
-                    <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', marginBottom: '4px', letterSpacing: '0.5px' }}>
-                      WELCOME BONUS
-                    </div>
-                    <div style={{ fontSize: '18px', fontWeight: '800', color: '#ffffff', marginBottom: '12px' }}>
-                      {casinoData.bonus}
-                    </div>
+                  {/* Tags/Highlights */}
+                  <div style={{ 
+                    display: 'flex', 
+                    gap: '10px', 
+                    flexWrap: 'wrap',
+                    marginBottom: '24px',
+                    justifyContent: 'center'
+                  }}>
+                    {casinoData.highlights.map((highlight, hidx) => (
+                      <span
+                        key={hidx}
+                        style={{
+                          padding: '8px 16px',
+                          background: 'rgba(255,255,255,0.06)',
+                          borderRadius: '10px',
+                          fontSize: '13px',
+                          fontWeight: '600',
+                          color: 'rgba(255,255,255,0.85)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          border: '1px solid rgba(255,255,255,0.08)'
+                        }}
+                      >
+                        <Star size={14} color={brand.accentColor} />
+                        {highlight}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* CTA Button - Centered at Bottom */}
+                  <div style={{ textAlign: 'center' }}>
                     <button
                       data-testid={`casino-cta-${casinoData.slug}`}
                       onClick={(e) => {
@@ -575,28 +614,246 @@ function Landing() {
                         setSelectedCasino({...casino, ...casinoData});
                       }}
                       style={{
-                        padding: '12px 24px',
-                        background: brand.accentColor,
-                        borderRadius: '10px',
+                        padding: '16px 40px',
+                        background: `linear-gradient(135deg, ${brand.accentColor}, ${brand.accentColor}cc)`,
+                        borderRadius: '14px',
                         border: 'none',
                         color: brand.primaryColor === '#0f0f1a' ? '#ffffff' : '#000000',
-                        fontSize: '14px',
+                        fontSize: '15px',
                         fontWeight: '700',
                         cursor: 'pointer',
-                        display: 'flex',
+                        display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '8px',
-                        transition: 'all 0.2s'
+                        gap: '10px',
+                        transition: 'all 0.3s ease',
+                        boxShadow: `0 4px 20px ${brand.accentColor}30`
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.05)';
+                        e.currentTarget.style.boxShadow = `0 8px 30px ${brand.accentColor}50`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = `0 4px 20px ${brand.accentColor}30`;
                       }}
                     >
-                      Play Now
-                      <ArrowRight size={16} />
+                      <Zap size={18} />
+                      Claim {casinoData.rakeback}% Rakeback + Bonus
+                      <ArrowRight size={18} />
                     </button>
                   </div>
                 </div>
               );
             })
           )}
+        </div>
+      </div>
+
+      {/* WHY RAKESTAKE SECTION */}
+      <div style={{
+        maxWidth: '1000px',
+        margin: '0 auto 100px',
+        padding: '0 20px'
+      }}>
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(255,215,0,0.08) 0%, rgba(124,58,237,0.05) 100%)',
+          border: '1px solid rgba(255,215,0,0.2)',
+          borderRadius: '32px',
+          padding: '60px 48px',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          {/* Background Decoration */}
+          <div style={{
+            position: 'absolute',
+            top: '-50%',
+            right: '-20%',
+            width: '400px',
+            height: '400px',
+            background: 'radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%)',
+            borderRadius: '50%',
+            pointerEvents: 'none'
+          }} />
+
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            {/* Header */}
+            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '10px 20px',
+                background: 'rgba(255,215,0,0.15)',
+                border: '1px solid rgba(255,215,0,0.3)',
+                borderRadius: '30px',
+                marginBottom: '20px'
+              }}>
+                <Sparkles size={18} color="#ffd700" />
+                <span style={{ fontSize: '13px', fontWeight: '700', color: '#ffd700', letterSpacing: '1px' }}>
+                  THE RAKESTAKE ADVANTAGE
+                </span>
+              </div>
+              
+              <h2 style={{
+                fontSize: '42px',
+                fontWeight: '900',
+                color: 'var(--text-primary)',
+                marginBottom: '16px',
+                letterSpacing: '-1px',
+                lineHeight: '1.2'
+              }}>
+                Why Play Through Rakestake?
+              </h2>
+              
+              <p style={{
+                fontSize: '18px',
+                color: 'var(--text-secondary)',
+                maxWidth: '600px',
+                margin: '0 auto',
+                lineHeight: '1.7'
+              }}>
+                You're already gambling. Why not get <strong style={{color: '#ffd700'}}>paid more</strong> for it?
+              </p>
+            </div>
+
+            {/* Value Props */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '24px',
+              marginBottom: '48px'
+            }}>
+              {/* Prop 1 */}
+              <div style={{
+                padding: '28px',
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '20px',
+                border: '1px solid rgba(255,255,255,0.08)'
+              }}>
+                <div style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 14,
+                  background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '20px'
+                }}>
+                  <TrendingUp size={28} color="#000" />
+                </div>
+                <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#ffffff', marginBottom: '10px' }}>
+                  Free Money. Literally.
+                </h3>
+                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', lineHeight: '1.7', margin: 0 }}>
+                  Casinos already have affiliate programs. We pass <strong style={{color: '#ffd700'}}>100% of our commission back to you</strong> as rakeback. You lose nothing. You only gain.
+                </p>
+              </div>
+
+              {/* Prop 2 */}
+              <div style={{
+                padding: '28px',
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '20px',
+                border: '1px solid rgba(255,255,255,0.08)'
+              }}>
+                <div style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 14,
+                  background: 'linear-gradient(135deg, #7c3aed, #5b21b6)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '20px'
+                }}>
+                  <Gift size={28} color="#fff" />
+                </div>
+                <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#ffffff', marginBottom: '10px' }}>
+                  Stack It. Don't Waste It.
+                </h3>
+                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', lineHeight: '1.7', margin: 0 }}>
+                  Your casino welcome bonus stays the same. Rakestake rakeback is <strong style={{color: '#a78bfa'}}>extra, on top</strong>. It's not either/or — it's both. Every single bet earns you more.
+                </p>
+              </div>
+
+              {/* Prop 3 */}
+              <div style={{
+                padding: '28px',
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '20px',
+                border: '1px solid rgba(255,255,255,0.08)'
+              }}>
+                <div style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 14,
+                  background: 'linear-gradient(135deg, #22c55e, #16a34a)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '20px'
+                }}>
+                  <Wallet size={28} color="#fff" />
+                </div>
+                <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#ffffff', marginBottom: '10px' }}>
+                  Turn Losses Into Wins
+                </h3>
+                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', lineHeight: '1.7', margin: 0 }}>
+                  Had a bad session? Rakeback softens the blow. <strong style={{color: '#4ade80'}}>Up to 15% of every bet comes back to you</strong> — win or lose. It's insurance that actually pays.
+                </p>
+              </div>
+            </div>
+
+            {/* Bottom CTA Section */}
+            <div style={{
+              textAlign: 'center',
+              padding: '32px',
+              background: 'rgba(255,215,0,0.08)',
+              borderRadius: '20px',
+              border: '1px solid rgba(255,215,0,0.2)'
+            }}>
+              <div style={{
+                fontSize: '28px',
+                fontWeight: '800',
+                color: '#ffffff',
+                marginBottom: '8px'
+              }}>
+                The Math is Simple
+              </div>
+              <p style={{
+                fontSize: '16px',
+                color: 'rgba(255,255,255,0.8)',
+                marginBottom: '24px',
+                maxWidth: '500px',
+                margin: '0 auto 24px'
+              }}>
+                Bet $10,000/month → Get <span style={{color: '#ffd700', fontWeight: '800'}}>$1,500 back</span> at Diamond level.<br/>
+                That's money you'd never see playing direct.
+              </p>
+              <Link 
+                to="/vip"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '18px 40px',
+                  background: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+                  borderRadius: '14px',
+                  color: '#000',
+                  fontSize: '16px',
+                  fontWeight: '700',
+                  textDecoration: 'none',
+                  boxShadow: '0 4px 20px rgba(255,215,0,0.3)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <Crown size={20} />
+                Start Earning Rakeback Now
+                <ArrowRight size={20} />
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
 
